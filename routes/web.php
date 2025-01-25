@@ -20,3 +20,6 @@ Route::middleware([
     })->name('dashboard');
 });
 
+Route::get('/create-post', [PostController::class, 'create'])->name('create.post');
+
+

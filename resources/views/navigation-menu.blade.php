@@ -15,7 +15,13 @@
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                </div>
+
+                @if (Auth::user()->role === 'customer')
+    <x-nav-link href="{{ route('create.post') }}" :active="request()->routeIs('create.post')">
+        {{ __('Зробити пост') }}
+    </x-nav-link>
+@endif
+</div>
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
