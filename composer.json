@@ -7,9 +7,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "intervention/image": "^3.11",
         "laravel/cashier": "^15.6",
         "laravel/framework": "^11.31",
-        "laravel/jetstream": "^5.3",
+        "laravel/jetstream": "*",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.0",

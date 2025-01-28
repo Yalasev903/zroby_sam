@@ -33,6 +33,26 @@
                  <x-input id="password_confirmation" class="block mt-1 w-full border-none shadow-md" type="password" name="password_confirmation" required autocomplete="new-password" />
              </div>
 
+                        <!-- Поле для города -->
+            <div class="mt-4">
+                <x-label for="city" value="{{ __('Місто') }}" />
+                <select id="city" name="city" class="block mt-1 w-full border-none shadow-md" required>
+                    <option value="">{{ __('Оберіть місто') }}</option>
+                    <option value="Київ">Київ</option>
+                    <option value="Львів">Львів</option>
+                    <option value="Одеса">Одеса</option>
+                    <option value="Харків">Харків</option>
+                    <option value="Дніпро">Дніпро</option>
+                    <!-- Добавьте остальные города Украины -->
+                </select>
+            </div>
+
+            <!-- Поле для загрузки изображения -->
+            <div class="mt-4">
+                <x-label for="profile_photo_path" value="{{ __('Завантажте фото профілю') }}" />
+                <x-input id="profile_photo_path" class="block mt-1 w-full border-none shadow-md" type="file" name="avatar" accept="image/*" />
+            </div>
+
              <!-- Вибір ролі -->
              <div class="mt-4">
                  <x-label for="role" value="{{ __('Виберіть вашу роль') }}" />

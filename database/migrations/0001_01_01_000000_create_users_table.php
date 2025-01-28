@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
+            $table->string('city')->nullable(); // Город пользователя
             $table->string('profile_photo_path', 2048)->nullable();
             $table->enum('role', ['customer', 'executor'])->default('customer'); // Добавляем роль пользователя
             $table->string('company_name')->nullable(); // Название компании для customer
