@@ -7,6 +7,14 @@
 
     <div>
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+            {{-- Отображение рейтинга пользователя --}}
+            <div class="bg-white shadow rounded-lg p-6 mb-6">
+                <h3 class="text-lg font-semibold mb-2">{{ __('Your Rating') }}</h3>
+                <p class="text-gray-700 text-xl font-bold">
+                    ⭐ {{ auth()->user()->rating ?? 0 }} / 5
+                </p>
+            </div>
+
             @if (Laravel\Fortify\Features::canUpdateProfileInformation())
                 @livewire('profile.update-profile-information-form')
 

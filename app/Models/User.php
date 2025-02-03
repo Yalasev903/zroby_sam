@@ -24,6 +24,7 @@ class User extends Authenticatable
         'skills',
         'services_category',
         'services',
+        'rating',
     ];
 
     protected $hidden = [
@@ -61,4 +62,10 @@ class User extends Authenticatable
             ? asset('storage/' . $this->profile_photo_path)
             : asset('storage/avatars/default-avatar.webp'); // Путь к изображению по умолчанию
     }
+
+    public function updateRating(int $points): void
+{
+    $this->increment('rating', $points);
+}
+
 }

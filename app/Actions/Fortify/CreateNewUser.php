@@ -69,6 +69,7 @@ class CreateNewUser implements CreatesNewUsers
             'skills' => $input['role'] === 'executor' ? $input['skills'] : null,
             'services_category' => $input['services_category'],
             'services' => json_encode($input['services'] ?? []),
+            'rating' => 0,
         ]);
     }
 }

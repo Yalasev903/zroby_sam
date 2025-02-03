@@ -21,20 +21,28 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'rating' => ['nullable', 'numeric', 'min:0', 'max:5'], // Проверяем рейтинг
         ])->validateWithBag('updateProfileInformation');
 
         if (isset($input['photo'])) {
             $user->updateProfilePhoto($input['photo']);
         }
 
+        $updateData = [
+            'name' => $input['name'],
+            'email' => $input['email'],
+        ];
+
+        // Проверяем, передан ли рейтинг, и обновляем его
+        if (isset($input['rating'])) {
+            $updateData['rating'] = $input['rating'];
+        }
+
         if ($input['email'] !== $user->email &&
             $user instanceof MustVerifyEmail) {
             $this->updateVerifiedUser($user, $input);
         } else {
-            $user->forceFill([
-                'name' => $input['name'],
-                'email' => $input['email'],
-            ])->save();
+            $user->forceFill($updateData)->save();
         }
     }
 
