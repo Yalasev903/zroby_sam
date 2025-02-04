@@ -8,4 +8,9 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    resolve: {
+        alias: {
+            jquery: 'jquery/dist/jquery.min.js',
+        },
+    },
 });

@@ -10,6 +10,7 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -34,12 +35,17 @@
 
             <!-- Page Content -->
             <main>
-                {{ $slot }}
+                @if(isset($slot))
+                {{ $slot }}  <!-- Поддержка Jetstream -->
+            @else
+                @yield('content')  <!-- Для обычных страниц -->
+            @endif
             </main>
         </div>
 
         @stack('modals')
 
         @livewireScripts
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
-
+use App\Http\Controllers\ExecutorController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,6 +18,8 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    Route::get('/executors', [ExecutorController::class, 'index'])->name('executors.index');
 });
 
 Route::get('/create-post', [PostController::class, 'create'])->name('create.post');
