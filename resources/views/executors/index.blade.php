@@ -5,7 +5,7 @@
     <h2 class="mb-4">Исполнители</h2>
     <div class="row">
         @foreach($executors as $executor)
-            <div class="col-md-4 mb-4">
+            <div class="col-md-3 mb-4">
                 <div class="card">
                     <div class="card-body">
                         <!-- Добавляем изображение профиля -->
@@ -20,7 +20,7 @@
                         <p class="card-text"><strong>Місто:</strong> {{ $executor->city }}</p>
                         <p class="card-text"><strong>Навички:</strong> {{ $executor->skills }}</p>
                         <p class="card-text"><strong>Рейтинг:</strong> ⭐{{ $executor->rating }}</p>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#executorModal{{ $executor->id }}">
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#executorModal{{ $executor->id }}">
                             Подрібніше
                         </button>
                     </div>
@@ -50,7 +50,7 @@
                             <p><strong>Рейтинг:</strong> ⭐{{ $executor->rating }}</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Закрыть</button>
                         </div>
                     </div>
                 </div>
