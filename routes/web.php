@@ -8,6 +8,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/home', function () {
+    return view('home');
+});
+
 Route::post('/register', [RegisteredUserController::class, 'store'])->name('register');
 
 Route::middleware([
