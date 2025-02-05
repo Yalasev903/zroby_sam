@@ -9,7 +9,7 @@
                 <div class="ld-fancy-heading relative animation-element">
                     <h2 class=" ld-fh-element relative ld-gradient-heading bg-transparent leading-1/2em mb-0/5em" data-text-rotator="true" style="background-image: linear-gradient(10deg, #F14DFF 0%, #E38300 85%);">
                         <span class="txt-rotate-keywords">
-                            <span class="txt-rotate-keyword active">для пошуку спеціалістів і</span>
+                            <span class="txt-rotate-keyword active">пошуку спеціалістів.</span>
                             <span class="txt-rotate-keyword">замовлення послуг.</span>
                         </span>
                     </h2>

@@ -74,7 +74,7 @@
 										</li>
 										<li class="menu-item-has-children position-applied">
 											<a href="#services">
-												<span>Services</span>
+												<span>Послуги</span>
 												<span class="submenu-expander">
 													<svg xmlns="http://www.w3.org/2000/svg" width="21" height="32" viewBox="0 0 21 32" style="width: 1em; height: 1em;">
 														<path fill="currentColor" d="M10.5 18.375l7.938-7.938c.562-.562 1.562-.562 2.125 0s.562 1.563 0 2.126l-9 9c-.563.562-1.5.625-2.063.062L.437 12.562C.126 12.25 0 11.876 0 11.5s.125-.75.438-1.063c.562-.562 1.562-.562 2.124 0z"></path>
@@ -95,7 +95,7 @@
 										</li>
 										<li>
 											<a href="#contact">
-												<span>Contact</span>
+												<span>Контакти</span>
 												<span class="link-icon inline-flex hide-if-empty right-icon">
 													<i class="lqd-icn-ess icon-ion-ios-arrow-down"></i>
 												</span>

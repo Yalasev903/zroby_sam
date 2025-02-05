@@ -2,123 +2,11 @@
 @include('components_layout.start_banner')
 @include('components_layout.about')
 @include('components_layout.registration_info')
+@include('components_layout.services')
 
-
-					<!-- Start Services -->
-					<section class="lqd-section services pt-45 pb-55 bg-transparent" id="services" style="background-image: linear-gradient(180deg, #fff 47%, #F0EEFD 47%);" data-custom-animations="true" data-ca-options='{"animationTarget": "h6, h2, .iconbox", "ease": "power4.out", "initValues": {"y": "45px", "scaleX" : 1.2, "scaleY" : 1.2, "opacity" : 0} , "animations": {"y": "0px", "scaleX" : 1, "scaleY" : 1, "opacity" : 1}}'>
-						<div class="background-overlay bg-transparent transition-all opacity-100" style="background-image: linear-gradient(0deg, rgb(255, 255, 255) 0, rgba(255, 255, 255, 0) 55%);"></div>
-						<div class="container">
-							<div class="row justify-center">
-								<div class="col col-12 col-md-10 col-lg-9 col-xl-7 mb-25 text-center px-70 sm:px-0">
-									<div class="mb-20 ld-fancy-heading relative">
-										<h6 class="ld-fh-element m-0 inline-block relative label text-10 tracking-1 uppercase font-bold text-blue-500 bg-blue-200 trackink-1px py-5 px-15 rounded-100">Our services</h6>
-									</div>
-									<div class="ld-fancy-heading relative">
-										<h2 class="ld-fh-element mb-0/5em inline-block relative">We build ideas driven by the future.</h2>
-									</div>
-								</div>
-								<div class="col col-12 p-0"></div>
-								<div class="col col-12 col-md-6 p-15">
-									<div class="iconbox flex flex-grow-1 relative iconbox-heading-arrow-onhover box-shadow-bottom bg-white rounded-16 pt-35 pr-65 pb-40 pl-50 mb-15 mr-10 lg:m-0">
-										<div class="iconbox-icon-wrap mr-35">
-											<div class="text-34 iconbox-icon-container inline-flex">
-												<svg xmlns="http://www.w3.org/2000/svg" height="35.044" viewbox="0 0 30.783 35.044" width="30.783">
-													<path d="m1.874 18.985a1.876 1.876 0 0 1 0-3.752h3.755a1.876 1.876 0 0 1 0 3.752zm3.754-8.6-2.655-2.656a1.876 1.876 0 0 1 2.653-2.653l2.655 2.656a1.876 1.876 0 0 1 -2.653 2.653zm16.1 0a1.875 1.875 0 0 1 0-2.652l2.655-2.655a1.876 1.876 0 0 1 2.653 2.653l-2.655 2.655a1.876 1.876 0 0 1 -2.652 0zm-8.828-4.756v-3.755a1.876 1.876 0 0 1 3.752 0v3.755a1.876 1.876 0 0 1 -3.752 0z" fill="#41b79d"></path>
-													<path d="m11.746 13.271 6.112-2.9c.62-.295.627-.794.024-1.121l-16.869-9.116c-.603-.326-1.056-.034-1.013.647l1.272 18.831c.046.69.513.89 1.042.461l5.264-4.264 4.459 7.135a1.244 1.244 0 0 0 1.712.392l2.028-1.267a1.244 1.244 0 0 0 .4-1.711z" fill="#6dd8c0" transform="translate(12.454 11.519)"></path>
-												</svg>
-											</div>
-										</div>
-										<div class="contents">
-											<h3 class="text-20 lqd-iconbox-heading">
-												<span>Interaction Design</span>
-												<svg class="inline-block" xmlns="http://www.w3.org/2000/svg" width="12" height="32" viewbox="0 0 12 32">
-													<path fill="currentColor" d="M8.375 16L.437 8.062C-.125 7.5-.125 6.5.438 5.938s1.563-.563 2.126 0l9 9c.562.562.624 1.5.062 2.062l-9.063 9.063c-.312.312-.687.437-1.062.437s-.75-.125-1.063-.438c-.562-.562-.562-1.562 0-2.125z"></path>
-												</svg>
-											</h3>
-											<p>Produce the highest quality work and services for every client, on every project.</p>
-										</div>
-									</div>
-								</div>
-								<div class="col col-12 col-md-6 p-15">
-									<div class="iconbox flex flex-grow-1 relative iconbox-heading-arrow-onhover box-shadow-bottom bg-white rounded-16 pt-35 pr-65 pb-40 pl-50 mb-15 ml-10 lg:m-0">
-										<div class="iconbox-icon-wrap mr-35">
-											<div class="text-34 iconbox-icon-container inline-flex">
-												<svg xmlns="http://www.w3.org/2000/svg" width="27.388" height="40.486" viewbox="0 0 27.388 40.486">
-													<g transform="translate(-16.075 -10.122)">
-														<path d="M4.763,10.717c2.484,0,4.763-6.974,4.763-8.335C9.526,1.08,7.512,0,4.763,0,2.543,0,0,1.08,0,2.382,0,3.743,2.279,10.717,4.763,10.717Z" transform="translate(25.006 39.891)" fill="rgba(0,203,153,0.14)"></path>
-														<path d="M26.319,16.056l-4.851-.6a3.1,3.1,0,0,1-2.654-2.992V1.271c0-1.475.706-1.7,1.578-.506L25.81,8.172a9.534,9.534,0,0,1,1.578,4.82v2.134a.917.917,0,0,1-.935.937A1.078,1.078,0,0,1,26.319,16.056ZM0,15.114v-2.1A9.591,9.591,0,0,1,1.582,8.165L6.991.772C7.865-.423,8.574-.19,8.574,1.29V12.442a3.112,3.112,0,0,1-2.654,3.01l-4.851.6a1.076,1.076,0,0,1-.133.008A.921.921,0,0,1,0,15.114Z" transform="translate(16.075 28.234)" fill="#00cb99"></path>
-														<path d="M.3,9.989a12.916,12.916,0,0,1,5.577-8.9A5.223,5.223,0,0,1,8.336,0a5.223,5.223,0,0,1,2.458,1.091A12.958,12.958,0,0,1,16.374,10s.405,1.709.27,9.372a106.118,106.118,0,0,1-1.112,13.661,1.217,1.217,0,0,1-1.718.992,12.129,12.129,0,0,0-5.479-.964,12.129,12.129,0,0,0-5.479.964A1.21,1.21,0,0,1,1.139,33.02,107.386,107.386,0,0,1,.027,19.372C-.107,11.791.3,9.989.3,9.989Z" transform="translate(21.433 10.122)" fill="#00cb99" opacity="0.14"></path>
-														<path d="M2.857,25.826V14.675a1.143,1.143,0,1,1,2.285,0V25.826a1.143,1.143,0,1,1-2.285,0ZM0,4.109A4.055,4.055,0,0,1,4,0,4.056,4.056,0,0,1,8,4.109,4.056,4.056,0,0,1,4,8.218,4.056,4.056,0,0,1,0,4.109Z" transform="translate(26 17.538)" fill="#00cb99"></path>
-													</g>
-												</svg>
-											</div>
-										</div>
-										<div class="contents">
-											<h3 class="text-20 lqd-iconbox-heading">
-												<span>Search Engine Optimization</span>
-												<svg class="inline-block" xmlns="http://www.w3.org/2000/svg" width="12" height="32" viewbox="0 0 12 32">
-													<path fill="currentColor" d="M8.375 16L.437 8.062C-.125 7.5-.125 6.5.438 5.938s1.563-.563 2.126 0l9 9c.562.562.624 1.5.062 2.062l-9.063 9.063c-.312.312-.687.437-1.062.437s-.75-.125-1.063-.438c-.562-.562-.562-1.562 0-2.125z"></path>
-												</svg>
-											</h3>
-											<p>Produce the highest quality work and services for every client, on every project.</p>
-										</div>
-									</div>
-								</div>
-								<div class="col col-12 col-md-6 p-15">
-									<div class="iconbox flex flex-grow-1 relative iconbox-heading-arrow-onhover box-shadow-bottom bg-white rounded-16 pt-35 pr-65 pb-40 pl-50 mb-15 mr-10 lg:m-0">
-										<div class="iconbox-icon-wrap mr-35">
-											<div class="text-34 iconbox-icon-container inline-flex">
-												<svg xmlns="http://www.w3.org/2000/svg" height="36.587" viewbox="0 0 41.046 36.587" width="41.046">
-													<path d="m2.226 24.4-1.497-12.188-.394-3.206-.316-2.571a2.583 2.583 0 0 1 2.254-2.873l28.847-3.542a2.581 2.581 0 0 1 2.88 2.243l.316 2.571.394 3.206 1.5 12.189a2.582 2.582 0 0 1 -2.256 2.871l-28.846 3.544a2.626 2.626 0 0 1 -.32.02 2.581 2.581 0 0 1 -2.562-2.264z" fill="#41b79d" opacity=".222" transform="translate(0 -.001)"></path>
-													<path d="m34.238 2.578a2.582 2.582 0 0 0 -2.588-2.578h-29.063a2.583 2.583 0 0 0 -2.587 2.578v18.1a2.582 2.582 0 0 0 2.587 2.578h29.063a2.583 2.583 0 0 0 2.587-2.578z" fill="#6dd9c1" transform="translate(6.809 13.331)"></path>
-													<path d="m13.94 11.722a1.3 1.3 0 0 1 0-2.6h8.237a1.3 1.3 0 0 1 0 2.6zm-12.673 0a1.3 1.3 0 0 1 0-2.6h8.233a1.3 1.3 0 0 1 0 2.6zm0-6.512a1.281 1.281 0 0 1 -1.267-1.301v-2.609a1.281 1.281 0 0 1 1.267-1.3h3.8a1.281 1.281 0 0 1 1.269 1.3v2.609a1.281 1.281 0 0 1 -1.267 1.3z" fill="#41b79d" transform="translate(10.296 19.981)"></path>
-												</svg>
-											</div>
-										</div>
-										<div class="contents">
-											<h3 class="text-20 lqd-iconbox-heading">
-												<span>eCommerce Solutions</span>
-												<svg class="inline-block" xmlns="http://www.w3.org/2000/svg" width="12" height="32" viewbox="0 0 12 32">
-													<path fill="currentColor" d="M8.375 16L.437 8.062C-.125 7.5-.125 6.5.438 5.938s1.563-.563 2.126 0l9 9c.562.562.624 1.5.062 2.062l-9.063 9.063c-.312.312-.687.437-1.062.437s-.75-.125-1.063-.438c-.562-.562-.562-1.562 0-2.125z"></path>
-												</svg>
-											</h3>
-											<p>Produce the highest quality work and services for every client, on every project.</p>
-										</div>
-									</div>
-								</div>
-								<div class="col col-12 col-md-6 p-15">
-									<div class="iconbox flex flex-grow-1 relative iconbox-heading-arrow-onhover box-shadow-bottom relative bg-white rounded-16 pt-35 pr-65 pb-40 pl-50 mb-15 ml-10 lg:m-0">
-										<div class="ld-fancy-heading absolute top-0 z-1">
-											<h6 class="ld-fh-element relative m-0 leading-1em uppercase px-10 py-5 rounded-4 text-13 bg-yellow-200">PRO</h6>
-										</div>
-										<div class="iconbox-icon-wrap mr-35">
-											<div class="text-34 iconbox-icon-container inline-flex">
-												<svg xmlns="http://www.w3.org/2000/svg" height="34.872" viewbox="0 0 35.35 34.872" width="35.35">
-													<g fill="#00cb99">
-														<path d="m16.169 18.979-9.511-9.491-3.644-.793-3.014-5.852 2.849-2.843 5.864 3.008.795 3.636 9.511 9.492.486-.485a2.679 2.679 0 0 1 3.779 0l8.582 8.564a2.667 2.667 0 0 1 0 3.772l-3.819 3.813a2.679 2.679 0 0 1 -3.779 0l-8.582-8.564a2.667 2.667 0 0 1 0-3.772l.486-.485z" opacity=".191" transform="translate(0 2.29)"></path>
-														<path d="m14.8 14.256a10.021 10.021 0 0 1 13.311-13.325l-5.575 4.92a3.826 3.826 0 0 0 -1.1 3.276l.29 1.454a2.142 2.142 0 0 0 1.562 1.559l1.457.29a3.845 3.845 0 0 0 3.283-1.1l4.93-5.564a10.021 10.021 0 0 1 -13.358 13.279 3.946 3.946 0 0 1 -.312.371l-12.575 13.213a3.788 3.788 0 0 1 -5.444.073l-.149-.149a3.771 3.771 0 0 1 .073-5.433l13.239-12.553a3.947 3.947 0 0 1 .368-.311z" transform="translate(1.464)"></path>
-													</g>
-												</svg>
-											</div>
-										</div>
-										<div class="contents">
-											<h3 class="text-20 lqd-iconbox-heading">
-												<span>Product Development</span>
-												<svg class="inline-block" xmlns="http://www.w3.org/2000/svg" width="12" height="32" viewbox="0 0 12 32">
-													<path fill="currentColor" d="M8.375 16L.437 8.062C-.125 7.5-.125 6.5.438 5.938s1.563-.563 2.126 0l9 9c.562.562.624 1.5.062 2.062l-9.063 9.063c-.312.312-.687.437-1.062.437s-.75-.125-1.063-.438c-.562-.562-.562-1.562 0-2.125z"></path>
-												</svg>
-											</h3>
-											<p>Produce the highest quality work and services for every client, on every project.</p>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</section>
-					<!-- End Services -->
 
 					<!-- Start Case Studies -->
-					<section class="lqd-section case-studies pt-55 pb-120">
+					{{-- <section class="lqd-section case-studies pt-55 pb-120">
 						<div class="container">
 							<div class="row justify-center">
 								<div class="col col-12 col-xl-4 col-md-8 mb-25 p-0 text-center module-title">
@@ -279,69 +167,9 @@
 								</div>
 							</div>
 						</div>
-					</section>
+					</section> --}}
 					<!-- End Case Studies -->
-
-					<!-- Start Text LG -->
-					<section class="lqd-section text-lg">
-						<div class="container-fluid">
-							<div class="row">
-								<div class="col col-12">
-									<div class="whitespace-nowrap ld-fancy-heading relative" data-parallax="true" data-parallax-options='{"ease": "linear", "start": "top bottom", "end": "bottom+=0px top"}' data-parallax-from='{"x": "1vw"}' data-parallax-to='{"x": "-20vw"}'>
-										<h2 class="ld-fh-element mb-0/5em inline-block relative">You'll love it</h2>
-									</div>
-								</div>
-							</div>
-						</div>
-					</section>
-					<!-- End Text LG -->
-
-					<!-- Start Icon Box Float -->
-					<section class="lqd-section iconbox-float -mt-15percent">
-						<div class="container">
-							<div class="row items-end">
-								<div class="col col-12 col-md-6" data-custom-animations="true" data-ca-options='{"animationTarget": "p", "ease": "power4.out", "initValues": {"y": "45px", "rotationY" : 65, "opacity" : 0, "transformOrigin": "100% 50% 0px"} , "animations": {"y": "0px", "rotationY" : 0, "opacity" : 1, "transformOrigin": "50% 50% 80px"}}'>
-									<div class="mb-100 mr-90 lg:mr-0 sm:m-0">
-										<p class="text-22 font-medium leading-1/15em mb-1/15em">
-											<span class="text-blue-400">We have three projects with this template and that is because we love the design,</span>
-											<span>the large number of possibilities.</span>
-										</p>
-									</div>
-								</div>
-								<div class="col col-12 col-md-6 sm:order-first" data-custom-animations="true" data-ca-options='{"animationTarget": "figure, h5, .btn", "startDelay" : 200, "ease": "power4.out", "initValues": {"y": "45px", "opacity" : 0} , "animations": {"y": "0px", "opacity" : 1}}'>
-									<div class="w-full flex flex-wrap items-end justify-center relative">
-										<div class="w-315 text-center">
-											<div class="lqd-imggrp-single block relative" data-float="ease-in">
-												<div class="lqd-imggrp-img-container inline-flex relative sm:w-50percent">
-													<figure class="w-full relative">
-														<img width="634" height="881" src="./assets/images/demo/start-hub-2/3D/Group-35760.png" alt="3D shape float">
-													</figure>
-												</div>
-											</div>
-										</div>
-										<div class="w-full relative -mt-200 mb-0 relative z-1 lg:mr-0" data-parallax-options='{"ease": "linear", "start": "top bottom", "end": "bottom+=0px top"}' data-parallax-from='{"x": "-70px", "y": "-30px"}' data-parallax-to='{"x": "-90px", "y": "-50px"}'>
-											<div class="w-350 flex mx-auto">
-												<div class="w-full flex">
-													<div class="has-bg bg-center bg-cover transition-all py-25 px-35 rounded-10" style="background-image: url('./assets/images/demo/start-hub-2/bg/bg.jpg');">
-														<div class="ld-fancy-heading relative">
-															<h5 class="ld-fh-element mb-0/5em inline-block relative">Social Media Integration</h5>
-														</div>
-														<a href="#" class="btn btn-naked btn-icon-right btn-hover-reveal text-secondary uppercase text-12 font-semibold tracking-1/5 hover:text-secondary">
-															<span class="btn-txt" data-text="Learn more">Learn more</span>
-															<span class="btn-icon">
-																<i aria-hidden="true" class="lqd-icn-ess icon-ion-ios-arrow-forward"></i>
-															</span>
-														</a>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</section>
-					<!-- End Icon Box Float -->
+@include('components_layout.how_it_works')
 
 					<!-- Start Experiences -->
 					<section class="lqd-section experiences pt-45 pb-95 relative">
@@ -1198,11 +1026,6 @@
 			</div>
 		</div>
 		<!-- Contact Modal -->
-
-		<!-- Hub wordpress -->
-		<a class="fixed z-100" href="https://themeforest.net/item/hub-responsive-multipurpose-wordpress-theme/31569152" title="Get Hub WordPress Theme" style="bottom: 2rem; left: 2rem;" target="_blank" rel="nofollow">
-			<svg width="62" height="62" viewBox="0 0 62 62" fill="none" xmlns="http://www.w3.org/2000/svg"> <g clip-path="url(#clip0_4_2)"> <path d="M61.07 30.5719C61.07 31.7719 59.17 32.8429 59.03 34.0039C58.887 35.1899 60.476 36.6829 60.197 37.8219C59.913 38.9789 57.81 39.5649 57.397 40.6639C56.984 41.7629 58.158 43.6079 57.61 44.6499C57.062 45.6919 54.877 45.7639 54.21 46.7339C53.543 47.7039 54.246 49.7709 53.462 50.6549C52.678 51.5389 50.544 51.0819 49.662 51.8669C48.78 52.6519 48.977 54.8239 48.002 55.4969C47.027 56.1699 45.07 55.2149 44.019 55.7679C42.968 56.3209 42.65 58.4739 41.538 58.8959C40.426 59.3179 38.764 57.9169 37.607 58.1959C36.468 58.4759 35.633 60.4959 34.446 60.6339C33.285 60.7739 31.994 59.0159 30.796 59.0159C29.598 59.0159 28.307 60.7729 27.146 60.6339C25.959 60.4909 25.123 58.4759 23.985 58.1959C22.828 57.9119 21.153 59.3079 20.054 58.8909C18.955 58.4739 18.616 56.3119 17.573 55.7629C16.53 55.2139 14.561 56.1629 13.59 55.4919C12.619 54.8209 12.814 52.6449 11.93 51.8609C11.046 51.0769 8.91197 51.5339 8.12997 50.6489C7.34797 49.7639 8.05599 47.7019 7.38199 46.7279C6.70799 45.7539 4.52999 45.6939 3.98199 44.6439C3.43399 43.5939 4.61698 41.7689 4.19498 40.6579C3.77298 39.5469 1.67599 38.9739 1.39499 37.8159C1.11499 36.6769 2.70398 35.1849 2.56198 33.9979C2.42298 32.8369 0.521973 31.7649 0.521973 30.5669C0.521973 29.3689 2.42198 28.2959 2.56198 27.1359C2.70498 25.9499 1.11599 24.4559 1.39499 23.3179C1.67899 22.1609 3.78098 21.5749 4.19498 20.4759C4.60898 19.3769 3.43399 17.5319 3.98199 16.4899C4.52999 15.4479 6.71599 15.3759 7.38199 14.4049C8.04799 13.4339 7.34597 11.3679 8.12997 10.4839C8.91397 9.59991 11.048 10.0569 11.93 9.2719C12.812 8.4869 12.615 6.31489 13.59 5.64089C14.565 4.96689 16.522 5.9229 17.573 5.3709C18.624 4.8189 18.942 2.66491 20.054 2.24291C21.166 1.82091 22.828 3.22189 23.985 2.94289C25.124 2.66289 25.96 0.642903 27.146 0.504903C28.307 0.365903 29.598 2.12291 30.796 2.12291C31.994 2.12291 33.286 0.365903 34.447 0.504903C35.633 0.647903 36.469 2.66289 37.608 2.94289C38.765 3.22789 40.44 1.83091 41.539 2.24791C42.638 2.66491 42.977 4.82691 44.02 5.37591C45.063 5.92491 47.032 4.97589 48.002 5.64589C48.972 6.31589 48.778 8.49291 49.662 9.27691C50.546 10.0609 52.681 9.60391 53.462 10.4889C54.243 11.3739 53.536 13.4359 54.209 14.4099C54.882 15.3839 57.061 15.4439 57.609 16.4949C58.157 17.5459 56.974 19.3689 57.396 20.4809C57.818 21.5929 59.915 22.1659 60.196 23.3229C60.476 24.4619 58.887 25.9549 59.029 27.1409C59.169 28.3009 61.07 29.3729 61.07 30.5719Z" fill="#E1E6EA"/> <path d="M16.827 31.128C16.8266 33.7663 17.569 36.3515 18.9693 38.5876C20.3696 40.8237 22.3712 42.6204 24.745 43.772L18.045 25.411C17.2419 27.2098 16.8276 29.158 16.829 31.128H16.827ZM40.36 30.419C40.3402 29.0449 39.9382 27.7034 39.199 26.545C38.4448 25.5953 37.9679 24.4557 37.821 23.252C37.8029 22.6078 38.0412 21.9828 38.4835 21.5141C38.9257 21.0454 39.5359 20.7713 40.18 20.752C40.242 20.752 40.301 20.76 40.362 20.763C38.8617 19.3896 37.0811 18.3584 35.1432 17.7408C33.2054 17.1231 31.1564 16.9337 29.1382 17.1856C27.1199 17.4375 25.1804 18.1247 23.4538 19.1998C21.7272 20.2748 20.2546 21.712 19.138 23.412C19.468 23.422 19.778 23.429 20.038 23.429C21.507 23.429 23.782 23.251 23.782 23.251C23.9354 23.239 24.0873 23.2885 24.2042 23.3886C24.3212 23.4886 24.3935 23.631 24.4055 23.7845C24.4174 23.9379 24.3679 24.0898 24.2679 24.2067C24.1678 24.3236 24.0254 24.396 23.872 24.408C23.872 24.408 23.111 24.498 22.264 24.542L27.38 39.759L30.454 30.538L28.265 24.538C27.508 24.494 26.792 24.404 26.792 24.404C26.6487 24.3799 26.5197 24.303 26.4305 24.1885C26.3412 24.0739 26.2981 23.93 26.3098 23.7853C26.3215 23.6405 26.3871 23.5054 26.4936 23.4066C26.6001 23.3079 26.7397 23.2527 26.885 23.252C26.885 23.252 29.205 23.43 30.585 23.43C32.054 23.43 34.329 23.252 34.329 23.252C34.4824 23.24 34.6343 23.2895 34.7512 23.3896C34.8682 23.4896 34.9405 23.632 34.9525 23.7855C34.9644 23.9389 34.9149 24.0908 34.8149 24.2077C34.7148 24.3246 34.5724 24.397 34.419 24.409C34.419 24.409 33.656 24.499 32.811 24.543L37.888 39.643L39.288 34.96C39.852 33.5028 40.2121 31.9747 40.358 30.419H40.36ZM31.122 32.352L26.907 44.605C29.7372 45.4383 32.7578 45.36 35.541 44.381C35.502 44.3194 35.4685 44.2544 35.441 44.187L31.122 32.352ZM43.199 24.388C43.2646 24.8665 43.298 25.3489 43.299 25.832C43.2751 27.5629 42.9122 29.2725 42.231 30.864L37.938 43.272C41.1024 41.4302 43.423 38.426 44.4056 34.899C45.3882 31.3719 44.9553 27.6006 43.199 24.388ZM30.876 14.752C27.6372 14.7522 24.4711 15.7128 21.7782 17.5123C19.0854 19.3118 16.9866 21.8695 15.7472 24.8618C14.5079 27.8542 14.1838 31.1468 14.8158 34.3234C15.4478 37.4999 17.0075 40.4178 19.2978 42.7079C21.588 44.998 24.5059 46.5576 27.6826 47.1894C30.8592 47.8212 34.1518 47.4968 37.144 46.2573C40.1363 45.0178 42.6938 42.9189 44.4932 40.2259C46.2926 37.5329 47.253 34.3668 47.253 31.128C47.248 26.7861 45.5209 22.6236 42.4507 19.5536C39.3804 16.4835 35.2178 14.7567 30.876 14.752ZM30.876 46.752C27.7852 46.7525 24.7637 45.8366 22.1936 44.1198C19.6235 42.4031 17.6202 39.9627 16.4371 37.1074C15.254 34.252 14.9443 31.11 15.547 28.0786C16.1498 25.0472 17.638 22.2626 19.8234 20.0771C22.0088 17.8915 24.7933 16.4031 27.8246 15.8002C30.856 15.1972 33.9981 15.5068 36.8535 16.6897C39.7089 17.8726 42.1494 19.8757 43.8663 22.4458C45.5832 25.0158 46.4994 28.0372 46.499 31.128C46.4937 35.2699 44.846 39.2407 41.9173 42.1696C38.9886 45.0985 35.0179 46.7464 30.876 46.752Z" fill="#317296"/> </g> <defs> <clipPath id="clip0_4_2"> <rect width="61.57" height="61.144" fill="white"/> </clipPath> </defs> </svg>
-		</a>
 
 		<script src="./assets/vendors/jquery.min.js"></script>
 		<script src="./assets/vendors/jquery-ui/jquery-ui.min.js"></script>
