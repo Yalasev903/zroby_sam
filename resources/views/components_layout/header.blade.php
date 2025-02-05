@@ -57,8 +57,8 @@
 								<div class="link-font-medium navbar-collapse inline-flex p-0 lqd-submenu-default-style" aria-expanded="false" role="navigation">
 									<ul class="main-nav flex reset-ul inline-ul lqd-menu-counter-right lqd-menu-items-inline main-nav-hover-fill lqd-submenu-toggle-hover link-white" data-submenu-options='{"toggleType": "fade", "handler": "mouse-in-out"}' data-localscroll="true" data-localscroll-options='{"itemsSelector":"> li > a", "trackWindowScroll": true, "includeParentAsOffset": true}'>
 										<li class="menu-item-home is-active">
-											<a href="#banner">
-												<span>Home</span>
+											<a href="{{ route('home') }}">
+												<span>Головна</span>
 												<span class="link-icon inline-flex hide-if-empty right-icon">
 													<i class="lqd-icn-ess icon-ion-ios-arrow-down"></i>
 												</span>
@@ -66,7 +66,7 @@
 										</li>
 										<li>
 											<a href="#about">
-												<span>About</span>
+												<span>Про нас</span>
 												<span class="link-icon inline-flex hide-if-empty right-icon">
 													<i class="lqd-icn-ess icon-ion-ios-arrow-down"></i>
 												</span>

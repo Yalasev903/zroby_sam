@@ -6,7 +6,7 @@ use App\Http\Controllers\ExecutorController;
 
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
 Route::post('/register', [RegisteredUserController::class, 'store'])->name('register');
 
