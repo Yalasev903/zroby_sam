@@ -5,7 +5,7 @@
 	--lqd-container-width-md: 1024px;
 	--lqd-row-gutter-y: 30px;
 	--lqd-row-gutter-x: 30px;
-	
+
 	--lqd-color-primary: #00CB99;
 	--lqd-color-secondary: #2D6FE8;
 	--lqd-body-text-color: #737588;
@@ -607,6 +607,13 @@
 .connect-bottom .lqd-imggrp-single[data-float] {
 	--float-animate-from: -10%;
 }
+
+.text-responsive {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
 
 @media (max-width: 1199px) {
 	.connect-bottom .module {
