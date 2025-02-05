@@ -86,8 +86,8 @@
 											</a>
 										</li>
 										<li>
-											<a href="#clients">
-												<span>Customer Stories</span>
+											<a href="#info">
+												<span>Інформація</span>
 												<span class="link-icon inline-flex hide-if-empty right-icon">
 													<i class="lqd-icn-ess icon-ion-ios-arrow-down"></i>
 												</span>
