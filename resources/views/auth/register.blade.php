@@ -34,18 +34,15 @@
              </div>
 
                         <!-- Поле для города -->
-            <div class="mt-4">
-                <x-label for="city" value="{{ __('Місто') }}" />
-                <select id="city" name="city" class="block mt-1 w-full border-none shadow-md" required>
-                    <option value="">{{ __('Оберіть місто') }}</option>
-                    <option value="Київ">Київ</option>
-                    <option value="Львів">Львів</option>
-                    <option value="Одеса">Одеса</option>
-                    <option value="Харків">Харків</option>
-                    <option value="Дніпро">Дніпро</option>
-                    <!-- Добавьте остальные города Украины -->
-                </select>
-            </div>
+                        <div class="mt-4">
+                            <x-label for="city" value="{{ __('Місто') }}" />
+                            <select id="city" name="city" class="block mt-1 w-full border-none shadow-md" required>
+                                <option value="">{{ __('Оберіть місто') }}</option>
+                                @foreach (DB::table('cities')->get() as $city)
+                                    <option value="{{ $city->name }}">{{ $city->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
             <!-- Поле для загрузки изображения -->
             <div class="mt-4">
