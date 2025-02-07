@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\ExecutorController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('home');
@@ -20,6 +21,9 @@ Route::middleware([
     })->name('dashboard');
 
     Route::get('/executors', [ExecutorController::class, 'index'])->name('executors.index');
+
+    Route::get('/my_profile', [ProfileController::class, 'showProfile'])->name('my_profile.show');
+    Route::get('/my_profile/settings', [ProfileController::class, 'showProfileSettings'])->name('profile.settings');
 });
 
 Route::get('/create-post', [PostController::class, 'create'])->name('create.post');

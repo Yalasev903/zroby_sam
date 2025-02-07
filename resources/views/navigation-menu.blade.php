@@ -1,3 +1,4 @@
+
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -105,9 +106,23 @@
                                 {{ __('Manage Account') }}
                             </div>
 
+
+
                             <x-dropdown-link href="{{ route('profile.show') }}">
-                                {{ __('Profile') }}
+                                <i class="bi bi-person-circle mr-2"></i>
+                                {{ __('Налаштування Профілю') }}
                             </x-dropdown-link>
+
+                            <x-dropdown-link href="{{ url('/my_profile') }}">
+                                <i class="bi bi-person mr-2"></i>
+                                {{ __('Мій профіль') }}
+                            </x-dropdown-link>
+
+                            <x-dropdown-link href="{{ url('/my_profile/settings') }}">
+                                <i class="bi bi-gear mr-2"></i>
+                                {{ __('Змінити Налаштування Послуг') }}
+                            </x-dropdown-link>
+
 
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                 <x-dropdown-link href="{{ route('api-tokens.index') }}">
@@ -123,7 +138,8 @@
 
                                 <x-dropdown-link href="{{ route('logout') }}"
                                          @click.prevent="$root.submit();">
-                                    {{ __('Log Out') }}
+                                         <i class="bi bi-box-arrow-right mr-2"></i>
+                                    {{ __('Вийти') }}
                                 </x-dropdown-link>
                             </form>
                         </x-slot>
