@@ -249,7 +249,7 @@
 				<div class="lqd-stickybar-wrap lqd-stickybar-right w-auto items-end pointer-events-none">
 					<div class="static flex flex-col flex-grow-1 items-end justify-center vertical-rl p-10 mr-60">
 						<a href="#contact-modal" class="btn btn-solid btn-sm btn-icon-left btn-icon-circle btn-icon-custom-size btn-icon-solid pointer-events-auto horizontal-tb -ml-60 bg-white text-15 font-medium text-gray-600 shadow-md rounded-100 hover:text-white hover:bg-primary" data-lity="#contact-modal">
-							<span class="btn-txt" data-text="Contact us">Contact us</span>
+							<span class="btn-txt" data-text="Contact us">Зв'язок з нами</span>
 							<span class="btn-icon mr-15 w-35 h-35 text-blue-300 bg-blue-100">
 								<svg class="w-20" xmlns="http://www.w3.org/2000/svg" width="19.955" height="16.522" viewbox="0 0 19.955 16.522" fill="currentColor">
 									<g transform="translate(-6.045 -8.06)">

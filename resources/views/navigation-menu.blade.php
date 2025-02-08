@@ -86,6 +86,8 @@
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                                 <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
                                     <img class="size-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                    <span class="ms-2 text-gray-700 font-medium">{{ Auth::user()->name }}</span>
+                                    <br>
                                 </button>
                             @else
                                 <span class="inline-flex rounded-md">
@@ -107,6 +109,10 @@
                             </div>
 
 
+                            <x-dropdown-link href="{{ route('home') }}">
+                                <i class="bi bi-house-door mr-2"></i>
+                                {{ __('Головна') }}
+                            </x-dropdown-link>
 
                             <x-dropdown-link href="{{ route('profile.show') }}">
                                 <i class="bi bi-person-circle mr-2"></i>
@@ -122,6 +128,13 @@
                                 <i class="bi bi-gear mr-2"></i>
                                 {{ __('Змінити Налаштування Послуг') }}
                             </x-dropdown-link>
+
+                            @if (auth()->user()->role === 'customer')
+                            <x-dropdown-link href="{{ route('executors.index') }}">
+                                <i class="bi bi-person-workspace mr-2"></i>
+                                {{ __('Виконавці') }}
+                            </x-dropdown-link>
+                            @endif
 
 
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
