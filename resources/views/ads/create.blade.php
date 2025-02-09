@@ -33,9 +33,9 @@
 
         <!-- Выбор города -->
         <div class="form-group mt-3">
-            <label for="city">Город</label>
+            <label for="city">Місто</label>
             <select name="city" id="city" class="form-control" required>
-                <option value="">Выберите город</option>
+                <option value="">Оберіть місто</option>
                 @foreach($cities as $city)
                     <option value="{{ $city }}" {{ old('city') == $city ? 'selected' : '' }}>
                         {{ $city }}
@@ -55,7 +55,11 @@
                 <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
-
+<style>
+    .btn {
+        border-radius: 50ch;
+    }
+</style>
         <button type="submit" class="btn btn-primary mt-3">Створити Оголошення</button>
     </form>
 </div>

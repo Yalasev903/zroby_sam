@@ -101,7 +101,7 @@
                             @else
                                 <div class="transition-bg border-1 border-black-10 mb-10 mr-10 py-10 px-15 rounded-6 ld-fancy-heading relative">
                                     <h6 class="transition-color text-16 font-medium m-0 text-black-40 ld-fh-element inline-block relative">
-                                        Навички не указані
+                                        Навички не вказані
                                     </h6>
                                 </div>
                             @endif
