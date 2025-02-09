@@ -68,4 +68,9 @@ class User extends Authenticatable
     $this->increment('rating', $points);
 }
 
+public function ads()
+{
+    return $this->hasMany(Ad::class);
+
+}
 }

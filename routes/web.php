@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\ExecutorController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdController;
+// use App\Http\Controllers\PostController;
 
 Route::get('/', function () {
     return view('home');
@@ -24,8 +26,17 @@ Route::middleware([
 
     Route::get('/my_profile', [ProfileController::class, 'showProfile'])->name('my_profile.show');
     Route::get('/my_profile/settings', [ProfileController::class, 'showProfileSettings'])->name('profile.settings');
+
+    // Форма создания объявления
+    Route::get('/ads/create', [AdController::class, 'create'])->name('ads.create');
+
+    // Сохранение объявления
+    Route::post('/ads', [AdController::class, 'store'])->name('ads.store');
+
+    Route::get('/ads', [AdController::class, 'index'])->name('ads.index');
+    // Страница объявлений (GET, а не POST)
+    Route::get('/ads_card_page', [AdController::class, 'index'])->name('ads.ads_card_page');
 });
 
-Route::get('/create-post', [PostController::class, 'create'])->name('create.post');
-
-
+// Страница создания поста
+// Route::get('/create-post', [PostController::class, 'create'])->name('create.post');

@@ -17,13 +17,12 @@
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-
-                @if (Auth::user()->role === 'customer')
-    <x-nav-link href="{{ route('create.post') }}" :active="request()->routeIs('create.post')">
-        {{ __('Зробити пост') }}
-    </x-nav-link>
-@endif
-</div>
+                    @if (Auth::user()->role === 'customer')
+                    <x-nav-link href="{{ route('ads.create') }}" :active="request()->routeIs('ads.create')">
+                        {{ __('Зробити пост') }}
+                    </x-nav-link>
+                @endif
+                </div>
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
