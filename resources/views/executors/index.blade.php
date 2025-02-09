@@ -2,9 +2,22 @@
 
 @section('content')
 <div class="container">
+        <!-- Заголовок страницы -->
+        <div class="row items-center pt-5 mb-4">
+            <div class="col-12">
+                <div class="ld-fancy-heading relative"></div>
+                <h6 class="text-center mb-0/5em relative text-25 text-white-600 btn-sm tracking-1 font-bold bg-blue-700 py-3 px-5 rounded-100">
+                    Останні Виконавці
+                </h6>
+                {{-- <p class="text-center text-18 text-gray-500">
+                    Переглядайте актуальні оголошення на нашій платформі.
+                </p> --}}
+            </div>
+        </div>
     <div class="row items-center pt-5">
         @foreach($executors as $executor)
-            <div class="col-md-4 col-sm-6 mb-4 animation-element">
+            <!-- Оборачиваем карточку в блок с классом executor-card и скрываем, если индекс >= 6 -->
+            <div class="col-md-4 col-sm-6 mb-4 animation-element executor-card" style="{{ $loop->index >= 6 ? 'display: none;' : '' }}">
                 <div class="card lqd-lp relative lqd-lp-style-6 lqd-lp-hover-img-zoom lqd-lp-animate-onhover rounded-4 overflow-hidden text-start">
                     <div class="lqd-lp-img overflow-hidden">
                         <figure>
@@ -17,23 +30,33 @@
                     <div class="lqd-lp-meta uppercase font-bold relative z-3">
                         <span class="screen-reader-text">Роль</span>
                         <ul class="lqd-lp-cat lqd-lp-cat-shaped lqd-lp-cat-solid reset-ul inline-ul font-bold uppercase tracking-0/1em">
-                            <li><a class="rounded-full" href="#" rel="category">{{ $executor->role }}</a></li>
+                            <li>
+                                <a class="rounded-full" href="#" rel="category">{{ $executor->role }}</a>
+                            </li>
                         </ul>
                     </div>
                     <header class="lqd-lp-header pt-1/5em px-1em">
                         <div class="lqd-lp-meta lqd-lp-meta-dot-between flex flex-wrap items-center">
                             <div class="lqd-lp-author relative z-3">
-                                <h3  class="ld-fh-element mb-0/5em inline-block relative text-40 text-gray-600">
+                                <h3 class="ld-fh-element mb-0/5em inline-block relative text-40 text-gray-600">
                                     <a href="#">{{ $executor->name }}</a>
                                 </h3>
                             </div>
-                            <time class="lqd-lp-date" datetime="{{ $executor->created_at }}">{{ $executor->created_at->diffForHumans() }}</time>
+                            <time class="lqd-lp-date" datetime="{{ $executor->created_at }}">
+                                {{ $executor->created_at->diffForHumans() }}
+                            </time>
                         </div>
-                        <h2 class="entry-title lqd-lp-title mt-0/5em mb-0 h5">Рейтинг: ⭐{{ $executor->rating }}</h2>
+                        <h2 class="entry-title lqd-lp-title mt-0/5em mb-0 h5">
+                            Рейтинг: ⭐{{ $executor->rating }}
+                        </h2>
                     </header>
                     <div class="lqd-lp-excerpt pt-1em pb-1/5em px-1em">
-                        <p class="ld-fh-element mb-0/5em inline-block relative text-20 text-gray-600"><strong>Місто:</strong> {{ $executor->city }}</p>
-                        <p class="ld-fh-element mb-0/5em inline-block relative text-20 text-gray-600"><strong >Навички:</strong> {{ $executor->skills }}</p>
+                        <p class="ld-fh-element mb-0/5em inline-block relative text-20 text-gray-600">
+                            <strong>Місто:</strong> {{ $executor->city }}
+                        </p>
+                        <p class="ld-fh-element mb-0/5em inline-block relative text-20 text-gray-600">
+                            <strong>Навички:</strong> {{ $executor->skills }}
+                        </p>
                     </div>
                     <style>
                         .btn {
@@ -54,10 +77,10 @@
                     </style>
                     <div class="card-footer text-center">
                         <button class="btn btn-sm blue" data-text="Подрібніше" data-split-text="true"
-                        data-split-options='{"type": "chars, words"}' data-bs-toggle="modal"
-                        data-bs-target="#executorModal{{ $executor->id }}">
-                        Подрібніше
-                    </button>
+                                data-split-options='{"type": "chars, words"}' data-bs-toggle="modal"
+                                data-bs-target="#executorModal{{ $executor->id }}">
+                            Подрібніше
+                        </button>
                     </div>
                 </div>
             </div>
@@ -67,7 +90,9 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="executorModalLabel{{ $executor->id }}">{{ $executor->name }}</h5>
+                            <h5 class="modal-title" id="executorModalLabel{{ $executor->id }}">
+                                {{ $executor->name }}
+                            </h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -80,19 +105,62 @@
                             <p><strong>Місто:</strong> {{ $executor->city }}</p>
                             <p><strong>Навички:</strong> {{ $executor->skills }}</p>
                             <p><strong>Категорія:</strong> {{ $executor->services_category }}</p>
-                            <p><strong>Послуги:</strong> {{ implode(', ', json_decode($executor->services, true) ?: []) }}</p>
+                            <p>
+                                <strong>Послуги:</strong>
+                                {{ implode(', ', json_decode($executor->services, true) ?: []) }}
+                            </p>
                             <p><strong>Рейтинг:</strong> ⭐{{ $executor->rating }}</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Закрити</button>
+                            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">
+                                Закрити
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         @endforeach
     </div>
+
+    <!-- Кнопка "Більше", если карточек больше 6 -->
+    @if(count($executors) > 6)
+        <div class="text-center mt-4">
+            <button id="loadMoreExecutors" class="btn btn-sm blue">
+                Більше
+            </button>
+        </div>
+    @endif
 </div>
+
+<!-- Стили для анимации появления карточек -->
+<style>
+    .fadeIn {
+        animation: fadeIn 0.5s ease-in forwards;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<!-- Скрипт для реализации функционала "Load More" для исполнителей -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const executorCards = document.querySelectorAll('.executor-card');
+    const loadMoreButton = document.getElementById('loadMoreExecutors');
+    let currentIndex = 6;
+    if (loadMoreButton) {
+        loadMoreButton.addEventListener('click', function() {
+            for (let i = currentIndex; i < currentIndex + 6 && i < executorCards.length; i++) {
+                executorCards[i].style.display = 'block';
+                executorCards[i].classList.add('fadeIn');
+            }
+            currentIndex += 6;
+            if (currentIndex >= executorCards.length) {
+                loadMoreButton.style.display = 'none';
+            }
+        });
+    }
+});
+</script>
 @endsection
-
-
-
