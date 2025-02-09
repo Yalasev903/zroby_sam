@@ -13,11 +13,8 @@ class ProfileController extends Controller
     /**
      * Отображение страницы профиля.
      */
-    public function showProfile($id)
+    public function showProfile(User $user)
     {
-        // Получаем пользователя по id
-        $user = User::findOrFail($id);
-
         // Загружаем все категории услуг с их связанными услугами (eager loading)
         $categories = ServiceCategory::with('services')->get();
 
@@ -28,45 +25,26 @@ class ProfileController extends Controller
     /**
      * Отображение страницы настроек профиля.
      */
-    public function showProfileSettings($id)
-    {
-        // Получаем пользователя по id
-        $user = User::findOrFail($id);
-
-        // Проверяем, что пользователь пытается изменить только свои настройки
-        if ($user->id !== auth()->id()) {
-            abort(403); // Доступ запрещен
-        }
-
-        // Получаем данные для селектов и чекбоксов
-        $cities = DB::table('cities')->get();
-        $categories = DB::table('services_category')->get();
-        $allServices = DB::table('services')->get();
-
-        // Группируем услуги по категориям
-        $servicesByCategory = [];
-        foreach ($allServices as $service) {
-            $servicesByCategory[$service->services_category_id][] = $service;
-        }
-
-        // Если у пользователя уже выбраны услуги (хранятся в JSON)
-        $userServices = json_decode($user->services, true) ?? [];
-
-        // Передаём данные в представление
-        return view('profile_setting', compact('user', 'cities', 'categories', 'servicesByCategory', 'userServices'));
+    public function showProfileSettings(User $user)
+{
+    // Проверяем, что пользователь пытается изменить только свои настройки
+    if ($user->id !== auth()->id()) {
+        abort(403, 'Доступ запрещен'); // Доступ запрещен для чужих профилей
     }
 
-    /**
-     * Проверка прав доступа и отображение настроек пользователя.
-     */
-    public function settings(User $user)
-    {
-        // Если пользователь пытается изменить чужие настройки
-        if ($user->id !== auth()->id()) {
-            abort(403); // Страница запрещена
-        }
+    // Логика для получения данных профиля и настроек
+    $cities = DB::table('cities')->get();
+    $categories = DB::table('services_category')->get();
+    $allServices = DB::table('services')->get();
 
-        // Возвращаем представление с настройками пользователя
-        return view('profile_setting', compact('user'));
+    // Группировка услуг по категориям
+    $servicesByCategory = [];
+    foreach ($allServices as $service) {
+        $servicesByCategory[$service->services_category_id][] = $service;
     }
+
+    // Передача данных в представление
+    return view('profile_setting', compact('user', 'cities', 'categories', 'servicesByCategory'));
+}
+
 }

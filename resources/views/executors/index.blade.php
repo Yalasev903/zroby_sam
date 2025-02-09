@@ -2,18 +2,19 @@
 
 @section('content')
 <div class="container">
-        <!-- Заголовок страницы -->
-        <div class="row items-center pt-5 mb-4">
-            <div class="col-12">
-                <div class="ld-fancy-heading relative"></div>
-                <h6 class="text-center mb-0/5em relative text-25 text-white-600 btn-sm tracking-1 font-bold bg-blue-700 py-3 px-5 rounded-100">
-                    Останні Виконавці
-                </h6>
-                {{-- <p class="text-center text-18 text-gray-500">
-                    Переглядайте актуальні оголошення на нашій платформі.
-                </p> --}}
-            </div>
+    <!-- Заголовок страницы -->
+    <div class="row items-center pt-5 mb-4">
+        <div class="col-12">
+            <div class="ld-fancy-heading relative"></div>
+            <h6 class="text-center mb-0/5em relative text-25 text-white-600 btn-sm tracking-1 font-bold bg-blue-700 py-3 px-5 rounded-100">
+                Останні Виконавці
+            </h6>
+            {{-- <p class="text-center text-18 text-gray-500">
+                Переглядайте актуальні оголошення на нашій платформі.
+            </p> --}}
         </div>
+    </div>
+
     <div class="row items-center pt-5">
         @foreach($executors as $executor)
             <!-- Оборачиваем карточку в блок с классом executor-card и скрываем, если индекс >= 6 -->
@@ -38,8 +39,11 @@
                     <header class="lqd-lp-header pt-1/5em px-1em">
                         <div class="lqd-lp-meta lqd-lp-meta-dot-between flex flex-wrap items-center">
                             <div class="lqd-lp-author relative z-3">
+                                <!-- Обновлённая ссылка: переходим по маршруту /profile/{id} -->
                                 <h3 class="ld-fh-element mb-0/5em inline-block relative text-40 text-gray-600">
-                                    <a href="#">{{ $executor->name }}</a>
+                                    <a href="{{ route('my_profile.show', ['user' => $executor->id]) }}">
+                                        {{ $executor->name }}
+                                    </a>
                                 </h3>
                             </div>
                             <time class="lqd-lp-date" datetime="{{ $executor->created_at }}">

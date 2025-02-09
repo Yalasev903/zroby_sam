@@ -23,11 +23,11 @@ Route::middleware([
 
     Route::get('/executors', [ExecutorController::class, 'index'])->name('executors.index');
 
-    // Страница профиля с ID пользователя
-    Route::get('/my_profile/{id}', [ProfileController::class, 'showProfile'])->name('my_profile.show');
+    // Страница профиля (Route Model Binding)
+    Route::get('/my_profile/{user}', [ProfileController::class, 'showProfile'])->name('my_profile.show');
 
-    // Страница настроек профиля с ID пользователя
-    Route::get('/my_profile/settings/{id}', [ProfileController::class, 'showProfileSettings'])->name('profile.settings');
+    // Страница настроек профиля (только для владельца)
+    Route::get('/my_profile/settings/{user}', [ProfileController::class, 'showProfileSettings'])->name('profile.settings');
 
     // Форма создания объявления
     Route::get('/ads/create', [AdController::class, 'create'])->name('ads.create');

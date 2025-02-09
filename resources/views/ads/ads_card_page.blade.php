@@ -50,8 +50,11 @@
                                      alt="{{ $ad->user->name }}"
                                      class="rounded-circle"
                                      style="width: 40px; height: 40px; object-fit: cover; margin-right: 10px;">
+                                <!-- Обновлённая ссылка: переходим по маршруту /profile/{id} -->
                                 <h5 class="mb-0 text-gray-600" style="font-size: 16px;">
-                                    <a href="#">{{ $ad->user->name }}</a>
+                                    <a href="my_profile/{{ $ad->user->id }}">
+                                        {{ $ad->user->name }}
+                                    </a>
                                 </h5>
                             </div>
                             <div class="lqd-lp-date text-gray-600" style="font-size: 14px;">
