@@ -23,36 +23,13 @@
         {{-- <link rel="stylesheet" href="{{ asset('assets/css/theme.min.css') }}"> --}}
         <link rel="stylesheet" href="{{ asset('assets/css/utility.min.css') }}">
         {{-- <link rel="stylesheet" href="{{ asset('assets/css/demo/start-hub-4/base.css') }}"> --}}
-        <link rel="stylesheet" href="{{ asset('assets/css/demo/start-hub-4/start-hub-4.css') }}">
-
+        {{-- <link rel="stylesheet" href="{{ asset('assets/css/demo/start-hub-4/start-hub-4.css') }}"> --}}
+		<link rel="stylesheet" href="./assets/css/demo/start-hub-2.css">
 
 		<!-- Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&family=DM+Serif+Text:ital@1&family=Rubik:wght@600&display=swap" rel="stylesheet">
-
-        <script src="./assets/vendors/jquery.min.js"></script>
-		<script src="./assets/vendors/jquery-ui/jquery-ui.min.js"></script>
-		<script src="./assets/vendors/bootstrap/js/bootstrap.min.js"></script>
-		<script src="./assets/vendors/gsap/minified/gsap.min.js"></script>
-		<script src="./assets/vendors/gsap/minified/DrawSVGPlugin.min.js"></script>
-		<script src="./assets/vendors/gsap/utils/SplitText.min.js"></script>
-		<script src="./assets/vendors/gsap/minified/ScrollTrigger.min.js"></script>
-		<script src="./assets/vendors/fastdom/fastdom.min.js"></script>
-		<script src="./assets/vendors/draw-shape/liquidDrawShape.min.js"></script>
-		<script src="./assets/vendors/isotope/isotope.pkgd.min.js"></script>
-		<script src="./assets/vendors/isotope/packery-mode.pkgd.min.js"></script>
-		<script src="./assets/vendors/flickity/flickity.pkgd.min.js"></script>
-		<script src="./assets/vendors/imagesloaded.pkgd.min.js"></script>
-		<script src="./assets/vendors/draggabilly.pkgd.min.js"></script>
-		<script src="./assets/vendors/fontfaceobserver.js"></script>
-		<script src="./assets/vendors/particles.min.js"></script>
-		<script src="./assets/vendors/lity/lity.min.js"></script>
-		<script src="./assets/vendors/lottie/lottie.min.js"></script>
-		<script src="./assets/js/liquid-gdpr.min.js"></script>
-		<script src="./assets/js/theme.min.js"></script>
-		<script src="./assets/js/liquid-ajax-contact-form.min.js"></script>
-		<script src="./assets/js/demo/start-hub-4.js"></script>
 
 
         <!-- Scripts -->

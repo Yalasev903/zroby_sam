@@ -104,7 +104,7 @@
                         <x-slot name="content">
                             <!-- Account Management -->
                             <div class="block px-4 py-2 text-xs text-gray-400">
-                                {{ __('Manage Account') }}
+                                {{ __('Менеджер') }}
                             </div>
 
 
@@ -198,26 +198,63 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <!-- Account Management -->
-                <x-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
 
-                @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                    <x-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
-                        {{ __('API Tokens') }}
-                    </x-responsive-nav-link>
-                @endif
 
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}" x-data>
-                    @csrf
+                            <!-- Account Management -->
+                            <div class="block px-4 py-2 text-xs text-gray-400">
+                                {{ __('Менеджер') }}
+                            </div>
 
-                    <x-responsive-nav-link href="{{ route('logout') }}"
-                                   @click.prevent="$root.submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
+
+                            <x-dropdown-link href="{{ route('home') }}">
+                                <i class="bi bi-house-door mr-2"></i>
+                                {{ __('Головна') }}
+                            </x-dropdown-link>
+
+                            <x-dropdown-link href="{{ route('profile.show') }}">
+                                <i class="bi bi-person-circle mr-2"></i>
+                                {{ __('Налаштування Профілю') }}
+                            </x-dropdown-link>
+
+                            <!-- Профиль пользователя с добавлением ID -->
+                            <x-dropdown-link href="{{ route('my_profile.show', auth()->user()->id) }}">
+                                <i class="bi bi-person mr-2"></i>
+                                {{ __('Мій профіль') }}
+                            </x-dropdown-link>
+
+                            <!-- Страница настроек профиля -->
+                            <x-dropdown-link href="{{ url('/my_profile/settings', auth()->user()->id) }}) }}">
+                                <i class="bi bi-gear mr-2"></i>
+                                {{ __('Змінити Налаштування Послуг') }}
+                            </x-dropdown-link>
+
+                            @if (auth()->user()->role === 'customer')
+                                <x-dropdown-link href="{{ route('executors.index') }}">
+                                    <i class="bi bi-person-workspace mr-2"></i>
+                                    {{ __('Виконавці') }}
+                                </x-dropdown-link>
+                            @endif
+
+
+
+                            @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                                <x-dropdown-link href="{{ route('api-tokens.index') }}">
+                                    {{ __('API Tokens') }}
+                                </x-dropdown-link>
+                            @endif
+
+                            <div class="border-t border-gray-200"></div>
+
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}" x-data>
+                                @csrf
+
+                                <x-dropdown-link href="{{ route('logout') }}"
+                                         @click.prevent="$root.submit();">
+                                         <i class="bi bi-box-arrow-right mr-2"></i>
+                                    {{ __('Вийти') }}
+                                </x-dropdown-link>
+                            </form>
 
                 <!-- Team Management -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
