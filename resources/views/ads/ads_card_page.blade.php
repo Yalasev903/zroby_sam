@@ -1,52 +1,187 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="lqd-section blog py-90 bg-transparent transition-all" style="background-image: linear-gradient(180deg, #FAF9FE 0%, #fff 100%);">
-    <div class="container">
-        <div class="row items-center">
-            <div class="col col-12 col-md-6">
-                <h6 class="text-10 tracking-1 uppercase font-bold text-black bg-blue-200 py-5 px-15 rounded-100">Объявления</h6>
-                <h2 class="text-40 text-gray-600">Последние объявления</h2>
-            </div>
-            <div class="col col-12 col-md-6">
-                <p class="text-18 text-gray-500">Просматривайте актуальные объявления на нашей платформе.</p>
-            </div>
-        </div>
-        <div class="row">
-            @foreach($ads as $ad)
-                <div class="w-33percent flex px-30 mb-30 md:w-50percent sm:w-full module-col">
-                    <article class="lqd-lp relative rounded-4 overflow-hidden text-start">
-                        <div class="lqd-lp-img overflow-hidden">
-                            <figure>
-                                <img class="w-full"
-                                src="{{ $ad->photo_path ? asset('storage/' . $ad->photo_path) : asset('images/default-avatar.webp') }}"
-                                alt="{{ $ad->title }}">
-
-                            </figure>
-                            <div class="lqd-lp-meta uppercase font-bold">
-                                <ul class="lqd-lp-cat lqd-lp-cat-shaped inline-ul">
-                                    {{-- <li><a href="#">{{ $ad->category->name }}</a></li> --}}
-                                </ul>
-                            </div>
-                        </div>
-                        <header class="lqd-lp-header pt-1/5em px-1em">
-                            <div class="lqd-lp-meta flex flex-wrap items-center">
-                                <div class="lqd-lp-author">
-                                    <h3 class="mt-0 mb-0">
-                                        <a href="#">{{ $ad->user->name }}</a>
-                                    </h3>
-                                </div>
-                                <time class="lqd-lp-date">{{ $ad->created_at->diffForHumans() }}</time>
-                            </div>
-                            <h2 class="entry-title lqd-lp-title mt-0/5em mb-0 h5">{{ $ad->title }}</h2>
-                        </header>
-                        <div class="lqd-lp-excerpt pt-1em pb-1/5em px-1em">
-                            <p>{{ Str::limit($ad->description, 100) }}</p>
-                        </div>
-                    </article>
-                </div>
-            @endforeach
+<div class="container">
+    <!-- Заголовок страницы -->
+    <div class="row items-center pt-5 mb-4">
+        <div class="col-12">
+            <div class="ld-fancy-heading relative"></div>
+            <h6 class="text-center mb-0/5em relative text-25 text-white-600 btn-sm tracking-1 font-bold bg-blue-700 py-3 px-5 rounded-100">
+                Останні оголошення
+            </h6>
+            {{-- <p class="text-center text-18 text-gray-500">
+                Переглядайте актуальні оголошення на нашій платформі.
+            </p> --}}
         </div>
     </div>
-</section>
+
+    <!-- Карточки оголошень -->
+    <div class="row">
+        @foreach($ads as $ad)
+            <!-- Добавляем класс "ad-card" и скрываем карточки, начиная с 7-й -->
+            <div class="col-md-4 col-sm-6 mb-4 animation-element ad-card" style="{{ $loop->index >= 6 ? 'display: none;' : '' }}">
+                <div class="card lqd-lp relative lqd-lp-style-6 lqd-lp-hover-img-zoom lqd-lp-animate-onhover rounded-4 overflow-hidden text-start">
+                    <!-- Изображение объявления -->
+                    <div class="lqd-lp-img overflow-hidden">
+                        <figure>
+                            <img src="{{ $ad->photo_path ? asset('storage/' . $ad->photo_path) : asset('images/default-avatar.webp') }}"
+                                 alt="{{ $ad->title }}"
+                                 class="w-full"
+                                 style="object-fit: cover; height: 200px;">
+                        </figure>
+                    </div>
+
+                    <!-- Метаданные (город) -->
+                    <div class="lqd-lp-meta uppercase font-bold relative z-3">
+                        @if($ad->city)
+                            <ul class="lqd-lp-cat lqd-lp-cat-shaped lqd-lp-cat-solid reset-ul inline-ul font-bold uppercase tracking-0/1em">
+                                <li>
+                                    <a class="rounded-full" href="#" rel="category">{{ $ad->city }}</a>
+                                </li>
+                            </ul>
+                        @endif
+                    </div>
+
+                    <header class="lqd-lp-header pt-1/5em px-1em">
+                        <!-- Блок с автором и датой (дата справа) -->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="lqd-lp-author d-flex align-items-center">
+                                <img src="{{ $ad->user->profile_photo_path ? asset('storage/' . $ad->user->profile_photo_path) : asset('images/default-avatar.webp') }}"
+                                     alt="{{ $ad->user->name }}"
+                                     class="rounded-circle"
+                                     style="width: 40px; height: 40px; object-fit: cover; margin-right: 10px;">
+                                <h5 class="mb-0 text-gray-600" style="font-size: 16px;">
+                                    <a href="#">{{ $ad->user->name }}</a>
+                                </h5>
+                            </div>
+                            <div class="lqd-lp-date text-gray-600" style="font-size: 14px;">
+                                {{ $ad->created_at->diffForHumans() }}
+                            </div>
+                        </div>
+
+                        <!-- Заголовок объявления -->
+                        <h2 class="entry-title lqd-lp-title mt-0/5em mb-0 h5">
+                            {{ $ad->title }}
+                        </h2>
+                    </header>
+
+                    <!-- Краткое описание объявления -->
+                    <div class="lqd-lp-excerpt pt-1em pb-1/5em px-1em">
+                        <p class="ld-fh-element mb-0/5em inline-block relative text-20 text-gray-600">
+                            {{ Str::limit($ad->description, 100) }}
+                        </p>
+                    </div>
+                    <style>
+                        .btn {
+                            display: inline-block;
+                            position: relative;
+                            padding: 12px 25px;
+                            font-size: 16px;
+                            font-weight: bold;
+                            text-transform: uppercase;
+                            border: none;
+                            border-radius: 50px; /* Полностью скругленные кнопки */
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                            background: linear-gradient(45deg, #007bff, #0056b3);
+                            color: white;
+                            overflow: hidden;
+                        }
+                    </style>
+                    <!-- Кнопка для открытия модального окна -->
+                    <div class="card-footer text-center">
+                        <button class="btn btn-sm blue" data-bs-toggle="modal" data-bs-target="#adModal{{ $ad->id }}">
+                            Подрібніше
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Модальное окно для объявления -->
+            <div class="modal fade" id="adModal{{ $ad->id }}" tabindex="-1" aria-labelledby="adModalLabel{{ $ad->id }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                        <!-- Заголовок модального окна -->
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="adModalLabel{{ $ad->id }}">
+                                {{ $ad->title }}
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити"></button>
+                        </div>
+
+                        <!-- Содержимое объявления -->
+                        <div class="modal-body">
+                            <div class="text-center mb-3">
+                                <img src="{{ $ad->photo_path ? asset('storage/' . $ad->photo_path) : asset('images/default-avatar.webp') }}"
+                                     alt="{{ $ad->title }}"
+                                     class="rounded"
+                                     style="object-fit: cover; width: 100%; max-height: 400px;">
+                            </div>
+                            <p class="text-18 text-gray-700">
+                                {{ $ad->description }}
+                            </p>
+                        </div>
+
+                        <!-- Футер модального окна с информацией об авторе и дате публикации -->
+                        <div class="modal-footer d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <img src="{{ $ad->user->profile_photo_path ? asset('storage/' . $ad->user->profile_photo_path) : asset('images/default-avatar.webp') }}"
+                                     alt="{{ $ad->user->name }}"
+                                     class="rounded-circle"
+                                     style="width: 40px; height: 40px; object-fit: cover; margin-right: 10px;">
+                                <small class="text-muted">
+                                    Опубліковано {{ $ad->created_at->format('d.m.Y H:i') }} користувачем: {{ $ad->user->name }}
+                                </small>
+                            </div>
+                            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">
+                                Закрити
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+
+    <!-- Кнопка "Більше", если карточек больше 6 -->
+    @if(count($ads) > 6)
+        <div class="text-center mt-4">
+            <button id="loadMore" class="btn btn-sm blue">
+                Більше
+            </button>
+        </div>
+    @endif
+</div>
+
+<!-- Стили для анимации появления карточек -->
+<style>
+    .fadeIn {
+        animation: fadeIn 0.5s ease-in forwards;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<!-- Скрипт для реализации функционала "Load More" -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.ad-card');
+    const loadMoreButton = document.getElementById('loadMore');
+    let currentIndex = 6;
+    if (loadMoreButton) {
+        loadMoreButton.addEventListener('click', function() {
+            for (let i = currentIndex; i < currentIndex + 6 && i < cards.length; i++) {
+                cards[i].style.display = 'block';
+                cards[i].classList.add('fadeIn');
+            }
+            currentIndex += 6;
+            if (currentIndex >= cards.length) {
+                loadMoreButton.style.display = 'none';
+            }
+        });
+    }
+});
+</script>
 @endsection
