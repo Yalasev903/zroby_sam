@@ -12,6 +12,7 @@
     foreach ($allServices as $service) {
         $servicesByCategory[$service->services_category_id][] = $service;
     }
+
     // Если у пользователя уже выбраны услуги (хранятся в JSON)
     $userServices = json_decode($user->services, true) ?? [];
 @endphp
@@ -19,15 +20,6 @@
 @section('content')
 <div class="container my-5">
     <div class="row">
-        <!-- Боковое меню кабинета -->
-        <div class="col-md-3 mb-4">
-            <div class="list-group">
-                {{-- <a href="{{ route('account.index') }}" class="list-group-item list-group-item-action active">Мой аккаунт</a>
-                <a href="{{ route('profile.settings') }}" class="list-group-item list-group-item-action">Настройки профиля</a> --}}
-                <!-- Можно добавить дополнительные пункты меню -->
-            </div>
-        </div>
-
         <!-- Основной контент кабинета -->
         <div class="col-md-9">
             <!-- Блок с базовой информацией пользователя -->
@@ -39,6 +31,7 @@
                         @else
                             <img src="{{ asset('images/default-avatar.webp') }}" alt="Аватар" class="rounded" style="width: 120px; height: 120px; object-fit: cover;">
                         @endif
+                    </div>
                     <div>
                         <h4 class="mb-0">{{ $user->name }}</h4>
                         <p class="mb-0 text-muted">{{ $user->email }}</p>
@@ -54,7 +47,7 @@
                 <div class="card-body">
                     <x-validation-errors class="mb-3" />
 
-                    {{-- <form action="{{ route('account.update') }}" method="POST"> --}}
+                    <form action="{{ route('profile.settings', $user->id) }}" method="POST">
                         @csrf
                         @method('PUT')
 
@@ -101,7 +94,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Сохранити змінення</button>
+                        <button type="submit" class="btn btn-primary">Зберегти змінення</button>
                     </form>
                 </div>
             </div>

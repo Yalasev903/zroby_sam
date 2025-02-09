@@ -63,6 +63,7 @@
                 <div class="space-y-3 mb-6">
                     <p><strong>Email:</strong> {{ $user->email }}</p>
                     <p><strong>Місто:</strong> {{ $user->city ?? 'Не указан' }}</p>
+                    <p>ID користувача: {{ $user->id }}</p>
                 </div>
                 <!-- Блок: Роль -->
                 <div class="mb-6">
@@ -126,7 +127,7 @@
                         @else
                             <div class="transition-bg border-1 border-black-10 mb-10 mr-10 py-10 px-15 rounded-6 ld-fancy-heading relative">
                                 <h6 class="transition-color text-16 font-medium m-0 text-black-40 ld-fh-element inline-block relative">
-                                    Категорія не указана
+                                    Категорія не вказана
                                 </h6>
                             </div>
                         @endif

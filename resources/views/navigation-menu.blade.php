@@ -118,22 +118,25 @@
                                 {{ __('Налаштування Профілю') }}
                             </x-dropdown-link>
 
-                            <x-dropdown-link href="{{ url('/my_profile') }}">
+                            <!-- Профиль пользователя с добавлением ID -->
+                            <x-dropdown-link href="{{ route('my_profile.show', auth()->user()->id) }}">
                                 <i class="bi bi-person mr-2"></i>
                                 {{ __('Мій профіль') }}
                             </x-dropdown-link>
 
-                            <x-dropdown-link href="{{ url('/my_profile/settings') }}">
+                            <!-- Страница настроек профиля -->
+                            <x-dropdown-link href="{{ url('/my_profile/settings', auth()->user()->id) }}) }}">
                                 <i class="bi bi-gear mr-2"></i>
                                 {{ __('Змінити Налаштування Послуг') }}
                             </x-dropdown-link>
 
                             @if (auth()->user()->role === 'customer')
-                            <x-dropdown-link href="{{ route('executors.index') }}">
-                                <i class="bi bi-person-workspace mr-2"></i>
-                                {{ __('Виконавці') }}
-                            </x-dropdown-link>
+                                <x-dropdown-link href="{{ route('executors.index') }}">
+                                    <i class="bi bi-person-workspace mr-2"></i>
+                                    {{ __('Виконавці') }}
+                                </x-dropdown-link>
                             @endif
+
 
 
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
