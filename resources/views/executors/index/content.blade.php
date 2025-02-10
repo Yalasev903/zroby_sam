@@ -110,17 +110,28 @@
                     <h5>Коментарі</h5>
 
                     <!-- Список комментариев -->
-                    <div class="comments-list mb-3">
-                        @forelse($executor->receivedComments as $comment)
-                            <div class="comment border-bottom mb-2 pb-2">
+                <div class="comments-list mb-3">
+                    @forelse($executor->receivedComments as $comment)
+                        <div class="comment border-bottom mb-2 pb-2">
+                            @if(auth()->check())
+                                <a href="{{ route('my_profile.show', ['user' => $comment->user->id]) }}" class="d-flex align-items-center text-decoration-none">
+                                    <img src="{{ $comment->user->profile_photo_path ? asset('storage/' . $comment->user->profile_photo_path) : asset('images/default-avatar.webp') }}"
+                                        alt="{{ $comment->user->name }}'s avatar"
+                                        class="rounded-circle me-2"
+                                        style="width: 30px; height: 30px; object-fit: cover;">
+                                    <strong class="text-dark">{{ $comment->user->name }}</strong>
+                                </a>
+                            @else
                                 <strong>{{ $comment->user->name }}</strong>
-                                <small class="text-muted"> — {{ $comment->created_at->diffForHumans() }}</small>
-                                <p>{{ $comment->content }}</p>
-                            </div>
-                        @empty
-                            <p>Коментарів поки що немає.</p>
-                        @endforelse
-                    </div>
+                            @endif
+                            <small class="text-muted ms-2"> — {{ $comment->created_at->diffForHumans() }}</small>
+                            <p class="mb-0 mt-1">{{ $comment->content }}</p>
+                        </div>
+                    @empty
+                        <p>Коментарів поки що немає.</p>
+                    @endforelse
+                </div>
+
 
                     <!-- Форма добавления нового комментария -->
                     <form action="{{ route('comments.store') }}" method="POST">
