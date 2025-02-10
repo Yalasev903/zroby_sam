@@ -15,11 +15,14 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('Дошка оголошень') }}
                     </x-nav-link>
                     @if (Auth::user()->role === 'customer')
                     <x-nav-link href="{{ route('ads.create') }}" :active="request()->routeIs('ads.create')">
-                        {{ __('Зробити пост') }}
+                        {{ __('Створити оголошення') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('ads.my') }}" :active="request()->routeIs('ads.create')">
+                        {{ __('Мої оголошення') }}
                     </x-nav-link>
                 @endif
                 </div>
@@ -178,8 +181,16 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                {{ __('Дошка оголошень') }}
             </x-responsive-nav-link>
+            @if (Auth::user()->role === 'customer')
+            <x-responsive-nav-link href="{{ route('ads.create') }}" :active="request()->routeIs('ads.create')">
+                {{ __('Додати оголошення') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('ads.my') }}" :active="request()->routeIs('ads.create')">
+                {{ __('Мої оголошення') }}
+            </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

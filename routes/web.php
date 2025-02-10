@@ -39,8 +39,21 @@ Route::middleware([
     // Страница с объявлениями
     Route::get('/ads', [AdController::class, 'index'])->name('ads.index');
 
+    // Редактирование объявления (GET - форма редактирования)
+    Route::get('/ads/{ad}/edit', [AdController::class, 'edit'])->name('ads.edit');
+
+    // Обновление объявления (PUT - обновление данных)
+    Route::put('/ads/{ad}', [AdController::class, 'update'])->name('ads.update');
+
+    // Удаление объявления (DELETE)
+    Route::delete('/ads/{ad}', [AdController::class, 'destroy'])->name('ads.destroy');
+
+
+    Route::get('/my-ads', [AdController::class, 'myAds'])->name('ads.my');
+
     // Страница объявлений (GET)
     Route::get('/ads_card_page', [AdController::class, 'index'])->name('ads.ads_card_page');
 
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+
 });
