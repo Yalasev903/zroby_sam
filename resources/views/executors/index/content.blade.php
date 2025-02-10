@@ -75,33 +75,69 @@
                     </div>
                 </div>
             </div>
+<!-- Popup Modal -->
+<div class="modal fade" id="executorModal{{ $executor->id }}" tabindex="-1" aria-labelledby="executorModalLabel{{ $executor->id }}" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- Заголовок модального окна -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="executorModalLabel{{ $executor->id }}">
+                    {{ $executor->name }}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
-            <!-- Popup Modal -->
-            <div class="modal fade" id="executorModal{{ $executor->id }}" tabindex="-1" aria-labelledby="executorModalLabel{{ $executor->id }}" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="executorModalLabel{{ $executor->id }}">
-                                {{ $executor->name }}
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="text-center mb-3">
-                                <img src="{{ $executor->profile_photo_path ? asset('storage/' . $executor->profile_photo_path) : asset('images/default-avatar.webp') }}"
-                                     alt="{{ $executor->name }}'s photo"
-                                     class="rounded"
-                                     style="object-fit: cover; width: 100%; height: 300px;">
+            <!-- Тело модального окна с информацией об исполнителе -->
+            <div class="modal-body">
+                <div class="text-center mb-3">
+                    <img src="{{ $executor->profile_photo_path ? asset('storage/' . $executor->profile_photo_path) : asset('images/default-avatar.webp') }}"
+                         alt="{{ $executor->name }}'s photo"
+                         class="rounded"
+                         style="object-fit: cover; width: 100%; height: 300px;">
+                </div>
+                <p><strong>Місто:</strong> {{ $executor->city }}</p>
+                <p><strong>Навички:</strong> {{ $executor->skills }}</p>
+                <p><strong>Категорія:</strong> {{ $executor->services_category }}</p>
+                <p>
+                    <strong>Послуги:</strong>
+                    {{ implode(', ', json_decode($executor->services, true) ?: []) }}
+                </p>
+                <p><strong>Рейтинг:</strong> ⭐{{ $executor->rating }}</p>
+
+                <!-- Блок комментариев -->
+                <hr>
+                <div class="comments-section mt-4">
+                    <h5>Коментарі</h5>
+
+                    <!-- Список комментариев -->
+                    <div class="comments-list mb-3">
+                        @forelse($executor->receivedComments as $comment)
+                            <div class="comment border-bottom mb-2 pb-2">
+                                <strong>{{ $comment->user->name }}</strong>
+                                <small class="text-muted"> — {{ $comment->created_at->diffForHumans() }}</small>
+                                <p>{{ $comment->content }}</p>
                             </div>
-                            <p><strong>Місто:</strong> {{ $executor->city }}</p>
-                            <p><strong>Навички:</strong> {{ $executor->skills }}</p>
-                            <p><strong>Категорія:</strong> {{ $executor->services_category }}</p>
-                            <p>
-                                <strong>Послуги:</strong>
-                                {{ implode(', ', json_decode($executor->services, true) ?: []) }}
-                            </p>
-                            <p><strong>Рейтинг:</strong> ⭐{{ $executor->rating }}</p>
+                        @empty
+                            <p>Коментарів поки що немає.</p>
+                        @endforelse
+                    </div>
+
+                    <!-- Форма добавления нового комментария -->
+                    <form action="{{ route('comments.store') }}" method="POST">
+                        @csrf
+                        <!-- Передаём идентификатор и тип комментарируемой модели -->
+                        <input type="hidden" name="commentable_id" value="{{ $executor->id }}">
+                        <input type="hidden" name="commentable_type" value="App\Models\User">
+
+                        <div class="mb-3">
+                            <textarea class="form-control" name="content" rows="3" placeholder="Залишіть коментар" required></textarea>
                         </div>
+                        <button type="submit" class="btn btn-primary">Залишити коментар</button>
+                    </form>
+                </div>
+                <!-- /Блок комментариев -->
+            </div>
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-dark" data-bs-dismiss="modal">
                                 Закрити

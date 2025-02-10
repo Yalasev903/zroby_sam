@@ -73,4 +73,20 @@ public function ads()
     return $this->hasMany(Ad::class);
 
 }
+
+ /**
+     * Если необходимо, чтобы пользователь (например, исполнитель) мог получать комментарии.
+     */
+    public function receivedComments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    /**
+     * Комментарии, оставленные пользователем.
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

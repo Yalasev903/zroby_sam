@@ -5,6 +5,7 @@ use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\ExecutorController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdController;
+use App\Http\Controllers\CommentController;
 
 Route::get('/', function () {
     return view('home');
@@ -40,4 +41,6 @@ Route::middleware([
 
     // Страница объявлений (GET)
     Route::get('/ads_card_page', [AdController::class, 'index'])->name('ads.ads_card_page');
+
+    Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 });
