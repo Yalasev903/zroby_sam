@@ -58,7 +58,7 @@ class AdController extends Controller
     public function index()
     {
     // Загружаем объявления из базы данных, сортируя по дате добавления
-    $ads = Ad::latest()->paginate(10);
+    $ads = Ad::with(['user', 'comments.user'])->latest()->paginate(10);
 
     return view('ads.ads_card_page', compact('ads'));
     }

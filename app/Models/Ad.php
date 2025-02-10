@@ -29,6 +29,9 @@ class Ad extends Model
     /**
      * Получить комментарии объявления.
      */
-    
+    public function comments()
+{
+    return $this->morphMany(Comment::class, 'commentable');
+}
 
 }
