@@ -21,7 +21,7 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-
+    
     Route::get('/executors', [ExecutorController::class, 'index'])->name('executors.index');
 
     // Страница профиля (Route Model Binding)

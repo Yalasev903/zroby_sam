@@ -72,6 +72,9 @@
                                 data-bs-target="#executorModal{{ $executor->id }}">
                             Подрібніше
                         </button>
+                        <a href="{{ url('/chat/' . $executor->id) }}" class="btn btn-primary">
+                            Почати чат
+                        </a>
                     </div>
                 </div>
             </div>
