@@ -89,4 +89,12 @@ public function ads()
     {
         return $this->hasMany(Comment::class);
     }
+
+        // Получение аватарки для Chatify
+        // public function getAvatarAttribute()
+        // {
+        //     return $this->profile_photo_path
+        //         ? asset('storage/profile-photos/' . $this->profile_photo_path) // Jetstream хранит аватарку тут
+        //         : asset('images/default-avatar.webp'); // Если нет аватарки, ставим дефолт
+        // }
 }
