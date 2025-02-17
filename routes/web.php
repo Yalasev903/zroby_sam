@@ -59,4 +59,10 @@ Route::middleware([
 
 });
 
-Route::resource('news', NewsController::class);
+    Route::resource('news', NewsController::class);
+    Route::get('/news_details', function () {
+        return view('news.details');
+    })->name('details');
+    Route::get('/sidebar_details', function () {
+        return view('news.details');
+    })->name('sidebar_details');
