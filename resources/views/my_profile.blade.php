@@ -62,7 +62,8 @@
                 <!-- Контактные данные -->
                 <div class="space-y-3 mb-6">
                     <p><strong>Email:</strong> {{ $user->email }}</p>
-                    <p><strong>Місто:</strong> {{ $user->city ?? 'Не указан' }}</p>
+                    <p><strong>Телефон:</strong> {{ $user->phone ?? 'Не вказан' }}</p>
+                    <p><strong>Місто:</strong> {{ $user->city ?? 'Не вказан' }}</p>
                     <p>ID користувача: {{ $user->id }}</p>
                 </div>
                 <!-- Блок: Роль -->

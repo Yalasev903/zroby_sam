@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CitiesSeeder::class,
             ServicesSeeder::class,
+            AdsSeeder::class,
         ]);
     }
 }

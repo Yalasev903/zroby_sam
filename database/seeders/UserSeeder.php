@@ -14,6 +14,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Ярослав Слащев',
                 'email' => 'slasev903@gmail.com',
+                'phone' => '380508499639',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password123'),
                 'role' => 'executor',
@@ -28,6 +29,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Андрій Петренко',
                 'email' => 'andrii.petrenko@example.com',
+                'phone' => '380508499630',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password123'),
                 'role' => 'executor',
@@ -42,6 +44,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Марія Іваненко',
                 'email' => 'maria.ivanenko@example.com',
+                'phone' => '380508499631',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password123'),
                 'role' => 'customer',
@@ -56,6 +59,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Ігор Савченко',
                 'email' => 'igor.savchenko@example.com',
+                'phone' => '380508499632',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password123'),
                 'role' => 'executor',
@@ -70,6 +74,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Олена Ковальчук',
                 'email' => 'olena.kovalchuk@example.com',
+                'phone' => '380508499634',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password123'),
                 'role' => 'customer',

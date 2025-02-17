@@ -99,6 +99,7 @@
                          style="object-fit: cover; width: 100%; height: 300px;">
                 </div>
                 <p><strong>Місто:</strong> {{ $executor->city }}</p>
+                <p><strong>Телефон:</strong> {{ $executor->phone }}</p>
                 <p><strong>Навички:</strong> {{ $executor->skills }}</p>
                 <p><strong>Категорія:</strong> {{ $executor->services_category }}</p>
                 <p>

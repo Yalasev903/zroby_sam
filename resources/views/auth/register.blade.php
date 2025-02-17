@@ -38,6 +38,13 @@
                          type="email" name="email" :value="old('email')" required autocomplete="username" />
             </div>
 
+            <!-- Поле для номера телефона -->
+            <div class="mt-4">
+                <x-label for="phone" value="{{ __('Телефон') }}" />
+                <x-input id="phone" class="block mt-1 w-full border-none shadow-md"
+                        type="text" name="phone" :value="old('phone')" required autocomplete="phone" />
+            </div>
+
             <!-- Поле для пароля -->
             <div class="mt-4">
                 <x-label for="password" value="{{ __('Пароль') }}" />
