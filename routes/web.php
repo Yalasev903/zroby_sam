@@ -6,6 +6,7 @@ use App\Http\Controllers\ExecutorController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\NewsController;
 
 Route::get('/', function () {
     return view('home');
@@ -57,3 +58,5 @@ Route::middleware([
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 
 });
+
+Route::resource('news', NewsController::class);

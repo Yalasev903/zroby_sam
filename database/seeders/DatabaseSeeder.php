@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             CitiesSeeder::class,
             ServicesSeeder::class,
             AdsSeeder::class,
+            NewsCategoriesSeeder::class,
         ]);
     }
 }
