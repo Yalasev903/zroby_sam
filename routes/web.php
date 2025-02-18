@@ -49,20 +49,29 @@ Route::middleware([
     // Удаление объявления (DELETE)
     Route::delete('/ads/{ad}', [AdController::class, 'destroy'])->name('ads.destroy');
 
-
     Route::get('/my-ads', [AdController::class, 'myAds'])->name('ads.my');
 
     // Страница объявлений (GET)
     Route::get('/ads_card_page', [AdController::class, 'index'])->name('ads.ads_card_page');
 
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
-
 });
 
-    Route::resource('news', NewsController::class);
-    Route::get('/news_details', function () {
-        return view('news.details');
-    })->name('details');
-    Route::get('/sidebar_details', function () {
-        return view('news.details');
-    })->name('sidebar_details');
+// Ресурсный маршрут для новостей
+Route::resource('news', NewsController::class);
+
+// Добавляем отдельный маршрут для деталей новости, чтобы маршрут "news.details" был определён
+Route::get('/news/{slug}/details', [NewsController::class, 'show'])->name('news.details');
+
+// Статические маршруты для отображения страницы деталей (при необходимости)
+Route::get('/news_details', function () {
+    return view('news.details');
+})->name('details');
+
+Route::get('/sidebar_details', function () {
+    return view('news.details');
+})->name('sidebar_details');
+
+// Маршрут для вывода новостей по категориям
+Route::get('/news/category/{id}', [NewsController::class, 'byCategory'])->name('news.byCategory');
+Route::get('/news/{slug}', [NewsController::class, 'show'])->name('news.show');

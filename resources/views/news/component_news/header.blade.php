@@ -7,31 +7,31 @@
     <!-- Title -->
     <title> Digital Market Place HTML Template</title>
     <!-- Favicon -->
-    <link rel="shortcut icon" href="assets/images/logo/favicon.png">
+    <link rel="shortcut icon" href="{{ asset('assets/images/logo/favicon.png') }}">
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="assets/news/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/news/assets/css/bootstrap.min.css') }}">
     <!-- Fontawesome -->
-    <link rel="stylesheet" href="assets/news/assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/news/assets/css/fontawesome-all.min.css') }}">
     <!-- Slick -->
-    <link rel="stylesheet" href="assets/news/assets/css/slick.css">
+    <link rel="stylesheet" href="{{ asset('assets/news/assets/css/slick.css') }}">
     <!-- magnific popup -->
-    <link rel="stylesheet" href="assets/news/assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="{{ asset('assets/news/assets/css/magnific-popup.cs') }}s">
     <!-- line awesome -->
-    <link rel="stylesheet" href="assets/news/assets/css/line-awesome.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/news/assets/css/line-awesome.min.css') }}">
     <!-- Main css -->
-    <link rel="stylesheet" href="assets/news/assets/css/main.css">
+    <link rel="stylesheet" href="{{ asset('assets/news/assets/css/main.css') }}">
 
 </head>
 <body>
 
 <!--==================== Preloader Start ====================-->
- <div class="loader-mask">
+ {{-- <div class="loader-mask">
   <div class="loader">
       <div></div>
       <div></div>
   </div>
-</div>
+</div> --}}
 <!--==================== Preloader End ====================-->
 
 <!--==================== Overlay Start ====================-->
@@ -55,23 +55,23 @@
     <button type="button" class="close-button"> <i class="las la-times"></i> </button>
     <div class="mobile-menu__inner">
         <a href="index.html" class="mobile-menu__logo">
-            <img src="assets/images/logo/logo.png" alt="Logo">
+            <img src="images/logo.png" alt="Logo">
         </a>
         <div class="mobile-menu__menu">
 
 <ul class="nav-menu flx-align nav-menu--mobile">
     <li class="nav-menu__item has-submenu">
-        <a href="javascript:void(0)" class="nav-menu__link">Home</a>
+        <a href="javascript:void(0)" class="nav-menu__link">Головна</a>
         <ul class="nav-submenu">
             <li class="nav-submenu__item">
-                <a href="index.html" class="nav-submenu__link"> Home One</a>
+                <a href="{{ route('home') }}" class="nav-submenu__link"> Головна</a>
             </li>
             <li class="nav-submenu__item">
-                <a href="index-two.html" class="nav-submenu__link"> Home Two</a>
+                <a href="{{ route('dashboard') }}" class="nav-submenu__link"> Дошка оголошень</a>
             </li>
         </ul>
     </li>
-    <li class="nav-menu__item has-submenu">
+    {{-- <li class="nav-menu__item has-submenu">
         <a href="javascript:void(0)" class="nav-menu__link">Products</a>
          <ul class="nav-submenu">
             <li class="nav-submenu__item">
@@ -81,8 +81,8 @@
                 <a href="product-details.html" class="nav-submenu__link"> Product Details</a>
             </li>
         </ul>
-    </li>
-    <li class="nav-menu__item has-submenu">
+    </li> --}}
+    {{-- <li class="nav-menu__item has-submenu">
         <a href="javascript:void(0)" class="nav-menu__link">Pages</a>
          <ul class="nav-submenu">
             <li class="nav-submenu__item">
@@ -104,18 +104,15 @@
                 <a href="dashboard.html" class="nav-submenu__link"> Dashboard</a>
             </li>
         </ul>
-    </li>
+    </li> --}}
     <li class="nav-menu__item has-submenu">
-        <a href="javascript:void(0)" class="nav-menu__link">Blog</a>
+        <a href="javascript:void(0)" class="nav-menu__link">Категорії</a>
          <ul class="nav-submenu">
             <li class="nav-submenu__item">
-                <a href="{{ route('news.index') }}" class="nav-submenu__link"> Blog</a>
+                <a href="{{ route('details') }}" class="nav-submenu__link"> Будівництво та ремонт</a>
             </li>
             <li class="nav-submenu__item">
-                <a href="{{ route('details') }}" class="nav-submenu__link"> Blog Details</a>
-            </li>
-            <li class="nav-submenu__item">
-                <a href="{{ route('sidebar_details') }}" class="nav-submenu__link"> Blog Details Sidebar</a>
+                <a href="{{ route('sidebar_details') }}" class="nav-submenu__link"> Краса</a>
             </li>
         </ul>
     </li>
@@ -152,7 +149,7 @@
             <!-- Logo Start -->
             <div class="logo">
                 <a href="index.html" class="link">
-                    <img src="assets/images/logo/logo.png" alt="Logo">
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo" width="90" height="90">
                 </a>
             </div>
             <!-- Logo End  -->
@@ -162,17 +159,17 @@
 
 <ul class="nav-menu flx-align ">
     <li class="nav-menu__item has-submenu">
-        <a href="javascript:void(0)" class="nav-menu__link">Home</a>
+        <a href="javascript:void(0)" class="nav-menu__link">Головна</a>
         <ul class="nav-submenu">
             <li class="nav-submenu__item">
-                <a href="index.html" class="nav-submenu__link"> Home One</a>
+                <a href="{{ route('home') }}" class="nav-submenu__link"> Головна</a>
             </li>
             <li class="nav-submenu__item">
-                <a href="index-two.html" class="nav-submenu__link"> Home Two</a>
+                <a href="{{ route('dashboard') }}" class="nav-submenu__link"> Дошка оголошень</a>
             </li>
         </ul>
     </li>
-    <li class="nav-menu__item has-submenu">
+    {{-- <li class="nav-menu__item has-submenu">
         <a href="javascript:void(0)" class="nav-menu__link">Products</a>
          <ul class="nav-submenu">
             <li class="nav-submenu__item">
@@ -205,18 +202,15 @@
                 <a href="dashboard.html" class="nav-submenu__link"> Dashboard</a>
             </li>
         </ul>
-    </li>
+    </li> --}}
     <li class="nav-menu__item has-submenu">
-        <a href="javascript:void(0)" class="nav-menu__link">Blog</a>
+        <a href="javascript:void(0)" class="nav-menu__link">Категорії</a>
          <ul class="nav-submenu">
             <li class="nav-submenu__item">
-                <a href="{{ route('news.index') }}" class="nav-submenu__link"> Blog</a>
+                <a href="{{ route('news.index') }}" class="nav-submenu__link"> Будівництво та ремонт</a>
             </li>
             <li class="nav-submenu__item">
-                <a href="{{ route('details') }}" class="nav-submenu__link"> Blog Details</a>
-            </li>
-            <li class="nav-submenu__item">
-                <a href="{{ route('sidebar_details') }}" class="nav-submenu__link"> Blog Details Sidebar</a>
+                <a href="{{ route('details') }}" class="nav-submenu__link"> Краса</a>
             </li>
         </ul>
     </li>

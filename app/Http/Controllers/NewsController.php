@@ -51,8 +51,9 @@ class NewsController extends Controller
     /**
      * Отображение конкретной новости.
      */
-    public function show(News $news)
+    public function show($slug)
     {
+        $news = News::with('category')->where('slug', $slug)->firstOrFail();
         return view('news.show', compact('news'));
     }
 
@@ -84,6 +85,18 @@ class NewsController extends Controller
         $news->update($data);
 
         return redirect()->route('news.index')->with('success', 'Новина успішно оновлена.');
+    }
+
+    /**
+     * Вывод новостей по категории.
+     */
+    public function byCategory($id)
+    {
+        $news = News::where('news_category_id', $id)
+                    ->latest()
+                    ->paginate(10);
+
+        return view('news.index', compact('news'));
     }
 
     /**

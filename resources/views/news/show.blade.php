@@ -12,15 +12,15 @@
                             <!-- Здесь можно вывести аватар автора, если он есть. Пока используется картинка по умолчанию -->
                             <img src="{{ asset('assets/images/thumbs/blog-details-user.png') }}" alt="">
                             <!-- Выводим название категории новости или другого автора, если понадобится -->
-                            <span class="text-heading fw-500">{{ $article->category->name ?? 'News' }}</span>
+                            <span class="text-heading fw-500">{{ $news->category->name ?? 'News' }}</span>
                         </div>
                         <span class="blog-details-top__date flx-align gap-2">
                             <img src="{{ asset('assets/images/icons/clock.svg') }}" alt="">
-                            {{ $article->published_at ? \Carbon\Carbon::parse($article->published_at)->format('d M Y') : '' }}
+                            {{ $news->published_at ? \Carbon\Carbon::parse($news->published_at)->format('d M Y') : '' }}
                         </span>
                     </div>
-                    <h2 class="blog-details-top__title mb-4 text-capitalize">{{ $article->title }}</h2>
-                    <p class="blog-details-top__desc">{{ $article->excerpt }}</p>
+                    <h2 class="blog-details-top__title mb-4 text-capitalize">{{ $news->title }}</h2>
+                    <p class="blog-details-top__desc">{{ $news->excerpt }}</p>
                 </div>
                 <!-- blog details top End -->
             </div>
@@ -30,20 +30,20 @@
                 <!-- blog details content Start -->
                 <div class="blog-details-content">
                     <div class="blog-details-content__thumb mb-32">
-                        <img src="{{ $article->image_url ?: asset('assets/images/thumbs/default-details.png') }}" alt="{{ $article->title }}">
+                        <img src="{{ $news->image_url ?: asset('assets/images/thumbs/default-details.png') }}" alt="{{ $news->title }}">
                     </div>
                     <div class="blog-details-content__desc mb-40">
-                        {!! $article->content !!}
+                        {!! $news->content !!}
                     </div>
 
                     <!-- Можно добавить дополнительные динамические блоки, например, вывод тегов, комментариев и т.д. -->
 
                     <!-- Пример: блок тегов -->
-                    @if(isset($article->tags) && $article->tags->isNotEmpty())
+                    @if(isset($news->tags) && $news->tags->isNotEmpty())
                         <div class="post-tag flx-align gap-3 mb-40 mt-40">
                             <span class="post-tag__text text-heading fw-500">Post Tag: </span>
                             <ul class="post-tag__list flx-align gap-2">
-                                @foreach($article->tags as $tag)
+                                @foreach($news->tags as $tag)
                                     <li class="post-tag__item">
                                         <a href="{{ route('news.byTag', $tag->slug) }}" class="post-tag__link font-14 text-heading pill fw-500">{{ $tag->name }}</a>
                                     </li>
