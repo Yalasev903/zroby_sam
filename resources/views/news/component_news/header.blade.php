@@ -106,13 +106,13 @@
         </ul>
     </li> --}}
     <li class="nav-menu__item has-submenu">
-        <a href="javascript:void(0)" class="nav-menu__link">Категорії</a>
+        <a href="javascript:void(0)" class="nav-menu__link">Новини</a>
          <ul class="nav-submenu">
             <li class="nav-submenu__item">
-                <a href="{{ route('details') }}" class="nav-submenu__link"> Будівництво та ремонт</a>
+                <a href="/news?category=1" class="nav-submenu__link"> Будівництво та ремонт</a>
             </li>
             <li class="nav-submenu__item">
-                <a href="{{ route('sidebar_details') }}" class="nav-submenu__link"> Краса</a>
+                <a href="/news?category=2" class="nav-submenu__link"> Краса</a>
             </li>
         </ul>
     </li>
@@ -207,10 +207,10 @@
         <a href="javascript:void(0)" class="nav-menu__link">Категорії</a>
          <ul class="nav-submenu">
             <li class="nav-submenu__item">
-                <a href="{{ route('news.index') }}" class="nav-submenu__link"> Будівництво та ремонт</a>
+                <a href="/news?category=1" class="nav-submenu__link"> Будівництво та ремонт</a>
             </li>
             <li class="nav-submenu__item">
-                <a href="{{ route('details') }}" class="nav-submenu__link"> Краса</a>
+                <a href="/news?category=2" class="nav-submenu__link"> Краса</a>
             </li>
         </ul>
     </li>

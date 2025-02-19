@@ -1,30 +1,28 @@
-<!-- ======================== Breadcrumb Two Section Start ===================== -->
-<section class="breadcrumb border-bottom p-0 d-block section-bg position-relative z-index-1">
-    <div class="breadcrumb-two">
-        <img src="{{ asset('assets/images/gradients/breadcrumb-gradient-bg.png') }}" alt="" class="bg--gradient">
-        <div class="container container-two">
-            <div class="row justify-content-center">
-                <div class="col-lg-12">
-                    <div class="breadcrumb-two-content text-center">
-                        <ul class="breadcrumb-list flx-align gap-2 mb-2 justify-content-center">
-                            <li class="breadcrumb-list__item font-14 text-body">
-                                <a href="{{ route('home') }}" class="breadcrumb-list__link text-body hover-text-main">Home</a>
-                            </li>
-                            <li class="breadcrumb-list__item font-14 text-body">
-                                <span class="breadcrumb-list__icon font-10"><i class="fas fa-chevron-right"></i></span>
-                            </li>
-                            <li class="breadcrumb-list__item font-14 text-body">
-                                <span class="breadcrumb-list__text">Blog</span>
-                            </li>
-                        </ul>
-                        <h3 class="breadcrumb-two-content__title mb-0 text-capitalize">Latest Blogs And Articles</h3>
-                    </div>
+<!-- ======================== Filter Section Start ===================== -->
+<section class="filter-section mb-4">
+    <div class="container">
+        <form action="{{ route('news.index') }}" method="GET" class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="category">Категорії</label>
+                    <select name="category" id="category" class="form-control">
+                        <option value="">Усі Категорій</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
-        </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary mt-4">Фільтр</button>
+            </div>
+        </form>
     </div>
 </section>
-<!-- ======================== Breadcrumb Two Section End ===================== -->
+<!-- ======================== Filter Section End ===================== -->
+
 
 <!-- =========================== Blog Section Start ========================== -->
 <section class="blog padding-y-120 section-bg position-relative z-index-1 overflow-hidden">
@@ -69,7 +67,6 @@
 
         <!-- Pagination Start -->
         <nav aria-label="Page navigation example">
-            <!-- Используем стандартный вывод пагинации Laravel -->
             <ul class="pagination common-pagination">
                 {{ $news->links() }}
             </ul>
@@ -78,30 +75,3 @@
     </div>
 </section>
 <!-- =========================== Blog Section End ========================== -->
-
-<!-- ======================== Brand Section Start ========================= -->
-<div class="brand">
-    <div class="container container">
-        <div class="brand-slider">
-            <div class="brand-item d-flex align-items-center justify-content-center">
-                <img src="{{ asset('assets/images/thumbs/brand-img1.png') }}" alt="">
-            </div>
-            <div class="brand-item d-flex align-items-center justify-content-center">
-                <img src="{{ asset('assets/images/thumbs/brand-img2.png') }}" alt="">
-            </div>
-            <div class="brand-item d-flex align-items-center justify-content-center">
-                <img src="{{ asset('assets/images/thumbs/brand-img3.png') }}" alt="">
-            </div>
-            <div class="brand-item d-flex align-items-center justify-content-center">
-                <img src="{{ asset('assets/images/thumbs/brand-img4.png') }}" alt="">
-            </div>
-            <div class="brand-item d-flex align-items-center justify-content-center">
-                <img src="{{ asset('assets/images/thumbs/brand-img5.png') }}" alt="">
-            </div>
-            <div class="brand-item d-flex align-items-center justify-content-center">
-                <img src="{{ asset('assets/images/thumbs/brand-img3.png') }}" alt="">
-            </div>
-        </div>
-    </div>
-</div>
-<!-- ======================== Brand Section End ========================= -->

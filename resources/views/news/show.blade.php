@@ -91,9 +91,9 @@
     <div class="container container-two">
         <div class="section-heading style-left style-flex flx-between align-items-end gap-3">
             <div class="section-heading__inner">
-                <h3 class="section-heading__title">Browse all latest blogs and articles</h3>
+                <h3 class="section-heading__title">Дивись Усі Пости </h3>
             </div>
-            <a href="{{ route('news.index') }}" class="btn btn-outline-light btn-lg pill">Browse All Articles</a>
+            <a href="{{ route('news.index') }}" class="btn btn-outline-light btn-lg pill">Усі Новини</a>
         </div>
         <!-- Здесь можно добавить блок похожих статей (рекомендуемых) -->
         <div class="article-item-wrapper">

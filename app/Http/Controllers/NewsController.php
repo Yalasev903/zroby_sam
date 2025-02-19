@@ -10,13 +10,36 @@ use Illuminate\Support\Str;
 class NewsController extends Controller
 {
     /**
-     * Вывод списка новостей.
+     * Вывод списка новостей с возможностью фильтрации.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $news = News::latest()->paginate(10);
-        return view('news.index', compact('news'));
+        $query = News::latest();
+
+        // Фильтрация по категории
+        if ($request->has('category') && $request->category) {
+            $query->where('news_category_id', $request->category);
+        }
+
+        // Фильтрация по ключевым словам в заголовке
+        if ($request->has('title') && $request->title) {
+            $query->where('title', 'like', '%' . $request->title . '%');
+        }
+
+        // Фильтрация по дате
+        if ($request->has('published_at') && $request->published_at) {
+            $query->whereDate('published_at', $request->published_at);
+        }
+
+        // Получаем новости с пагинацией
+        $news = $query->paginate(10)->appends($request->except('page'));
+
+        // Получаем все категории для фильтра
+        $categories = NewsCategory::all();
+
+        return view('news.index', compact('news', 'categories'));
     }
+
 
     /**
      * Форма создания новости.
