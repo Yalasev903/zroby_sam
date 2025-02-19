@@ -11,74 +11,99 @@ use Illuminate\Support\Str;
 class FetchNews extends Command
 {
     protected $signature = 'news:fetch';
-    protected $description = 'Fetch news articles from external API and store in database';
+    protected $description = 'Fetch news articles from external APIs and store in database';
 
     public function handle()
     {
-        $apiKey = '47efe9ed60f24080baed62f4accc987c';
+        // Получаем ключ NewsAPI из конфигурации
+        $newsApiKey = config('services.newsapi.key');
+        dump($newsApiKey);
 
-        // Массив настроек для двух категорий:
-        // "q" - запрос к API, "category_id" - ID в таблице news_categories
+        // Задаём запросы:
+        // Категория 1: Стройка/ремонт в Украине через NewsAPI (everything)
+        // Категория 2: Красота в Украине через GNews API (запрос изменён на "beauty Ukraine")
         $queries = [
-            ['q' => 'будівництво', 'category_id' => 1],
-            ['q' => 'краса',       'category_id' => 2],
+            ['q' => 'Ukraine construction', 'category_id' => 1],
+            ['q' => 'beauty', 'category_id' => 2, 'api' => 'gnews'],
         ];
 
         foreach ($queries as $queryData) {
-            // Если для категории "краса" можно уточнить запрос, то добавляем дополнительные ключевые слова
-            $q = $queryData['q'];
-            if ($q === 'краса') {
-                $q = 'краса косметика мода бьюти';
-            }
+            if ($queryData['category_id'] == 1) {
+                // Используем NewsAPI (everything) для категории 1
+                $response = Http::get("https://newsapi.org/v2/everything", [
+                    'q'        => $queryData['q'],
+                    'language' => 'en',
+                    'from'     => now()->subDays(7)->format('Y-m-d'),
+                    'sortBy'   => 'relevancy',
+                    'apiKey'   => $newsApiKey,
+                ]);
 
-            $response = Http::get("https://newsapi.org/v2/everything", [
-                'q'        => $q,
-                'language' => 'uk',
-                'apiKey'   => $apiKey,
-            ]);
-
-            if ($response->failed()) {
-                $this->error("Ошибка при получении данных по запросу: {$queryData['q']}");
+                if ($response->failed()) {
+                    $this->error("Ошибка при получении данных по запросу: {$queryData['q']} (NewsAPI)");
+                    continue;
+                }
+                $articles = $response->json()['articles'] ?? [];
+            } elseif ($queryData['category_id'] == 2) {
+                // Используем GNews API для категории 2
+                $gnewsApiKey = '36737fd641cb692ee30ef3f4fc59aab2';
+                $response = Http::get("https://gnews.io/api/v4/search", [
+                    'q'       => $queryData['q'],
+                    'lang'    => 'en',
+                    'country' => null,
+                    'token'   => $gnewsApiKey,
+                    'max'     => 10,
+                    'sortby'  => 'relevance',
+                ]);
+                if ($response->failed()) {
+                    $this->error("Ошибка при получении данных по запросу: {$queryData['q']} (GNews API)");
+                    continue;
+                }
+                // У GNews новости находятся в ключе "articles"
+                $articles = $response->json()['articles'] ?? [];
+            } else {
                 continue;
             }
 
-            $articles = $response->json()['articles'] ?? [];
+            dump($articles);
 
             foreach ($articles as $article) {
-                // Если заголовок отсутствует, пропускаем статью
-                $title = $article['title'] ?? null;
-                if (!$title) {
+                if ($queryData['category_id'] == 1) {
+                    // Маппинг для NewsAPI
+                    $title       = $article['title'] ?? null;
+                    $description = $article['description'] ?? null;
+                    $content     = $article['content'] ?? null;
+                    $imageUrl    = $article['urlToImage'] ?? null;
+                    $publishedAt = $article['publishedAt'] ?? null;
+                } elseif ($queryData['category_id'] == 2) {
+                    // Маппинг для GNews API
+                    $title       = $article['title'] ?? null;
+                    $description = $article['description'] ?? null;
+                    $content     = $article['content'] ?? null;
+                    $imageUrl    = $article['image'] ?? null;
+                    $publishedAt = $article['publishedAt'] ?? null;
+                }
+
+                // Если описания нет, используем контент как запасной вариант
+                $description = $description ?? $content ?? null;
+
+                // Пропускаем новости без заголовка или с коротким описанием
+                if (!$title || mb_strlen($title, 'UTF-8') < 10 || !$description || mb_strlen($description, 'UTF-8') < 30) {
                     continue;
                 }
 
-                // Фильтрация в зависимости от категории
+                // Фильтрация по ключевым словам:
                 if ($queryData['category_id'] == 1) {
-                    // Фильтрация для категории "будівництво"
-                    $keywords = ['будівництво', 'ремонт', 'будинок', 'квартира', 'майстерня', 'інструмент', 'меблі', 'дизайн', 'плитка', 'паркет'];
-                } elseif ($queryData['category_id'] == 2) {
-                    // Фильтрация для категории "краса"
-                    $keywords = ['краса', 'косметика', 'мода', 'бьюти', 'макіяж', 'манікюр', 'педикюр', 'волосся', 'стріжки'];
+                    $keywords = ['construction', 'building', 'renovation', 'repair'];
                 } else {
-                    $keywords = [];
+                    $keywords = ['beauty', 'cosmetics', 'makeup', 'skincare', 'salon'];
+                }
+                $titleLower = mb_strtolower($title, 'UTF-8');
+                $descLower  = mb_strtolower($description, 'UTF-8');
+                if (!collect($keywords)->some(fn($keyword) => str_contains($titleLower, $keyword) || str_contains($descLower, $keyword))) {
+                    continue;
                 }
 
-                // Если набор ключевых слов задан, проверяем релевантность
-                if (!empty($keywords)) {
-                    $titleLower = mb_strtolower($title, 'UTF-8');
-                    $descLower = mb_strtolower($article['description'] ?? '', 'UTF-8');
-                    $isRelevant = false;
-                    foreach ($keywords as $keyword) {
-                        if (mb_strpos($titleLower, $keyword) !== false || mb_strpos($descLower, $keyword) !== false) {
-                            $isRelevant = true;
-                            break;
-                        }
-                    }
-                    if (!$isRelevant) {
-                        continue;
-                    }
-                }
-
-                // Формирование уникального slug
+                // Генерация уникального slug
                 $slug = Str::slug($title);
                 $originalSlug = $slug;
                 $counter = 1;
@@ -87,19 +112,16 @@ class FetchNews extends Command
                     $counter++;
                 }
 
-                $data = [
+                // Сохранение новости в базу данных
+                News::create([
                     'title'            => $title,
                     'slug'             => $slug,
-                    'excerpt'          => $article['description'] ?? null,
-                    'content'          => $article['content'] ?? '',
+                    'excerpt'          => $description,
+                    'content'          => $content,
                     'news_category_id' => $queryData['category_id'],
-                    'image_url'        => $article['urlToImage'] ?? null,
-                    'published_at'     => isset($article['publishedAt'])
-                        ? Carbon::parse($article['publishedAt'])->format('Y-m-d H:i:s')
-                        : null,
-                ];
-
-                News::create($data);
+                    'image_url'        => $imageUrl,
+                    'published_at'     => $publishedAt ? Carbon::parse($publishedAt)->format('Y-m-d H:i:s') : null,
+                ]);
             }
 
             $this->info("Новости по запросу '{$queryData['q']}' успешно загружены в категорию ID {$queryData['category_id']}.");

@@ -1,5 +1,12 @@
 @include('news.component_news.header')
-
+<!--==================== Preloader Start ====================-->
+ {{-- <div class="loader-mask">
+  <div class="loader">
+      <div></div>
+      <div></div>
+  </div>
+</div> --}}
+<!--==================== Preloader End ====================-->
 <!-- ======================= Blog Details Section Start ========================= -->
 <section class="blog-details padding-y-120 position-relative overflow-hidden">
     <div class="container container-two">
