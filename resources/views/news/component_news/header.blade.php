@@ -116,17 +116,37 @@
             </li>
         </ul>
     </li>
-    <li class="nav-menu__item">
-        <a href="contact.html" class="nav-menu__link">Contact</a>
-    </li>
 </ul>
             <div class="header-right__inner d-lg-none my-3 gap-1 d-flex flx-align">
 
-    <a href="register.html" class="btn btn-main pill">
-        <span class="icon-left icon">
-            <img src="assets/images/icons/user.svg" alt="">
-        </span>Create Account
-    </a>
+    @if (Route::has('login'))
+    <nav class="-mx-3 flex flex-1 justify-end">
+        @auth
+            <a
+                href="{{ url('/dashboard') }}"
+                class="btn btn-main pill"
+            >
+                Дошка оголошень
+            </a>
+        @else
+            <a
+                href="{{ route('login') }}"
+                class="btn btn-main pill"
+            >
+                Увійти
+            </a>
+
+            @if (Route::has('register'))
+                <a
+                    href="{{ route('register') }}"
+                    class="btn btn-main pill"
+                >
+                    Зареєструватись
+                </a>
+            @endif
+        @endauth
+    </nav>
+@endif
     <div class="language-select flx-align select-has-icon">
         <img src="assets/images/icons/globe.svg" alt="" class="globe-icon">
         <select class="select py-0 ps-2 border-0 fw-500">
@@ -214,9 +234,6 @@
             </li>
         </ul>
     </li>
-    <li class="nav-menu__item">
-        <a href="contact.html" class="nav-menu__link">Contact</a>
-    </li>
 </ul>
             </div>
             <!-- Menu End  -->
@@ -229,11 +246,34 @@
     </a>
     <div class="header-right__inner gap-3 flx-align d-lg-flex d-none">
 
-    <a href="register.html" class="btn btn-main pill">
-        <span class="icon-left icon">
-            <img src="assets/images/icons/user.svg" alt="">
-        </span>Create Account
-    </a>
+    @if (Route::has('login'))
+    <nav class="-mx-3 flex flex-1 justify-end">
+        @auth
+            <a
+                href="{{ url('/dashboard') }}"
+                class="btn btn-main pill"
+            >
+                Дошка оголошень
+            </a>
+        @else
+            <a
+                href="{{ route('login') }}"
+                class="btn btn-main pill"
+            >
+                Увійти
+            </a>
+
+            @if (Route::has('register'))
+                <a
+                    href="{{ route('register') }}"
+                    class="btn btn-main pill"
+                >
+                    Зареєструватись
+                </a>
+            @endif
+        @endauth
+    </nav>
+@endif
     <div class="language-select flx-align select-has-icon">
         <img src="assets/images/icons/globe.svg" alt="" class="globe-icon">
         <select class="select py-0 ps-2 border-0 fw-500">

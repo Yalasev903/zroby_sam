@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\NewsCategoryController;
 
 Route::get('/', function () {
     return view('home');
@@ -24,54 +25,21 @@ Route::middleware([
     })->name('dashboard');
 
     Route::get('/executors', [ExecutorController::class, 'index'])->name('executors.index');
-
-    // Страница профиля (Route Model Binding)
     Route::get('/my_profile/{user}', [ProfileController::class, 'showProfile'])->name('my_profile.show');
-
-    // Страница настроек профиля (только для владельца)
     Route::get('/my_profile/settings/{user}', [ProfileController::class, 'showProfileSettings'])->name('profile.settings');
-
-    // Форма создания объявления
     Route::get('/ads/create', [AdController::class, 'create'])->name('ads.create');
-
-    // Сохранение объявления
     Route::post('/ads', [AdController::class, 'store'])->name('ads.store');
-
-    // Страница с объявлениями
     Route::get('/ads', [AdController::class, 'index'])->name('ads.index');
-
-    // Редактирование объявления (GET - форма редактирования)
     Route::get('/ads/{ad}/edit', [AdController::class, 'edit'])->name('ads.edit');
-
-    // Обновление объявления (PUT - обновление данных)
     Route::put('/ads/{ad}', [AdController::class, 'update'])->name('ads.update');
-
-    // Удаление объявления (DELETE)
     Route::delete('/ads/{ad}', [AdController::class, 'destroy'])->name('ads.destroy');
-
     Route::get('/my-ads', [AdController::class, 'myAds'])->name('ads.my');
-
-    // Страница объявлений (GET)
-    Route::get('/ads_card_page', [AdController::class, 'index'])->name('ads.ads_card_page');
-
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 });
 
-// Ресурсный маршрут для новостей
+// Маршруты для новостей
 Route::resource('news', NewsController::class);
-
-// Добавляем отдельный маршрут для деталей новости, чтобы маршрут "news.details" был определён
 Route::get('/news/{slug}/details', [NewsController::class, 'show'])->name('news.details');
-
-// Статические маршруты для отображения страницы деталей (при необходимости)
-Route::get('/news_details', function () {
-    return view('news.details');
-})->name('details');
-
-Route::get('/sidebar_details', function () {
-    return view('news.details');
-})->name('sidebar_details');
-
-// Маршрут для вывода новостей по категориям
 Route::get('/news/category/{id}', [NewsController::class, 'byCategory'])->name('news.byCategory');
 Route::get('/news/{slug}', [NewsController::class, 'show'])->name('news.show');
+Route::get('/news/categories', [NewsCategoryController::class, 'index'])->name('news.categories');

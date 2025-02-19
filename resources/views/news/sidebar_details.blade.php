@@ -1,4 +1,5 @@
 @include('news.component_news.header')
+@include('news.component_news.breadcrumb', ['breadcrumbs' => $breadcrumbs])
 <!-- ======================= Blog Details Section Start ========================= -->
 <section class="blog-details padding-y-120 position-relative overflow-hidden">
     <div class="container container-two">

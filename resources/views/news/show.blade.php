@@ -1,4 +1,5 @@
 @include('news.component_news.header')
+@include('news.component_news.breadcrumb', ['breadcrumbs' => $breadcrumbs])
 <!--==================== Preloader Start ====================-->
  {{-- <div class="loader-mask">
   <div class="loader">

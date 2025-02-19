@@ -1,3 +1,4 @@
+@include('news.component_news.breadcrumb', ['breadcrumbs' => $breadcrumbs])
 <!-- ======================== Filter Section Start ===================== -->
 <section class="filter-section mb-4">
     <div class="container">
@@ -6,7 +7,7 @@
                 <div class="form-group">
                     <label for="category">Категорії</label>
                     <select name="category" id="category" class="form-control">
-                        <option value="">Усі Категорій</option>
+                        <option value="">Усі Категорії</option>
                         @foreach($categories as $category)
                             <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
                                 {{ $category->name }}
