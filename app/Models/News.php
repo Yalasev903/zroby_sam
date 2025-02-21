@@ -21,6 +21,10 @@ class News extends Model
         'published_at'
     ];
 
+    protected $casts = [
+        'published_at' => 'datetime',
+    ];
+    
     /**
      * Связь "принадлежит" с категорией новостей.
      */
