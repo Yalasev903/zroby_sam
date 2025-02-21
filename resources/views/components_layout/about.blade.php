@@ -27,7 +27,7 @@
                 <div class="px-35 transition-all">
                     <div class="iconbox flex flex-col iconbox-default">
                         <div class="iconbox-icon-wrap mb-45">
-                            <img class="w-175" src="./assets/images/demo/start-hub-2/3D/Image.png" alt="Пошук спеціалістів">
+                            <img class="w-175" src="{{ asset('assets/images/demo/start-hub-2/3D/Image.png') }}" alt="Пошук спеціалістів">
                         </div>
                         <div class="contents">
                             <h3 class="text-20 mb-0/5em lqd-iconbox-heading">Швидкий пошук професіоналів у будь-якій сфері</h3>
@@ -41,7 +41,7 @@
                 <div class="px-35 transition-all">
                     <div class="iconbox flex flex-col iconbox-default">
                         <div class="iconbox-icon-wrap mb-20">
-                            <img class="w-120" src="./assets/images/demo/start-hub-2/3D/icon2.png" alt="Зручний інтерфейс">
+                            <img class="w-120" src="{{ asset('assets/images/demo/start-hub-2/3D/icon2.png') }}" alt="Зручний інтерфейс">
                         </div>
                         <div class="contents">
                             <h3 class="text-20 mb-0/5em lqd-iconbox-heading">Зручний інтерфейс для створення завдань</h3>
@@ -69,7 +69,7 @@
                 <div class="px-35 transition-all">
                     <div class="iconbox flex flex-col iconbox-default">
                         <div class="iconbox-icon-wrap mb-45">
-                            <img class="w-175" src="./assets/images/demo/start-hub-2/3D/rating.png" alt="Рейтинг та відгуки">
+                            <img class="w-175" src="{{ asset('assets/images/demo/start-hub-2/3D/rating.png') }}" alt="Рейтинг та відгуки">
                         </div>
                         <div class="contents">
                             <h3 class="text-20 mb-0/5em lqd-iconbox-heading">Система рейтингу та відгуків</h3>
@@ -83,7 +83,7 @@
                 <div class="px-35 transition-all">
                     <div class="iconbox flex flex-col iconbox-default">
                         <div class="iconbox-icon-wrap mb-20">
-                            <img class="w-120" src="./assets/images/demo/start-hub-2/3D/payment.png" alt="Безпечні угоди">
+                            <img class="w-120" src="{{ asset('assets/images/demo/start-hub-2/3D/payment.png') }}" alt="Безпечні угоди">
                         </div>
                         <div class="contents">
                             <h3 class="text-20 mb-0/5em lqd-iconbox-heading">Безпечні угоди</h3>
@@ -97,7 +97,7 @@
                 <div class="px-35 transition-all">
                     <div class="iconbox flex flex-col iconbox-default">
                         <div class="iconbox-icon-wrap mb-55">
-                            <img class="w-160" src="./assets/images/demo/start-hub-2/3D/flexibility.png" alt="Гнучкість роботи">
+                            <img class="w-160" src="{{ asset('assets/images/demo/start-hub-2/3D/flexibility.png') }}" alt="Гнучкість роботи">
                         </div>
                         <div class="contents">
                             <h3 class="text-20 mb-0/5em lqd-iconbox-heading">Гнучкі умови роботи</h3>

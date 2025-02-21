@@ -5,19 +5,19 @@
                                 <div class="w-40percent flex lg:w-full p-0" data-custom-animations="true" data-ca-options='{"animationTarget": "img", "startDelay" : 200, "ease": "power4.out", "initValues": {"y": "45px", "opacity" : 0} , "animations": {"y": "0px", "opacity" : 1}}'>
                                     <div class="w-full flex flex-wrap items-center justify-center relative p-15">
                                         <div class="w-auto absolute top-0 module-img-1" data-parallax="true" data-parallax-options='{"ease": "linear", "start": "top bottom", "end": "bottom+=0px top"}' data-parallax-from='{"x": "45px"}' data-parallax-to='{"x": "0px"}'>
-                                            <img width="90" height="65" src="./assets/images/demo/start-hub-2/3D/patt.svg" alt="3D Shape dots">
+                                            <img width="90" height="65" src="{{ asset('assets/images/demo/start-hub-2/3D/patt.svg') }}" alt="3D Shape dots">
                                         </div>
                                         <div class="w-auto absolute top-0 module-img-2" data-parallax="true" data-parallax-options='{"ease": "linear", "start": "top bottom", "end": "bottom-=100% top"}' data-parallax-from='{"x": "48px", "y": "200px"}' data-parallax-to='{"x": "0px", "y": "0px"}'>
-                                            <img width="121" height="121" src="./assets/images/demo/start-hub-2/experience/registration.png" alt="experiences">
+                                            <img width="121" height="121" src="{{ asset('assets/images/demo/start-hub-2/experience/registration.png') }}" alt="experiences">
                                         </div>
                                         <div class="w-auto absolute -top-10percent module-img-3" data-parallax="true" data-parallax-options='{"ease": "linear", "start": "top bottom", "end": "bottom-=100% top"}' data-parallax-from='{"x": "-90px", "y": "230px"}' data-parallax-to='{"x": "0px", "y": "0px"}'>
-                                            <img width="127" height="127" src="./assets/images/demo/start-hub-2/experience/registrations.png" alt="experiences">
+                                            <img width="127" height="127" src="{{ asset('assets/images/demo/start-hub-2/experience/registrations.png') }}" alt="experiences">
                                         </div>
                                         <div class="w-auto relative z-1 module-img-4" data-parallax="true" data-parallax-options='{"ease": "linear", "start": "top bottom", "end": "bottom-=100% top"}' data-parallax-from='{"y": "95px"}' data-parallax-to='{"x": "0px", "y": "0px"}'>
-                                            <img width="213" height="213" src="./assets/images/demo/start-hub-2/experience/phone.png" alt="experiences">
+                                            <img width="213" height="213" src="{{ asset('assets/images/demo/start-hub-2/experience/phone.png') }}" alt="experiences">
                                         </div>
                                         <div class="w-auto absolute bottom-25percent z-1 module-img-5" data-parallax="true" data-parallax-options='{"ease": "linear", "start": "top bottom", "end": "bottom+=0px top"}' data-parallax-from='{"x": "-80px", "y": "65px", "scaleX" : 1.2, "scaleY" : 1.2}' data-parallax-to='{"x": "0px", "y": "0px", "scaleX" : 1, "scaleY" : 1}'>
-                                            <img width="34" height="34" src="./assets/images/demo/start-hub-2/3D/circle.svg" alt="3D Shape circle">
+                                            <img width="34" height="34" src="{{ asset('assets/images/demo/start-hub-2/3D/circle.svg') }}" alt="3D Shape circle">
                                         </div>
                                     </div>
                                 </div>
