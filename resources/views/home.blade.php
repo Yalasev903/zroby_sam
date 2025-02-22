@@ -226,9 +226,9 @@
 								<div class="col col-12 text-center" data-custom-animations="true" data-ca-options='{"animationTarget": "h2, p, .btn", "ease": "power4.out", "initValues": {"y": "45px", "rotationY" : 65, "opacity" : 0} , "animations": {"y": "0px", "rotationY" : 0, "opacity" : 1}}'>
 									<div class="ld-fancy-heading relative">
 										<h2 class="ld-fh-element relative heading-title lqd-highlight-custom lqd-highlight-custom-2 text-46 mb-0/75em text-gray-600" data-inview="true" data-transition-delay="true" data-delay-options='{"elements": ".lqd-highlight-inner", "delayType": "transition"}'>
-											<span>Have a project in mind? Let's </span>
+                                            <span>Зв'язок з нами! Давайте </span>
 											<mark class="lqd-highlight">
-												<span class="lqd-highlight-txt">connect</span>
+												<span class="lqd-highlight-txt">спілкуватися</span>
 												<span class="lqd-highlight-inner bottom-0 left-0">
 													<svg class="lqd-highlight-pen" width="51" height="51" viewbox="0 0 51 51" xmlns="http://www.w3.org/2000/svg">
 														<path d="M36.204 1.044C32.02 2.814 5.66 31.155 4.514 35.116c-.632 2.182-1.75 5.516-2.483 7.409-3.024 7.805-1.54 9.29 6.265 6.265 1.893-.733 5.227-1.848 7.41-2.477 3.834-1.105 4.473-1.647 19.175-16.27 0 0 10.63-10.546 15.21-15.125C53 8.997 42.021-1.418 36.203 1.044Zm7.263 5.369c3.56 3.28 4.114 4.749 2.643 6.995l-1.115 1.7-4.586-4.543-4.585-4.544 1.42-1.157C39.311 3.18 40.2 3.4 43.467 6.413ZM37.863 13.3l4.266 4.304-11.547 11.561-11.547 11.561-4.48-4.446-4.481-4.447 11.404-11.418c6.273-6.28 11.566-11.42 11.762-11.42.197 0 2.277 1.938 4.623 4.305ZM12.016 39.03l3.54 3.584-3.562 1.098-5.316 1.641c-1.665.516-1.727.455-1.211-1.21l1.614-5.226c1.289-4.177.685-4.191 4.935.113Z"></path>
@@ -242,12 +242,12 @@
 									</div>
 									<div class="mb-25">
 										<p class="text-18 font-medium leading-1/15em">
-											<span class="text-blue-400">We have three projects with this template and that is because we love the design,</span>
-											<span>the large number of possibilities.</span>
+											<span class="text-blue-400">Якщо є побажання чи потрібна допомога,</span>
+											<span>Звертайтесь до нас поштою.</span>
 										</p>
 									</div>
 									<a href="#contact-modal" class="btn btn-solid btn-hover-txt-liquid-y btn-icon-right btn-hover-reveal rounded-100 bg-transparent py-20 px-50 text-white" data-lity="#contact-modal">
-										<span class="btn-txt" data-text="Send a Message" data-split-text="true" data-split-options='{"type":  "chars, words"}'>Send a Message</span>
+										<span class="btn-txt" data-text="Send a Message" data-split-text="true" data-split-options='{"type":  "chars, words"}'>Відправити повідомлення</span>
 										<span class="btn-icon text-1em">
 											<i aria-hidden="true" class="lqd-icn-ess icon-md-arrow-forward"></i>
 										</span>
@@ -269,10 +269,10 @@
 											<div class="w-50percent flex flex-col sm:w-full">
 												<div class="module py-35 pr-50 pl-65 border-right border-black-10 transition-all sm:border-right-0 sm:border-bottom">
 													<div class="ld-fancy-heading relative">
-														<h6 class="ld-fh-element relative font-normal mb-0/75em">Project Offers</h6>
+														<h6 class="ld-fh-element relative font-normal mb-0/75em">Наша пошта</h6>
 													</div>
 													<div class="ld-fancy-heading relative">
-														<h2 class="ld-fh-element relative text-nightblue text-20 mb-0">info.liquid.com</h2>
+														<h2 class="ld-fh-element relative text-nightblue text-20 mb-0">zroby_sam@gmail.com</h2>
 													</div>
 												</div>
 											</div>
@@ -282,7 +282,7 @@
 														<h6 class="ld-fh-element relative font-normal mb-0/75em">Consultation</h6>
 													</div>
 													<div class="ld-fancy-heading relative">
-														<h2 class="ld-fh-element relative text-nightblue text-20 mb-0">+ 1 223 38 87</h2>
+														<h2 class="ld-fh-element relative text-nightblue text-15 mb-0">+ 38 050 849 96 39</h2>
 													</div>
 												</div>
 											</div>
@@ -293,7 +293,7 @@
 									<div class="lqd-imggrp-single block relative" data-float="ease-in">
 										<div class="lqd-imggrp-img-container inline-flex relative items-center justify-center">
 											<figure class="w-full relative">
-												<img width="500" height="552" src="./assets/images/demo/start-hub-2/3D/img.png" alt="shape">
+												<img width="500" height="552" src="{{ asset('assets/images/demo/start-hub-2/3D/send_message.png') }}" alt="shape">
 											</figure>
 										</div>
 									</div>
@@ -331,7 +331,8 @@
 					<div class="container">
 						<div class="row items-center">
 							<div class="col col-12 col-md-3 flex items-center justify-start">
-								<img width="145" height="21" src="./assets/images/demo/start-hub-2/logo/logo-d-1.svg" alt="logo hub">
+								<img width="145" height="21" src="/images/logo.png" alt="logo hub">
+                                <h3>Зроби<br/>Сам</h3>
 							</div>
 							<div class="col col-12 col-md-9">
 								<div class="flex flex-wrap alogn-items-center justify-end">
