@@ -2,15 +2,17 @@
 <html lang="en">
 
 	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="keywords" content="HTML Template, site template, seo, marketing, creative, corporate, modern, multipurpose, one page, business, responsive, minimal, saas, startup">
-		<meta name="author" content="LiquidThemes">
-		<meta name="description" content="Hub is a HTML template with high performance, and award-winning design collection.">
-		<meta property="og:title" content="Hub HTML template">
-		<meta property="og:description" content="Hub is a HTML template with high performance, and award-winning design collection.">
-		<meta property="og:type" content="website">
-		<meta property="og:image" content="./assets/images/common/og-image.jpg">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Zroby_Sam | Інноваційна платформа для майстрів та замовників</title>
+        <meta name="keywords" content="майстри, замовники, інноваційна платформа, профілі майстрів, портфоліо, оголошення, чат, рейтинг, замовлення послуг, Zroby_Sam">
+        <meta name="description" content="Наш додаток – це інноваційна платформа, що забезпечує ефективну взаємодію між майстрами та замовниками. Майстри демонструють свої профілі та портфоліо, а замовники створюють оголошення або узгоджують деталі проектів у чаті.">
+        <meta name="author" content="Zroby_Sam">
+        <meta property="og:title" content="Zroby_Sam | Інноваційна платформа для майстрів та замовників">
+        <meta property="og:description" content="Платформа для майстрів та замовників: представлення профілів, демонстрація портфоліо, створення оголошень та узгодження проектів у чаті. Високий рейтинг майстрів гарантує якість послуг.">
+        <meta property="og:image" content="{{ asset('images/logo.png') }}">
+
+
 
 		<link rel="stylesheet" href="./assets/vendors/liquid-icon/lqd-essentials/lqd-essentials.min.css">
 		<link rel="stylesheet" href="./assets/css/theme.min.css">

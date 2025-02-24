@@ -69,8 +69,8 @@
                                 <div class="mb-35 relative animation-element">
                                     <a href="#contact-modal" class="btn btn-solid btn-hover-txt-liquid-x-alt rounded-100 bg-white font-medium text-15 leading-1/25em text-red-700 module-btn-md" data-lity="#contact-modal">
                                         <span class="btn-txt text-start" data-split-text="true" data-split-options='{"type":  "chars, words"}'>
-                                            Let's talk —
-                                            <span>Limited Time Offer</span>
+                                            Реєструйся зараз—
+                                            <span>Отримайте знижки</span>
                                         </span>
                                     </a>
                                     <img class="relative -mt-50 -ml-40" width="54" height="54" src="./assets/images/demo/start-hub-2/3D/Discount.svg" alt="discount">
@@ -85,7 +85,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="w-full flex flex-wrap">
+                            {{-- <div class="w-full flex flex-wrap">
                                 <div class="w-20percent sm:w-50percent p-10 module-client animation-element">
                                     <img class="opacity-40 hover:opacity-100 transition-all" width="111" height="33" src="./assets/images/demo/start-hub-2/client/spotify-1.svg" alt="spotify">
                                 </div>
@@ -101,7 +101,7 @@
                                 <div class="w-20percent sm:w-full p-10 animation-element">
                                     <img class="opacity-40 hover:opacity-100 transition-all" width="85" height="25" src="./assets/images/demo/start-hub-2/client/logitech-2-1.svg" alt="logitech">
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
