@@ -17,6 +17,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'stripe/*', // Вебхуки Stripe
             '/register',
         ]);
+
+        // Регистрация пользовательского промежуточного ПО
+        $middleware->alias([
+            'role' => \App\Http\Middleware\CheckRole::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         // Обработка исключений

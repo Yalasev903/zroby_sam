@@ -34,10 +34,22 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
         Fortify::ignoreRoutes();
 
+        Fortify::authenticateUsing(function (Request $request) {
+            $user = \App\Models\User::where('email', $request->email)->first();
+
+            if ($user && \Hash::check($request->password, $user->password)) {
+                auth()->login($user);
+
+                return redirect()->intended(
+                    $user->role === 'admin' ? route('admin.dashboard') : route('dashboard')
+                );
+            }
+
+            return null;
+        });
 
         RateLimiter::for('login', function (Request $request) {
             $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
-
             return Limit::perMinute(5)->by($throttleKey);
         });
 
@@ -45,4 +57,5 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
     }
+
 }

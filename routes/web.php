@@ -21,8 +21,17 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        return auth()->user()->role === 'admin'
+            ? redirect()->route('admin.dashboard')
+            : view('dashboard');
     })->name('dashboard');
+
+    // Only allow access for 'admin' users
+    Route::middleware(['role:admin'])->group(function () {
+        Route::get('/admin/dashboard', function () {
+            return view('admin.dashboard');
+        })->name('admin.dashboard');
+    });
 
     Route::get('/executors', [ExecutorController::class, 'index'])->name('executors.index');
     Route::get('/my_profile/{user}', [ProfileController::class, 'showProfile'])->name('my_profile.show');
@@ -37,7 +46,7 @@ Route::middleware([
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 });
 
-// Маршруты для новостей
+// News Routes
 Route::resource('news', NewsController::class);
 Route::get('/news/{slug}/details', [NewsController::class, 'show'])->name('news.details');
 Route::get('/news/category/{id}', [NewsController::class, 'byCategory'])->name('news.byCategory');

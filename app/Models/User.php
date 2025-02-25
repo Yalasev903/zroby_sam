@@ -98,4 +98,9 @@ public function ads()
         //         ? asset('storage/profile-photos/' . $this->profile_photo_path) // Jetstream хранит аватарку тут
         //         : asset('images/default-avatar.webp'); // Если нет аватарки, ставим дефолт
         // }
+
+        public function isAdmin()
+        {
+            return $this->role === 'admin';  // проверка роли
+        }
 }

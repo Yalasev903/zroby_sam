@@ -15,14 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('phone')->unique(); 
+            $table->string('phone')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('city')->nullable(); // Город пользователя
             $table->string('profile_photo_path', 2048)->nullable();
-            $table->enum('role', ['customer', 'executor'])->default('customer'); // Добавляем роль пользователя
+            $table->enum('role', ['customer', 'executor', 'admin'])->default('customer'); // Добавляем роль пользователя
             $table->string('company_name')->nullable(); // Название компании для customer
             $table->text('skills')->nullable(); // Навыки для executor
             $table->string('services_category')->nullable(); // Категория услуг
