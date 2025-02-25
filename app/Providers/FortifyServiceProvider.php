@@ -35,27 +35,31 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::ignoreRoutes();
 
         Fortify::authenticateUsing(function (Request $request) {
+            // Находим пользователя по email
             $user = \App\Models\User::where('email', $request->email)->first();
 
+            // Проверяем, существует ли пользователь и правильный ли пароль
             if ($user && \Hash::check($request->password, $user->password)) {
+                // Входим в систему
                 auth()->login($user);
 
-                return redirect()->intended(
-                    $user->role === 'admin' ? route('admin.dashboard') : route('dashboard')
-                );
+                // Возвращаем пользователя, чтобы Fortify сам обработал редирект
+                return $user;
             }
 
+            // Если аутентификация не прошла, возвращаем null
             return null;
         });
 
+        // Ограничение на количество запросов для входа
         RateLimiter::for('login', function (Request $request) {
             $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
             return Limit::perMinute(5)->by($throttleKey);
         });
 
+        // Ограничение на количество запросов для двухфакторной аутентификации
         RateLimiter::for('two-factor', function (Request $request) {
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
     }
-
 }
