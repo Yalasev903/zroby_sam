@@ -21,8 +21,11 @@
                     <x-nav-link href="{{ route('ads.create') }}" :active="request()->routeIs('ads.create')">
                         {{ __('Створити оголошення') }}
                     </x-nav-link>
-                    <x-nav-link href="{{ route('ads.my') }}" :active="request()->routeIs('ads.create')">
+                    <x-nav-link href="{{ route('ads.my') }}" :active="request()->routeIs('ads.my')">
                         {{ __('Мої оголошення') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('orders.index') }}" :active="request()->routeIs('orders.index')">
+                        {{ __('Мої замовлення') }}
                     </x-nav-link>
                 @endif
                 </div>
@@ -187,8 +190,11 @@
             <x-responsive-nav-link href="{{ route('ads.create') }}" :active="request()->routeIs('ads.create')">
                 {{ __('Додати оголошення') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('ads.my') }}" :active="request()->routeIs('ads.create')">
+            <x-responsive-nav-link href="{{ route('ads.my') }}" :active="request()->routeIs('ads.my')">
                 {{ __('Мої оголошення') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('orders.index') }}" :active="request()->routeIs('orders.index')">
+                {{ __('Мої замовлення') }}
             </x-responsive-nav-link>
             @endif
         </div>
