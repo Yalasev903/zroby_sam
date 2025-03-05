@@ -15,7 +15,6 @@ class AdController extends Controller
      */
     public function create()
     {
-        // Получаем уникальные города из таблицы users, исключая пустые значения
         $cities = User::whereNotNull('city')
                       ->distinct()
                       ->pluck('city')
@@ -29,7 +28,6 @@ class AdController extends Controller
      */
     public function store(Request $request)
     {
-        // Валидация данных
         $validatedData = $request->validate([
             'title'       => 'required|string|max:255',
             'description' => 'required|string',
@@ -37,32 +35,54 @@ class AdController extends Controller
             'photo'       => 'nullable|image|max:2048',
         ]);
 
-        // Обработка загрузки фото (если загружено)
         $photoPath = null;
         if ($request->hasFile('photo')) {
             $photoPath = $request->file('photo')->store('ads', 'public');
         }
 
-        // Создание записи объявления в базе данных
         Ad::create([
             'user_id'    => Auth::id(),
             'title'      => $validatedData['title'],
             'description'=> $validatedData['description'],
             'city'       => $validatedData['city'],
             'photo_path' => $photoPath,
-            'posted_at'  => now(), // Можно использовать created_at, если не требуется отдельное поле
+            'posted_at'  => now(),
         ]);
 
         return redirect()->route('ads.create')->with('success', 'Оголошення успішно створено!');
     }
 
+    /**
+     * Отображение активных объявлений (без завершённых заказов).
+     */
     public function index()
     {
-    // Загружаем объявления из базы данных, сортируя по дате добавления
-    $ads = Ad::with(['user', 'comments.user'])->latest()->paginate(10);
+        $ads = Ad::with(['user', 'comments.user', 'order'])
+                 ->whereDoesntHave('order', function ($q) {
+                     $q->where('status', 'completed');
+                 })
+                 ->latest()
+                 ->paginate(10);
 
-    return view('ads.ads_card_page', compact('ads'));
+        return view('ads.ads_card_page', compact('ads'));
     }
+
+    /**
+     * Отображение объявлений, для которых заказ выполнен (завершенные).
+     */
+    public function completedAds()
+    {
+        $ads = Ad::with(['user', 'comments.user', 'order'])
+                 ->whereHas('order', function ($q) {
+                     $q->where('status', 'completed');
+                 })
+                 ->latest()
+                 ->paginate(10);
+
+        return view('ads.completed_ads', compact('ads'));
+    }
+
+    // Остальные методы (myAds, edit, update, destroy) остаются без изменений
 
     public function myAds()
     {
@@ -70,10 +90,8 @@ class AdController extends Controller
         return view('ads.my_ads', compact('ads'));
     }
 
-    // Метод редактирования объявления
     public function edit(Ad $ad)
     {
-        // Проверяем, является ли пользователь владельцем объявления
         if (auth()->id() !== $ad->user_id) {
             abort(403, 'У вас немає прав для редагування цього оголошення.');
         }
@@ -81,10 +99,8 @@ class AdController extends Controller
         return view('ads.edit', compact('ad'));
     }
 
-    // Метод обновления объявления
     public function update(Request $request, Ad $ad)
     {
-        // Проверяем владельца объявления
         if (auth()->id() !== $ad->user_id) {
             abort(403, 'Ви не можете редагувати це оголошення.');
         }
@@ -98,9 +114,7 @@ class AdController extends Controller
 
         $data = $request->only(['title', 'description', 'city']);
 
-        // Обновляем фото, если загружено новое
         if ($request->hasFile('photo')) {
-            // Удаляем старое фото
             if ($ad->photo_path) {
                 Storage::delete('public/' . $ad->photo_path);
             }
@@ -114,15 +128,12 @@ class AdController extends Controller
         return redirect()->route('ads.index')->with('success', 'Оголошення успішно оновлено.');
     }
 
-    // Метод удаления объявления
     public function destroy(Ad $ad)
     {
-        // Проверяем владельца объявления
         if (auth()->id() !== $ad->user_id) {
             abort(403, 'Ви не можете видалити це оголошення.');
         }
 
-        // Удаляем фото
         if ($ad->photo_path) {
             Storage::delete('public/' . $ad->photo_path);
         }

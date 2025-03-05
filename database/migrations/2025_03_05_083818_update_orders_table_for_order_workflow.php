@@ -9,6 +9,10 @@ class UpdateOrdersTableForOrderWorkflow extends Migration
     public function up(): void
     {
         Schema::table('orders', function (Blueprint $table) {
+            $table->foreignId('ad_id')
+                  ->nullable()
+                  ->constrained('ads')
+                  ->onDelete('cascade');
             $table->foreignId('executor_id')
                   ->nullable()
                   ->constrained('users')
@@ -23,6 +27,8 @@ class UpdateOrdersTableForOrderWorkflow extends Migration
     public function down(): void
     {
         Schema::table('orders', function (Blueprint $table) {
+            $table->dropForeign(['ad_id']);
+            $table->dropColumn('ad_id');
             $table->dropForeign(['executor_id']);
             $table->dropColumn(['executor_id', 'status', 'start_time', 'end_time']);
         });

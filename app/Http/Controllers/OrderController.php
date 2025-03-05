@@ -10,24 +10,22 @@ use Illuminate\Support\Facades\Auth;
 class OrderController extends Controller
 {
     /**
-     * Страница со списком заказов (для отображения подтверждения заказчиком)
+     * Страница со списком заказов (фильтрация по пользователю)
      */
     public function index()
     {
         $user = Auth::user();
 
-        // Фильтруем заказы: заказчик видит свои заказы, исполнитель — только те, которые он выполняет
         if ($user->role === 'customer') {
             $orders = Order::where('user_id', $user->id)->latest()->get();
         } elseif ($user->role === 'executor') {
             $orders = Order::where('executor_id', $user->id)->latest()->get();
         } else {
-            $orders = collect(); // Если роль неизвестна, ничего не показываем
+            $orders = collect();
         }
 
         return view('orders.index', compact('orders'));
     }
-
 
     /**
      * Метод для исполнителя, создающий заказ на основе объявления.
@@ -38,20 +36,18 @@ class OrderController extends Controller
             abort(403, 'Доступ запрещен.');
         }
 
-        $existingOrder = Order::where('title', $ad->title)
-                              ->where('executor_id', Auth::id())
-                              ->where('status', 'waiting')
-                              ->first();
-        if ($existingOrder) {
-            return redirect()->back()->with('error', 'Вы уже взяли этот заказ.');
+        // Проверка: если заказ для данного объявления уже существует и его статус не равен 'completed'
+        if ($ad->order && $ad->order->status !== 'completed') {
+            return redirect()->back()->with('error', 'Этот заказ уже взят.');
         }
 
         $order = Order::create([
+            'ad_id'       => $ad->id,
             'title'       => $ad->title,
             'description' => $ad->description,
             'category'    => $ad->category ?? 'Строительство',
-            'user_id'     => $ad->user_id,
-            'executor_id' => Auth::id(),
+            'user_id'     => $ad->user_id,   // заказчик (автор объявления)
+            'executor_id' => Auth::id(),     // исполнитель, взявший заказ
             'status'      => 'waiting',
         ]);
 
