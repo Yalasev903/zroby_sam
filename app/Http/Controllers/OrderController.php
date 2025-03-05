@@ -14,9 +14,20 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::latest()->get();
+        $user = Auth::user();
+
+        // Фильтруем заказы: заказчик видит свои заказы, исполнитель — только те, которые он выполняет
+        if ($user->role === 'customer') {
+            $orders = Order::where('user_id', $user->id)->latest()->get();
+        } elseif ($user->role === 'executor') {
+            $orders = Order::where('executor_id', $user->id)->latest()->get();
+        } else {
+            $orders = collect(); // Если роль неизвестна, ничего не показываем
+        }
+
         return view('orders.index', compact('orders'));
     }
+
 
     /**
      * Метод для исполнителя, создающий заказ на основе объявления.
