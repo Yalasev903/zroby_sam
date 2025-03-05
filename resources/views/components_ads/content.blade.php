@@ -154,7 +154,6 @@
                                 <!-- Форма добавления нового комментария -->
                                 <form action="{{ route('comments.store') }}" method="POST">
                                     @csrf
-                                    <!-- Передаём идентификатор и тип комментарируемой модели -->
                                     <input type="hidden" name="commentable_id" value="{{ $ad->id }}">
                                     <input type="hidden" name="commentable_type" value="App\Models\Ad">
                                     <div class="mb-3">
@@ -177,14 +176,21 @@
                                     Опубліковано {{ $ad->created_at->format('d.m.Y H:i') }} користувачем: {{ $ad->user->name }}
                                 </small>
                             </div>
-                            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">
-                                Закрити
-                            </button>
+                            <div>
+                                @if(auth()->check() && auth()->user()->role == 'executor')
+                                    <form action="{{ route('orders.take', $ad->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success">Узяти замовлення</button>
+                                    </form>
+                                @endif
+                                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">
+                                    Закрити
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         @endforeach
     </div>
 

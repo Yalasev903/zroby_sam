@@ -8,6 +8,7 @@ use App\Http\Controllers\AdController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NewsCategoryController;
+use App\Http\Controllers\OrderController;
 
 Route::get('/', function () {
     return view('home');
@@ -44,6 +45,16 @@ Route::middleware([
     Route::delete('/ads/{ad}', [AdController::class, 'destroy'])->name('ads.destroy');
     Route::get('/my-ads', [AdController::class, 'myAds'])->name('ads.my');
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+
+    // Маршрут для отображения страницы заказов
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+
+    // Маршрут для создания заказа на основе объявления (принимает параметр {ad})
+    Route::post('/orders/{ad}/take', [OrderController::class, 'takeOrder'])->name('orders.take');
+
+    Route::post('/orders/{order}/approve', [OrderController::class, 'approveOrder'])->name('orders.approve');
+    Route::post('/orders/{order}/complete', [OrderController::class, 'completeOrder'])->name('orders.complete');
+    Route::post('/orders/{order}/confirm', [OrderController::class, 'confirmOrder'])->name('orders.confirm');
 });
 
 // News Routes
