@@ -11,6 +11,7 @@
                     <th>Опис</th>
                     <th>Категорія</th>
                     <th>Статус</th>
+                    <th>Час виконання</th> <!-- Новая колонка -->
                     <th>Замовник</th>
                     <th>Виконавець</th>
                     <th>Дія</th>
@@ -23,6 +24,13 @@
                         <td>{{ $order->description }}</td>
                         <td>{{ $order->servicesCategory ? $order->servicesCategory->name : '—' }}</td>
                         <td>{{ $order->status }}</td>
+                        <td>
+                            @if($order->start_time && $order->end_time)
+                                {{ $order->start_time->diffForHumans($order->end_time, true) }}
+                            @else
+                                -
+                            @endif
+                        </td>
                         <td>
                             @if($order->customer)
                                 <a href="{{ route('my_profile.show', $order->customer->id) }}">

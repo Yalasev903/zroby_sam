@@ -21,6 +21,14 @@ class Order extends Model
         'end_time',
     ];
 
+    // Приведение полей времени к типу datetime
+    protected $casts = [
+        'start_time' => 'datetime',
+        'end_time'   => 'datetime',
+    ];
+
+    // Остальные связи и методы модели...
+
     // Связь с объявлением
     public function ad()
     {
