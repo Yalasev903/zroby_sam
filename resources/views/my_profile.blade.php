@@ -21,7 +21,7 @@
             <!-- Информация о пользователе -->
             <div class="md:w-75percent order-2 md:order-1 flex flex-col bg-white rounded-12 shadow-md p-8">
                 <div class="mb-4">
-                    <h2>Ласкаво просимо! {{ $user->name }}!</h2>
+                    <h2>{{ $user->name }}</h2>
                 </div>
 
                 <div class="mb-4">
@@ -82,7 +82,49 @@
                         @endif
                     </div>
                 </div>
+                <a href="{{ url('/chat/' . $user->id) }}" class="btn btn-primary">
+                    Почати чат
+                </a>
             </div>
+        </div>
+
+        <!-- Добавляем секцию комментариев аналогично шаблону объявлений -->
+        <div class="comments-section mt-4">
+            <h5>Коментарі</h5>
+            <div class="comments-list mb-3">
+                @forelse($user->receivedComments as $comment)
+                    <div class="comment border-bottom mb-2 pb-2 d-flex flex-column">
+                        <div class="d-flex align-items-center">
+                            @if(auth()->check())
+                                <a href="{{ route('my_profile.show', ['user' => $comment->user->id]) }}" class="d-flex align-items-center text-decoration-none">
+                                    <img src="{{ $comment->user->profile_photo_path ? asset('storage/' . $comment->user->profile_photo_path) : asset('images/default-avatar.webp') }}"
+                                        alt="{{ $comment->user->name }}'s avatar"
+                                        class="rounded-circle me-2"
+                                        style="width: 30px; height: 30px; object-fit: cover;">
+                                    <strong class="text-dark">{{ $comment->user->name }}</strong>
+                                </a>
+                            @else
+                                <strong>{{ $comment->user->name }}</strong>
+                            @endif
+                            <small class="text-muted ms-2"> — {{ $comment->created_at->diffForHumans() }}</small>
+                        </div>
+                        <p class="mb-0 mt-1">{{ $comment->content }}</p>
+                    </div>
+                @empty
+                    <p>Коментарів поки що немає.</p>
+                @endforelse
+            </div>
+            <!-- Форма для добавления нового комментария -->
+            <form action="{{ route('comments.store') }}" method="POST">
+                @csrf
+                <!-- Указываем, что комментарий относится к пользователю -->
+                <input type="hidden" name="commentable_id" value="{{ $user->id }}">
+                <input type="hidden" name="commentable_type" value="App\Models\User">
+                <div class="mb-3">
+                    <textarea class="form-control" name="content" rows="3" placeholder="Залишіть коментар" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Залишити коментар</button>
+            </form>
         </div>
     </div>
 </section>
