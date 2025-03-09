@@ -21,6 +21,13 @@
                             <!-- Краткое описание -->
                             <p class="card-text">{{ Str::limit($ad->description, 100) }}</p>
 
+                            <!-- Статус заказа -->
+                            @if($ad->order)
+                                <p class="card-text">Статус замовлення: <strong>{{ $ad->order->status }}</strong></p>
+                            @else
+                                <p class="card-text">Замовлення не створено</p>
+                            @endif
+
                             <!-- Проверяем, является ли пользователь владельцем объявления -->
                             @if(Auth::id() === $ad->user_id)
                                 <div class="d-flex justify-content-between mt-2">
