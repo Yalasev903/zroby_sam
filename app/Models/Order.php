@@ -32,4 +32,14 @@ class Order extends Model
     {
         return $this->belongsTo(ServiceCategory::class, 'services_category_id');
     }
+
+    public function customer()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'user_id');
+    }
+
+    public function executor()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'executor_id');
+    }
 }

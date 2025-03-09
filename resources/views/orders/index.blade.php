@@ -11,6 +11,8 @@
                     <th>Опис</th>
                     <th>Категорія</th>
                     <th>Статус</th>
+                    <th>Замовник</th>
+                    <th>Виконавець</th>
                     <th>Дія</th>
                 </tr>
             </thead>
@@ -21,6 +23,24 @@
                         <td>{{ $order->description }}</td>
                         <td>{{ $order->servicesCategory ? $order->servicesCategory->name : '—' }}</td>
                         <td>{{ $order->status }}</td>
+                        <td>
+                            @if($order->customer)
+                                <a href="{{ route('my_profile.show', $order->customer->id) }}">
+                                    {{ $order->customer->name }}
+                                </a>
+                            @else
+                                —
+                            @endif
+                        </td>
+                        <td>
+                            @if($order->executor)
+                                <a href="{{ route('my_profile.show', $order->executor->id) }}">
+                                    {{ $order->executor->name }}
+                                </a>
+                            @else
+                                —
+                            @endif
+                        </td>
                         <td>
                             @if(auth()->user()->role == 'customer' && $order->status == 'waiting')
                                 <form method="POST" action="{{ route('orders.approve', $order) }}" style="display:inline;">

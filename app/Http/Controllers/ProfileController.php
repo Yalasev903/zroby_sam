@@ -13,38 +13,40 @@ class ProfileController extends Controller
     /**
      * Отображение страницы профиля.
      */
-    public function showProfile(User $user)
+    public function showProfile($id)
     {
-        // Загружаем все категории услуг с их связанными услугами (eager loading)
-        $categories = ServiceCategory::with('services')->get();
+        $user = User::findOrFail($id); // Получаем пользователя по ID
 
-        // Передаём данные в представление
-        return view('my_profile', compact('user', 'categories'));
+        // Получаем категорию услуг пользователя
+        $userCategory = ServiceCategory::find($user->services_category);
+
+        // Получаем список услуг пользователя (предполагаем, что это JSON)
+        $userServices = json_decode($user->services, true) ?? [];
+
+        return view('my_profile', compact('user', 'userCategory', 'userServices'));
     }
 
     /**
      * Отображение страницы настроек профиля.
      */
     public function showProfileSettings(User $user)
-{
-    // Проверяем, что пользователь пытается изменить только свои настройки
-    if ($user->id !== auth()->id()) {
-        abort(403, 'Доступ запрещен'); // Доступ запрещен для чужих профилей
+    {
+        // Проверяем, что пользователь пытается изменить только свои настройки
+        if ($user->id !== auth()->id()) {
+            abort(403, 'Доступ запрещен'); // Доступ запрещен для чужих профилей
+        }
+
+        // Получаем необходимые данные
+        $cities = DB::table('cities')->get();
+        $categories = ServiceCategory::all();
+        $allServices = DB::table('services')->get();
+
+        // Группировка услуг по категориям
+        $servicesByCategory = [];
+        foreach ($allServices as $service) {
+            $servicesByCategory[$service->services_category_id][] = $service;
+        }
+
+        return view('profile_setting', compact('user', 'cities', 'categories', 'servicesByCategory'));
     }
-
-    // Логика для получения данных профиля и настроек
-    $cities = DB::table('cities')->get();
-    $categories = DB::table('services_category')->get();
-    $allServices = DB::table('services')->get();
-
-    // Группировка услуг по категориям
-    $servicesByCategory = [];
-    foreach ($allServices as $service) {
-        $servicesByCategory[$service->services_category_id][] = $service;
-    }
-
-    // Передача данных в представление
-    return view('profile_setting', compact('user', 'cities', 'categories', 'servicesByCategory'));
-}
-
 }
