@@ -26,7 +26,7 @@
 
                 <div class="mb-4">
                     <h3>Ваш рейтинг</h3>
-                    <p>⭐ {{ $user->rating ?? 0 }} / 5</p>
+                    <p>⭐ {{ $user->rating ?? 0 }}</p>
                 </div>
 
                 <div class="mb-6">
