@@ -9,7 +9,7 @@
     @else
         <div class="row">
             @foreach($orders as $order)
-                <div class="col-md-6 mb-4">
+                <div class="col-md-4 mb-4">
                     <div class="card shadow-sm">
                         <!-- Изображение заказа (из объявления) -->
                         @if($order->ad && $order->ad->photo_path)
