@@ -15,6 +15,7 @@ class Ad extends Model
         'description',
         'photo_path',
         'city',
+        'services_category_id',
         'posted_at',
     ];
 
@@ -24,7 +25,7 @@ class Ad extends Model
         return $this->hasOne(Order::class, 'ad_id');
     }
 
-    // Другие отношения, например, с комментариями
+    // Связь с комментариями
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');
@@ -33,5 +34,10 @@ class Ad extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function servicesCategory()
+    {
+        return $this->belongsTo(ServiceCategory::class, 'services_category_id');
     }
 }

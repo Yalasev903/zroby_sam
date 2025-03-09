@@ -23,6 +23,14 @@
                                 </li>
                             </ul>
                         @endif
+
+                        @if($ad->servicesCategory)
+                            <ul class="lqd-lp-cat lqd-lp-cat-shaped lqd-lp-cat-solid reset-ul inline-ul font-bold uppercase tracking-0/1em">
+                                <li>
+                                    <a class="rounded-full" href="#" rel="category">{{ $ad->servicesCategory->name }}</a>
+                                </li>
+                            </ul>
+                        @endif
                     </div>
 
                     <header class="lqd-lp-header pt-1/5em px-1em">

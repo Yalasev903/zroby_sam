@@ -21,6 +21,10 @@ return new class extends Migration
             $table->text('description');          // Описание объявления
             $table->string('photo_path')->nullable(); // Путь к фото объявления
             $table->string('city')->nullable();   // Город объявления (выбранный из таблицы users)
+            $table->foreignId('services_category_id')
+            ->nullable()
+            ->constrained('services_category')
+            ->onDelete('set null'); // При удалении категории поле становится null
             $table->timestamp('posted_at')->nullable(); // Дата размещения объявления (при сохранении запишем текущее время)
             $table->timestamps();                 // created_at и updated_at
         });

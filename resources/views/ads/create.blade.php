@@ -31,6 +31,22 @@
             @enderror
         </div>
 
+        <!-- Выбор категории объявления -->
+        <div class="form-group mt-3">
+            <label for="services_category_id">Категорія</label>
+            <select name="services_category_id" id="services_category_id" class="form-control" required>
+                <option value="">Оберіть категорію</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}" {{ old('services_category_id') == $category->id ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+                @endforeach
+            </select>
+            @error('services_category_id')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
         <!-- Выбор города -->
         <div class="form-group mt-3">
             <label for="city">Місто</label>
@@ -55,11 +71,13 @@
                 <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
-<style>
-    .btn {
-        border-radius: 50ch;
-    }
-</style>
+
+        <style>
+            .btn {
+                border-radius: 50ch;
+            }
+        </style>
+
         <button type="submit" class="btn btn-primary mt-3">Створити Оголошення</button>
     </form>
 </div>

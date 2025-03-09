@@ -26,6 +26,22 @@
             <input type="text" class="form-control" name="city" id="city" value="{{ old('city', $ad->city) }}" required>
         </div>
 
+        <!-- Выбор категории объявления -->
+        <div class="form-group mt-3">
+            <label for="services_category_id">Категорія</label>
+            <select name="services_category_id" id="services_category_id" class="form-control" required>
+                <option value="">Оберіть категорію</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}" {{ old('services_category_id', $ad->services_category_id) == $category->id ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+                @endforeach
+            </select>
+            @error('services_category_id')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
         <!-- Текущее изображение -->
         @if($ad->photo_path)
             <div class="form-group mt-3">

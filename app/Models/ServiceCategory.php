@@ -23,4 +23,9 @@ class ServiceCategory extends Model
     {
         return $this->hasMany(Service::class, 'services_category_id');
     }
+
+    public function ads()
+    {
+        return $this->hasMany(Ad::class, 'services_category_id');
+    }
 }

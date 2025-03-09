@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ad;
 use App\Models\User;
+use App\Models\ServiceCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -20,7 +21,10 @@ class AdController extends Controller
                       ->pluck('city')
                       ->toArray();
 
-        return view('ads.create', compact('cities'));
+        // Получаем все категории для отображения в форме
+        $categories = ServiceCategory::all();
+
+        return view('ads.create', compact('cities', 'categories'));
     }
 
     /**
@@ -29,10 +33,11 @@ class AdController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'title'       => 'required|string|max:255',
-            'description' => 'required|string',
-            'city'        => 'required|string',
-            'photo'       => 'nullable|image|max:2048',
+            'title'                => 'required|string|max:255',
+            'description'          => 'required|string',
+            'city'                 => 'required|string',
+            'services_category_id' => 'required|exists:services_category,id',
+            'photo'                => 'nullable|image|max:2048',
         ]);
 
         $photoPath = null;
@@ -41,20 +46,20 @@ class AdController extends Controller
         }
 
         Ad::create([
-            'user_id'    => Auth::id(),
-            'title'      => $validatedData['title'],
-            'description'=> $validatedData['description'],
-            'city'       => $validatedData['city'],
-            'photo_path' => $photoPath,
-            'posted_at'  => now(),
+            'user_id'             => Auth::id(),
+            'title'               => $validatedData['title'],
+            'description'         => $validatedData['description'],
+            'city'                => $validatedData['city'],
+            'services_category_id'=> $validatedData['services_category_id'],
+            'photo_path'          => $photoPath,
+            'posted_at'           => now(),
         ]);
 
         return redirect()->route('ads.create')->with('success', 'Оголошення успішно створено!');
     }
 
-    /**
-     * Отображение активных объявлений (без завершённых заказов).
-     */
+    // Остальные методы остаются без изменений...
+
     public function index()
     {
         $ads = Ad::with(['user', 'comments.user', 'order'])
@@ -67,9 +72,6 @@ class AdController extends Controller
         return view('ads.ads_card_page', compact('ads'));
     }
 
-    /**
-     * Отображение объявлений, для которых заказ выполнен (завершенные).
-     */
     public function completedAds()
     {
         $ads = Ad::with(['user', 'comments.user', 'order'])
@@ -81,8 +83,6 @@ class AdController extends Controller
 
         return view('ads.completed_ads', compact('ads'));
     }
-
-    // Остальные методы (myAds, edit, update, destroy) остаются без изменений
 
     public function myAds()
     {
@@ -96,9 +96,11 @@ class AdController extends Controller
             abort(403, 'У вас немає прав для редагування цього оголошення.');
         }
 
-        return view('ads.edit', compact('ad'));
-    }
+        // Получаем список категорий
+        $categories = \App\Models\ServiceCategory::all();
 
+        return view('ads.edit', compact('ad', 'categories'));
+    }
     public function update(Request $request, Ad $ad)
     {
         if (auth()->id() !== $ad->user_id) {
@@ -106,13 +108,14 @@ class AdController extends Controller
         }
 
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'city' => 'required|string|max:100',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
+            'title'                => 'required|string|max:255',
+            'description'          => 'required|string',
+            'city'                 => 'required|string|max:100',
+            'services_category_id' => 'required|exists:services_category,id',
+            'photo'                => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
         ]);
 
-        $data = $request->only(['title', 'description', 'city']);
+        $data = $request->only(['title', 'description', 'city', 'services_category_id']);
 
         if ($request->hasFile('photo')) {
             if ($ad->photo_path) {
