@@ -2,8 +2,6 @@
 
 @section('content')
     <div class="container mt-4">
-        <!-- Меню расположено выше в layouts.app -->
-
         <h2>Список замовлень</h2>
 
         <table class="table table-bordered table-striped">
@@ -11,6 +9,7 @@
                 <tr>
                     <th>Заголовок</th>
                     <th>Опис</th>
+                    <th>Категорія</th>
                     <th>Статус</th>
                     <th>Дія</th>
                 </tr>
@@ -20,9 +19,9 @@
                     <tr>
                         <td>{{ $order->title }}</td>
                         <td>{{ $order->description }}</td>
+                        <td>{{ $order->servicesCategory ? $order->servicesCategory->name : '—' }}</td>
                         <td>{{ $order->status }}</td>
                         <td>
-                            <!-- Если заказ в статусе waiting и пользователь - заказчик, показываем кнопку подтверждения -->
                             @if(auth()->user()->role == 'customer' && $order->status == 'waiting')
                                 <form method="POST" action="{{ route('orders.approve', $order) }}" style="display:inline;">
                                     @csrf
@@ -30,7 +29,6 @@
                                 </form>
                             @endif
 
-                            <!-- Остальные кнопки для статусов -->
                             @if(auth()->user()->role == 'executor' && $order->status == 'in_progress')
                                 <form method="POST" action="{{ route('orders.complete', $order) }}" style="display:inline;">
                                     @csrf

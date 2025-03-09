@@ -13,7 +13,7 @@ class Order extends Model
         'ad_id',
         'title',
         'description',
-        'category',
+        'services_category_id',
         'user_id',
         'executor_id',
         'status',
@@ -21,9 +21,15 @@ class Order extends Model
         'end_time',
     ];
 
-    // При необходимости можно добавить обратное отношение к объявлению
+    // Связь с объявлением
     public function ad()
     {
         return $this->belongsTo(Ad::class, 'ad_id');
+    }
+
+    // Связь с категорией послуг
+    public function servicesCategory()
+    {
+        return $this->belongsTo(ServiceCategory::class, 'services_category_id');
     }
 }

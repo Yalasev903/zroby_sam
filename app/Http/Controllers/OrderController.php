@@ -42,16 +42,17 @@ class OrderController extends Controller
         }
 
         $order = Order::create([
-            'ad_id'       => $ad->id,
-            'title'       => $ad->title,
-            'description' => $ad->description,
-            'category'    => $ad->category ?? 'Строительство',
-            'user_id'     => $ad->user_id,   // заказчик (автор объявления)
-            'executor_id' => Auth::id(),     // исполнитель, взявший заказ
-            'status'      => 'waiting',
+            'ad_id'                => $ad->id,
+            'title'                => $ad->title,
+            'description'          => $ad->description,
+            // Сохраняем идентификатор категории из объявления (если связь установлена)
+            'services_category_id' => $ad->servicesCategory ? $ad->servicesCategory->id : null,
+            'user_id'              => $ad->user_id,    // заказчик (автор объявления)
+            'executor_id'          => Auth::id(),      // исполнитель, взявший заказ
+            'status'               => 'waiting',
         ]);
 
-        return redirect()->route('orders.index')->with('success', 'Заказ успешно создан и принят.');
+        return redirect()->route('orders.index')->with('success', 'Замовлення успішно створено та прийнято.');
     }
 
     public function approveOrder(Order $order)
@@ -61,33 +62,33 @@ class OrderController extends Controller
         }
 
         if ($order->status !== 'waiting') {
-            return redirect()->back()->with('error', 'Заказ не готов к запуску.');
+            return redirect()->back()->with('error', 'Замовлення не готово до запуску.');
         }
 
         $order->update([
             'status'     => 'in_progress',
-            'start_time' => now()
+            'start_time' => now(),
         ]);
 
-        return redirect()->back()->with('success', 'Заказ запущен, отчёт времени начат.');
+        return redirect()->back()->with('success', 'Замовлення виконується, відлік часу розпочато.');
     }
 
     public function completeOrder(Order $order)
     {
         if (Auth::user()->role !== 'executor' || Auth::id() !== $order->executor_id) {
-            abort(403, 'Доступ запрещен.');
+            abort(403, 'Доступ заборонен.');
         }
 
         if ($order->status !== 'in_progress') {
-            return redirect()->back()->with('error', 'Заказ нельзя завершить на данном этапе.');
+            return redirect()->back()->with('error', 'Замовлення не можна завершити на данному етапі.');
         }
 
         $order->update([
             'status'   => 'pending_confirmation',
-            'end_time' => now()
+            'end_time' => now(),
         ]);
 
-        return redirect()->back()->with('success', 'Заказ выполнен, ожидает подтверждения заказчиком.');
+        return redirect()->back()->with('success', 'Замовлення виконано, очікує підтвердження замовником.');
     }
 
     public function confirmOrder(Order $order)
@@ -97,13 +98,13 @@ class OrderController extends Controller
         }
 
         if ($order->status !== 'pending_confirmation') {
-            return redirect()->back()->with('error', 'Заказ нельзя подтвердить на данном этапе.');
+            return redirect()->back()->with('error', 'Замовлення не можна підтвердити на данному етапі.');
         }
 
         $order->update([
-            'status' => 'completed'
+            'status' => 'completed',
         ]);
 
-        return redirect()->back()->with('success', 'Заказ подтверждён и завершён.');
+        return redirect()->back()->with('success', 'Замовлення підтверджено та завершено.');
     }
 }
