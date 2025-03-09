@@ -94,16 +94,27 @@ class OrderController extends Controller
     public function confirmOrder(Order $order)
     {
         if (Auth::user()->role !== 'customer' || Auth::id() !== $order->user_id) {
-            abort(403, 'Доступ запрещен.');
+            abort(403, 'Доступ заборонен.');
         }
 
         if ($order->status !== 'pending_confirmation') {
             return redirect()->back()->with('error', 'Замовлення не можна підтвердити на данному етапі.');
         }
 
+        // Обновляем статус заказа на "completed"
         $order->update([
             'status' => 'completed',
         ]);
+
+        // Обновление рейтинга исполнителя: добавляем 1 балл за выполненное задание
+        if ($order->executor) {
+            $order->executor->updateRating(1); // Метод updateRating реализован в модели User
+        }
+
+        // Обновление рейтинга заказчика: также добавляем 1 балл за успешное завершение заказа
+        if ($order->customer) {
+            $order->customer->updateRating(1);
+        }
 
         return redirect()->back()->with('success', 'Замовлення підтверджено та завершено.');
     }
