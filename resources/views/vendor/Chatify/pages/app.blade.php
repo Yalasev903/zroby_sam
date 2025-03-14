@@ -50,12 +50,14 @@
 
     {{-- ----------------------Messaging side---------------------- --}}
     <div class="messenger-messagingView">
-        {{-- header title [conversation name] amd buttons --}}
+        {{-- header title [conversation name] and buttons --}}
         <div class="m-header m-header-messaging">
             <nav class="chatify-d-flex chatify-justify-content-between chatify-align-items-center">
                 {{-- header back button, avatar and user name --}}
                 <div class="chatify-d-flex chatify-justify-content-between chatify-align-items-center">
                     <a href="#" class="show-listView"><i class="fas fa-arrow-left"></i></a>
+                    <!-- Новая кнопка "Назад" -->
+                    <button onclick="window.history.back();" class="btn btn-danger" style="">Назад</button>
                     <div class="avatar av-s header-avatar" style="margin: 0px 10px; margin-top: -5px; margin-bottom: -5px;">
                     </div>
                     <a href="#" class="user-name">{{ config('chatify.name') }}</a>
@@ -92,7 +94,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
         {{-- Send Message Form --}}
         @include('Chatify::layouts.sendForm')
