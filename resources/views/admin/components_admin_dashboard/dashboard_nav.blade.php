@@ -21,7 +21,7 @@
 <div class="user-profile">
     <button class="user-profile__button flex-align">
         <span class="user-profile__thumb">
-            <img src="{{ asset('assets/admin_assets/images/thumbs/user-profile.png') }}" class="cover-img" alt="">
+            <img src="{{ auth()->user()->profile_photo_url }}" class="cover-img" alt="User Profile Photo">
         </span>
     </button>
     <ul class="user-profile-dropdown">

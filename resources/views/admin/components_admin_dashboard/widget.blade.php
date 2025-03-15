@@ -38,8 +38,8 @@
 </div>
 <div class="col-xl-3 col-sm-6">
 <div class="dashboard-widget">
-<img src="{{ asset('assets/admin_assets/images/shapes/widget-shape1 .png') }}" alt="" class="dashboard-widget__shape one">
-<img src="{{ asset('assets/admin_assets/images/shapes/widget-shape2 .png') }}" alt="" class="dashboard-widget__shape two">
+<img src="{{ asset('assets/admin_assets/images/shapes/widget-shape1.png') }}" alt="" class="dashboard-widget__shape one">
+<img src="{{ asset('assets/admin_assets/images/shapes/widget-shape2.png') }}" alt="" class="dashboard-widget__shape two">
 <span class="dashboard-widget__icon">
 <img src="{{ asset('/assets/admin_assets/images/icons/sidebar-icon5.svg') }}" alt="">
 </span>
@@ -48,14 +48,14 @@
 <h4 class="dashboard-widget__number mb-1 mt-3">{{ \App\Models\Order::count() }}</h4>
 <span class="dashboard-widget__text font-14">Всього замовлень</span>
 </div>
-<img src="{{ asset('assets/admin_assets/images/icons/chart-icon .svg') }}" alt="">
+<img src="{{ asset('assets/admin_assets/images/icons/chart-icon.svg') }}" alt="">
 </div>
 </div>
 </div>
 <div class="col-xl-3 col-sm-6">
 <div class="dashboard-widget">
-<img src="{{ asset('assets/admin_assets/images/shapes/widget-shape1 .png') }}" alt="" class="dashboard-widget__shape one">
-<img src="{{ asset('assets/admin_assets/images/shapes/widget-shape2 .png') }}" alt="" class="dashboard-widget__shape two">
+<img src="{{ asset('assets/admin_assets/images/shapes/widget-shape1.png') }}" alt="" class="dashboard-widget__shape one">
+<img src="{{ asset('assets/admin_assets/images/shapes/widget-shape2.png') }}" alt="" class="dashboard-widget__shape two">
 <span class="dashboard-widget__icon">
 <img src="{{ asset('/assets/admin_assets/images/icons/sidebar-icon10.svg') }}" alt="">
 </span>
@@ -64,7 +64,7 @@
 <h4 class="dashboard-widget__number mb-1 mt-3">2,589</h4>
 <span class="dashboard-widget__text font-14">Всього скарг</span>
 </div>
-<img src="{{ asset('assets/admin_assets/images/icons/chart-icon .svg') }}" alt="">
+<img src="{{ asset('assets/admin_assets/images/icons/chart-icon.svg') }}" alt="">
 </div>
 </div>
 </div>
