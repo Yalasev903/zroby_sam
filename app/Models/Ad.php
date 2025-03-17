@@ -19,6 +19,10 @@ class Ad extends Model
         'posted_at',
     ];
 
+    protected $casts = [
+        'posted_at' => 'datetime',
+    ];
+
     // Связь с заказом (если заказ создан для данного объявления)
     public function order()
     {

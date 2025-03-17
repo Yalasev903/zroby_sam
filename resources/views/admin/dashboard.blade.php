@@ -7,5 +7,6 @@
 @include('admin.components_admin_dashboard.history_widget')
 @include('admin.components_admin_dashboard.top_city_widget')
 @include('admin.components_admin_dashboard.users_table_widget')
+@include('admin.components_admin_dashboard.ads_table_widget')
 @include('admin.components_admin_dashboard.orders_table_widget')
 @include('admin.components_admin_dashboard.footer')

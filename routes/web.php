@@ -38,6 +38,12 @@ Route::middleware([
         Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
         Route::post('/admin/orders/{order}/update', [AdminController::class, 'updateOrderStatus'])->name('admin.orders.update');
         Route::delete('/admin/orders/{order}', [AdminController::class, 'destroyOrder'])->name('admin.orders.destroy');
+
+         // Маршруты для управления оголошеннями
+        Route::get('/admin/ads', [AdminController::class, 'ads'])->name('admin.ads');
+        Route::get('/admin/ads/{ad}/edit', [AdminController::class, 'editAd'])->name('admin.ads.edit');
+        Route::post('/admin/ads/{ad}/update', [AdminController::class, 'updateAd'])->name('admin.ads.update');
+        Route::delete('/admin/ads/{ad}', [AdminController::class, 'destroyAd'])->name('admin.ads.destroy');
     });
 
     Route::get('/executors', [ExecutorController::class, 'index'])->name('executors.index');
