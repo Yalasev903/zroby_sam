@@ -33,6 +33,11 @@ Route::middleware([
         Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
         Route::post('/admin/users/{user}/update', [AdminController::class, 'updateUserRole'])->name('admin.users.update');
         Route::delete('/admin/users/{user}', [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
+
+        // Новые маршруты для управления заказами
+        Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
+        Route::post('/admin/orders/{order}/update', [AdminController::class, 'updateOrderStatus'])->name('admin.orders.update');
+        Route::delete('/admin/orders/{order}', [AdminController::class, 'destroyOrder'])->name('admin.orders.destroy');
     });
 
     Route::get('/executors', [ExecutorController::class, 'index'])->name('executors.index');

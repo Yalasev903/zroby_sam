@@ -6,6 +6,7 @@
         </div>
     @endif
     <div class="table-responsive">
+        <h3>Користувачі</h3>
         <table class="table style-two">
             <thead>
                 <tr>
