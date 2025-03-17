@@ -5,9 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Title -->
-    <title> Digital Market Place HTML Template</title>
+    <title> Admin Panel </title>
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('assets/admin_assets/images/logo/favicon.png') }}">
+    {{-- <link rel="shortcut icon" href="{{ asset('assets/admin_assets/images/logo/favicon.png') }}"> --}}
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="{{ asset('assets/admin_assets/css/bootstrap.min.css') }}">
