@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
                 'phone' => '380508499639',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password123'),
-                'role' => 'executor',
+                'role' => 'admin',
                 'city' => 'Харків',
                 'skills' => 'Сантехнічні роботи, складські роботи',
                 'services_category' => 'construction',

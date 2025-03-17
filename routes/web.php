@@ -9,6 +9,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NewsCategoryController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return view('home');
@@ -27,11 +28,11 @@ Route::middleware([
             : view('dashboard');
     })->name('dashboard');
 
-    // Only allow access for 'admin' users
+    // Маршруты для админа
     Route::middleware(['role:admin'])->group(function () {
-        Route::get('/admin/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('admin.dashboard');
+        Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+        Route::post('/admin/users/{user}/update', [AdminController::class, 'updateUserRole'])->name('admin.users.update');
+        Route::delete('/admin/users/{user}', [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
     });
 
     Route::get('/executors', [ExecutorController::class, 'index'])->name('executors.index');
@@ -46,12 +47,9 @@ Route::middleware([
     Route::get('/my-ads', [AdController::class, 'myAds'])->name('ads.my');
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 
-    // Маршрут для отображения страницы заказов
+    // Маршруты для заказов
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-
-    // Маршрут для создания заказа на основе объявления (принимает параметр {ad})
     Route::post('/orders/{ad}/take', [OrderController::class, 'takeOrder'])->name('orders.take');
-
     Route::post('/orders/{order}/approve', [OrderController::class, 'approveOrder'])->name('orders.approve');
     Route::post('/orders/{order}/complete', [OrderController::class, 'completeOrder'])->name('orders.complete');
     Route::post('/orders/{order}/confirm', [OrderController::class, 'confirmOrder'])->name('orders.confirm');
