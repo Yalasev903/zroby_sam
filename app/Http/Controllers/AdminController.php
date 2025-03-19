@@ -145,4 +145,41 @@ class AdminController extends Controller
         return view('admin.components_admin_dashboard.chat_message_table_widget', compact('chatMessages'));
     }
 
+    public function usersTable()
+    {
+        $users = User::all();
+        return view('admin.pages.users_table', compact('users'));
+    }
+
+        /**
+     * Отображает страницу с таблицей объявлений.
+     */
+    public function adsTable()
+    {
+        // Получаем объявления с необходимыми связями (если требуется)
+        $ads = \App\Models\Ad::with(['user', 'servicesCategory'])->get();
+        return view('admin.pages.ads_table', compact('ads'));
+    }
+
+    /**
+     * Отображает страницу с таблицей сообщений чата.
+     */
+    public function chatTable()
+    {
+        // Получаем сообщения чата
+        $chatMessages = \App\Models\ChMessage::orderBy('created_at', 'desc')->get();
+        return view('admin.pages.chat_table', compact('chatMessages'));
+    }
+
+    /**
+     * Отображает страницу с таблицей заказов.
+     */
+    public function ordersTable()
+    {
+        // Получаем заказы с необходимыми связями
+        $orders = \App\Models\Order::with(['customer', 'executor'])->get();
+        return view('admin.pages.orders_table', compact('orders'));
+    }
+
+
 }

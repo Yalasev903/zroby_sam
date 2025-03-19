@@ -47,6 +47,12 @@ Route::middleware([
 
         Route::get('/admin/chat-messages', [AdminController::class, 'chatMessages'])->name('admin.chat.messages');
         Route::delete('/admin/chat-messages/{id}', [AdminController::class, 'destroyChatMessage'])->name('admin.chat.messages.destroy');
+
+            // Новые маршруты для страниц
+        Route::get('/admin/ads-table', [AdminController::class, 'adsTable'])->name('admin.ads.table');
+        Route::get('/admin/chat-table', [AdminController::class, 'chatTable'])->name('admin.chat.table');
+        Route::get('/admin/orders-table', [AdminController::class, 'ordersTable'])->name('admin.orders.table');
+        Route::get('/admin/users-table', [AdminController::class, 'usersTable'])->name('admin.users.table');
     });
 
     Route::get('/executors', [ExecutorController::class, 'index'])->name('executors.index');

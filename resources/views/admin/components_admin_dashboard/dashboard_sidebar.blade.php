@@ -16,7 +16,7 @@
         <!-- Sidebar List Start -->
         <ul class="sidebar-list">
             <li class="sidebar-list__item">
-                <a href="dashboard.html" class="sidebar-list__link">
+                <a href="{{ url('admin/dashboard') }}" class="sidebar-list__link">
                     <span class="sidebar-list__icon">
                         <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon1.svg') }}" alt="" class="icon">
                         <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon-active1.svg') }}" alt="" class="icon icon-active">
@@ -34,24 +34,24 @@
                 </a>
             </li>
             <li class="sidebar-list__item">
-                <a href="follower.html" class="sidebar-list__link">
+                <a href="{{ route('admin.users.table') }}" class="sidebar-list__link">
                     <span class="sidebar-list__icon">
                         <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon4.svg') }}" alt="" class="icon">
                         <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon-active4.svg') }}" alt="" class="icon icon-active">
                     </span>
-                    <span class="text">Followers</span>
+                    <span class="text">Користувачі</span>
                 </a>
             </li>
             <li class="sidebar-list__item">
-                <a href="following.html" class="sidebar-list__link">
+                <a href="{{ route('admin.orders.table') }}" class="sidebar-list__link">
                     <span class="sidebar-list__icon">
                         <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon5.svg') }}" alt="" class="icon">
                         <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon-active5.svg') }}" alt="" class="icon icon-active">
                     </span>
-                    <span class="text">Followings</span>
+                    <span class="text">Замовлення</span>
                 </a>
             </li>
-            <li class="sidebar-list__item">
+            {{-- <li class="sidebar-list__item">
                 <a href="setting.html" class="sidebar-list__link">
                     <span class="sidebar-list__icon">
                         <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon10.svg') }}" alt="" class="icon">
@@ -68,27 +68,27 @@
                     </span>
                     <span class="text">Statements</span>
                 </a>
-            </li>
+            </li> --}}
             <li class="sidebar-list__item">
-                <a href="earning.html" class="sidebar-list__link">
+                <a href="{{ route('admin.ads.table') }}" class="sidebar-list__link">
                     <span class="sidebar-list__icon">
                         <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon11.svg') }}" alt="" class="icon">
                         <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon-active11.svg') }}" alt="" class="icon icon-active">
                     </span>
-                    <span class="text">Earnings</span>
+                    <span class="text">Оголошення</span>
                 </a>
             </li>
             <li class="sidebar-list__item">
-                <a href="review.html" class="sidebar-list__link">
+                <a href="{{ route('admin.chat.table') }}" class="sidebar-list__link">
                     <span class="sidebar-list__icon">
                         <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon7.svg') }}" alt="" class="icon">
                         <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon-active7.svg') }}" alt="" class="icon icon-active">
                     </span>
-                    <span class="text">Reviews</span>
+                    <span class="text">Чати</span>
                 </a>
             </li>
 
-            <li class="sidebar-list__item">
+            {{-- <li class="sidebar-list__item">
                 <a href="download.html" class="sidebar-list__link">
                     <span class="sidebar-list__icon">
                         <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon6.svg') }}" alt="" class="icon">
@@ -105,7 +105,7 @@
                     </span>
                     <span class="text">Refunds</span>
                 </a>
-            </li>
+            </li> --}}
             <li class="sidebar-list__item">
                 <a href="login.html" class="sidebar-list__link">
                     <span class="sidebar-list__icon">
