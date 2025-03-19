@@ -26,37 +26,17 @@
     </button>
     <ul class="user-profile-dropdown">
         <li class="sidebar-list__item">
-            <a href="dashboard-profile.html" class="sidebar-list__link">
-                <span class="sidebar-list__icon">
-                    <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon2.svg') }}" alt="" class="icon">
-                    <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon-active2.svg') }}" alt="" class="icon icon-active">
-                </span>
-                <span class="text">Profile</span>
-            </a>
-        </li>
-
-        <li class="sidebar-list__item">
-            <a href="setting.html" class="sidebar-list__link">
-                <span class="sidebar-list__icon">
-                    <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon10.svg') }}" alt="" class="icon">
-                    <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon-active10.svg') }}" alt="" class="icon icon-active">
-                </span>
-                <span class="text">Settings</span>
-            </a>
-        </li>
-        <li class="sidebar-list__item">
             <a href="login.html" class="sidebar-list__link">
                 <span class="sidebar-list__icon">
                     <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon13.svg') }}" alt="" class="icon">
                     <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon-active13.svg') }}" alt="" class="icon icon-active">
                 </span>
-                <span class="text">Logout</span>
+                <span class="text">Вихід</span>
             </a>
         </li>
     </ul>
 </div>
-
-<div class="language-select flx-align select-has-icon">
+{{-- <div class="language-select flx-align select-has-icon">
     <img src="{{ asset('assets/admin_assets/images/icons/globe.svg') }}" alt="" class="globe-icon">
     <select class="select py-0 ps-2 border-0 fw-500">
         <option value="1">Eng</option>
@@ -64,7 +44,7 @@
         <option value="3">Eur</option>
         <option value="4">Urd</option>
     </select>
-</div>
+</div> --}}
 </div>
 </div>
 </div>

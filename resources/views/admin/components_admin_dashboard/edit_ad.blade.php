@@ -1,4 +1,8 @@
 @include('admin.components_admin_dashboard.header')
+@include('admin.components_admin_dashboard.mobile_menu')
+@include('admin.components_admin_dashboard.dashboard_sidebar')
+@include('admin.components_admin_dashboard.dashboard_nav')
+@include('admin.components_admin_dashboard.welcome')
 <div class="container mt-4">
     <h2>Редагувати оголошення</h2>
     <form action="{{ route('admin.ads.update', $ad) }}" method="POST" enctype="multipart/form-data">

@@ -24,7 +24,7 @@
                     <span class="text">Dashboard</span>
                 </a>
             </li>
-            <li class="sidebar-list__item">
+            {{-- <li class="sidebar-list__item">
                 <a href="dashboard-profile.html" class="sidebar-list__link">
                     <span class="sidebar-list__icon">
                         <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon2.svg') }}" alt="" class="icon">
@@ -32,7 +32,7 @@
                     </span>
                     <span class="text">Profile</span>
                 </a>
-            </li>
+            </li> --}}
             <li class="sidebar-list__item">
                 <a href="{{ route('admin.users.table') }}" class="sidebar-list__link">
                     <span class="sidebar-list__icon">
@@ -112,7 +112,7 @@
                         <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon13.svg') }}" alt="" class="icon">
                         <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon-active13.svg') }}" alt="" class="icon icon-active">
                     </span>
-                    <span class="text">Logout</span>
+                    <span class="text">Вихід</span>
                 </a>
             </li>
         </ul>
