@@ -5,17 +5,21 @@
             {{ session('success') }}
         </div>
     @endif
+
+    <h3>Оголошення</h3>
+    <!-- Поле поиска -->
+    <input type="text" id="searchInput" class="form-control mb-3" placeholder="Пошук...">
+
     <div class="table-responsive">
-        <h3>Оголошення</h3>
-        <table class="table style-two">
+        <table class="table style-two" id="adsTable">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Заголовок</th>
-                    <th>Автор</th>
-                    <th>Місто</th>
-                    <th>Категорія</th>
-                    <th>Дата розміщення</th>
+                    <th onclick="sortTable(0)">ID ▲▼</th>
+                    <th onclick="sortTable(1)">Заголовок ▲▼</th>
+                    <th onclick="sortTable(2)">Автор ▲▼</th>
+                    <th onclick="sortTable(3)">Місто ▲▼</th>
+                    <th onclick="sortTable(4)">Категорія ▲▼</th>
+                    <th onclick="sortTable(5)">Дата розміщення ▲▼</th>
                     <th>Дія</th>
                 </tr>
             </thead>
@@ -49,3 +53,38 @@
     </div>
 </div>
 <!-- dashboard body Item End -->
+
+<script>
+    // Поиск по таблице с подсветкой
+    document.getElementById("searchInput").addEventListener("keyup", function() {
+        let filter = this.value.toLowerCase();
+        let rows = document.querySelectorAll("#adsTable tbody tr");
+        rows.forEach(row => {
+            row.innerHTML = row.innerHTML.replace(/<mark>|<\/mark>/g, ""); // Убираем старые подсветки
+            let found = false;
+            row.querySelectorAll("td").forEach(cell => {
+                let text = cell.innerText.toLowerCase();
+                if (text.includes(filter) && filter !== "") {
+                    found = true;
+                    let regex = new RegExp(`(${filter})`, "gi");
+                    cell.innerHTML = cell.innerText.replace(regex, "<mark>$1</mark>");
+                }
+            });
+            row.style.display = found ? "" : "none";
+        });
+    });
+
+    // Сортировка таблицы
+    function sortTable(n) {
+        let table = document.getElementById("adsTable");
+        let rows = Array.from(table.rows).slice(1);
+        let ascending = table.getAttribute("data-sort") === "asc";
+        table.setAttribute("data-sort", ascending ? "desc" : "asc");
+        rows.sort((a, b) => {
+            let cellA = a.cells[n].innerText.trim().toLowerCase();
+            let cellB = b.cells[n].innerText.trim().toLowerCase();
+            return ascending ? cellA.localeCompare(cellB, 'uk') : cellB.localeCompare(cellA, 'uk');
+        });
+        rows.forEach(row => table.appendChild(row));
+    }
+</script>

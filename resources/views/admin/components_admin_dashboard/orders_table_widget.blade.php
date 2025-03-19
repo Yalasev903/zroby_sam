@@ -6,11 +6,11 @@
         </div>
     @endif
 
+    <h3>Замовлення</h3>
     <!-- Поле поиска -->
     <input type="text" id="searchInput" class="form-control mb-3" placeholder="Пошук...">
 
     <div class="table-responsive">
-        <h3>Замовлення</h3>
         <table class="table style-two" id="ordersTable">
             <thead>
                 <tr>
