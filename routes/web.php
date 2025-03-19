@@ -44,6 +44,9 @@ Route::middleware([
         Route::get('/admin/ads/{ad}/edit', [AdminController::class, 'editAd'])->name('admin.ads.edit');
         Route::post('/admin/ads/{ad}/update', [AdminController::class, 'updateAd'])->name('admin.ads.update');
         Route::delete('/admin/ads/{ad}', [AdminController::class, 'destroyAd'])->name('admin.ads.destroy');
+
+        Route::get('/admin/chat-messages', [AdminController::class, 'chatMessages'])->name('admin.chat.messages');
+        Route::delete('/admin/chat-messages/{id}', [AdminController::class, 'destroyChatMessage'])->name('admin.chat.messages.destroy');
     });
 
     Route::get('/executors', [ExecutorController::class, 'index'])->name('executors.index');

@@ -15,10 +15,12 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
-        $users = User::all();
-        $orders = Order::with(['customer', 'executor'])->get();
-        $ads = Ad::with(['user', 'servicesCategory'])->get();
-        return view('admin.dashboard', compact('users', 'orders', 'ads'));
+        $users = \App\Models\User::all();
+        $orders = \App\Models\Order::with(['customer', 'executor'])->get();
+        $ads = \App\Models\Ad::with(['user', 'servicesCategory'])->get();
+        $chatMessages = \App\Models\ChMessage::orderBy('created_at', 'desc')->get();
+
+        return view('admin.dashboard', compact('users', 'orders', 'ads', 'chatMessages'));
     }
 
     /**
@@ -133,4 +135,14 @@ class AdminController extends Controller
         $ad->delete();
         return redirect()->back()->with('success', 'Оголошення успішно видалено.');
     }
+
+    /**
+     * Отображает список сообщений для управления.
+     */
+    public function chatMessages()
+    {
+        $chatMessages = \App\Models\ChMessage::orderBy('created_at', 'desc')->get();
+        return view('admin.components_admin_dashboard.chat_message_table_widget', compact('chatMessages'));
+    }
+
 }
