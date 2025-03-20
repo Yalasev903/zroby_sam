@@ -73,6 +73,7 @@ Route::middleware([
     Route::post('/orders/{order}/approve', [OrderController::class, 'approveOrder'])->name('orders.approve');
     Route::post('/orders/{order}/complete', [OrderController::class, 'completeOrder'])->name('orders.complete');
     Route::post('/orders/{order}/confirm', [OrderController::class, 'confirmOrder'])->name('orders.confirm');
+    Route::post('/orders/{order}/cancel', [OrderController::class, 'cancelOrder'])->name('orders.cancel');
 });
 
 // News Routes

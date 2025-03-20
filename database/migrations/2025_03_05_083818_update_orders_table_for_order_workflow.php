@@ -26,11 +26,11 @@ class UpdateOrdersTableForOrderWorkflow extends Migration
                   ->constrained('users')
                   ->onDelete('cascade');
 
-            // Статус заказа
-            $table->enum('status', ['new', 'waiting', 'in_progress', 'pending_confirmation', 'completed'])
+            // Статус заказа с добавлением нового статуса "cancelled"
+            $table->enum('status', ['new', 'waiting', 'in_progress', 'pending_confirmation', 'completed', 'cancelled'])
                   ->default('new');
 
-            // Добавляем связь с категорией услуг
+            // Связь с категорией услуг
             $table->foreignId('services_category_id')
                   ->nullable()
                   ->constrained('services_category')
@@ -39,6 +39,11 @@ class UpdateOrdersTableForOrderWorkflow extends Migration
             // Время начала и окончания заказа
             $table->timestamp('start_time')->nullable();
             $table->timestamp('end_time')->nullable();
+
+            // Новые поля для отмены заказа
+            $table->text('cancellation_reason')->nullable();
+            $table->string('cancelled_by')->nullable(); // значение: 'customer' или 'executor'
+            $table->timestamp('cancelled_at')->nullable();
         });
     }
 
@@ -55,7 +60,7 @@ class UpdateOrdersTableForOrderWorkflow extends Migration
             $table->dropForeign(['services_category_id']);
             $table->dropColumn('services_category_id');
 
-            $table->dropColumn(['status', 'start_time', 'end_time']);
+            $table->dropColumn(['status', 'start_time', 'end_time', 'cancellation_reason', 'cancelled_by', 'cancelled_at']);
         });
     }
 }

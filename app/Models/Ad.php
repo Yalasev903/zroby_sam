@@ -26,7 +26,8 @@ class Ad extends Model
     // Связь с заказом (если заказ создан для данного объявления)
     public function order()
     {
-        return $this->hasOne(Order::class, 'ad_id');
+        // Возвращаем только активные заказы, исключая отменённые
+        return $this->hasOne(Order::class, 'ad_id')->where('status', '!=', 'cancelled');
     }
 
     // Связь с комментариями

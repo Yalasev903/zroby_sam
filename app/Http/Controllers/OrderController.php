@@ -36,19 +36,27 @@ class OrderController extends Controller
             abort(403, 'Доступ запрещен.');
         }
 
-        // Проверка: если заказ для данного объявления уже существует и его статус не равен 'completed'
-        if ($ad->order && $ad->order->status !== 'completed') {
-            return redirect()->back()->with('error', 'Этот заказ уже взят.');
+        // Проверяем, существует ли уже заказ для этого объявления
+        if ($ad->order) {
+            // Если статус заказа активный, то его нельзя взять
+            if (in_array($ad->order->status, ['waiting', 'in_progress', 'pending_confirmation'])) {
+                return redirect()->back()->with('error', 'Этот заказ уже взят.');
+            }
+
+            // Если заказ отменён, проверяем, был ли текущий пользователь исполнителем отменённого заказа
+            if ($ad->order->status === 'cancelled' && $ad->order->executor_id === Auth::id()) {
+                return redirect()->back()->with('error', 'Вы не можете снова взять этот заказ, так как он был отменён для вас.');
+            }
         }
 
+        // Создаём новый заказ для объявления
         $order = Order::create([
             'ad_id'                => $ad->id,
             'title'                => $ad->title,
             'description'          => $ad->description,
-            // Сохраняем идентификатор категории из объявления (если связь установлена)
             'services_category_id' => $ad->servicesCategory ? $ad->servicesCategory->id : null,
             'user_id'              => $ad->user_id,    // заказчик (автор объявления)
-            'executor_id'          => Auth::id(),      // исполнитель, взявший заказ
+            'executor_id'          => Auth::id(),      // новый исполнитель
             'status'               => 'waiting',
         ]);
 
@@ -117,5 +125,46 @@ class OrderController extends Controller
         }
 
         return redirect()->back()->with('success', 'Замовлення підтверджено та завершено.');
+    }
+
+    public function cancelOrder(Request $request, Order $order)
+    {
+        $user = Auth::user();
+
+        // Разрешаем отмену только если пользователь является заказчиком или исполнителем заказа
+        if (!($user->id === $order->user_id || $user->id === $order->executor_id)) {
+            abort(403, 'Доступ заборонено.');
+        }
+
+        // Валидация входящих данных
+        $data = $request->validate([
+            'cancellation_reason' => 'required|string',
+            'custom_reason'       => 'nullable|string',
+        ]);
+
+        $reason = $data['cancellation_reason'];
+
+        // Если выбрана опция "Другая причина", проверяем наличие пользовательской причины
+        if ($reason === 'other') {
+            if (empty($data['custom_reason'])) {
+                return redirect()->back()->with('error', 'Необхідно вказати свою причину отмены.');
+            }
+            $reason = $data['custom_reason'];
+        }
+
+        // Если заказ уже завершён или отменён, отмена невозможна
+        if (in_array($order->status, ['completed', 'cancelled'])) {
+            return redirect()->back()->with('error', 'Отмена заказа невозможна на данном этапе.');
+        }
+
+        // Обновляем заказ: статус и информацию об отмене
+        $order->update([
+            'status'              => 'cancelled',
+            'cancellation_reason' => $reason,
+            'cancelled_by'        => $user->role,
+            'cancelled_at'        => now(),
+        ]);
+
+        return redirect()->back()->with('success', 'Заказ успешно отменен.');
     }
 }

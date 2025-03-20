@@ -16,7 +16,12 @@
             @php
                 $categoryFilter = request('category');
                 $categories = ServiceCategory::all();
-                $adsQuery = Ad::whereDoesntHave('order')->orderBy('posted_at', 'desc');
+                // Выбираем объявления, исключая те, у которых заказ в активном состоянии
+                $adsQuery = Ad::with(['user', 'comments.user', 'order'])
+                    ->whereDoesntHave('order', function ($q) {
+                        $q->whereIn('status', ['waiting', 'in_progress', 'pending_confirmation']);
+                    })
+                    ->orderBy('posted_at', 'desc');
 
                 if (!empty($categoryFilter)) {
                     $adsQuery->where('services_category_id', $categoryFilter);

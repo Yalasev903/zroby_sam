@@ -96,6 +96,26 @@
                                     <button type="submit" class="btn btn-info btn-sm">Підтвердити завершення</button>
                                 </form>
                             @endif
+
+                            {{-- Форма отмены заказа для заказчика и исполнителя --}}
+                            @if(!in_array($order->status, ['completed', 'cancelled']))
+                                @if((auth()->user()->role == 'customer' && auth()->id() == $order->user_id) ||
+                                    (auth()->user()->role == 'executor' && auth()->id() == $order->executor_id))
+                                    <form method="POST" action="{{ route('orders.cancel', $order) }}" class="d-inline">
+                                        @csrf
+                                        <select name="cancellation_reason" class="form-control form-control-sm d-inline w-auto" onchange="toggleCustomReason(this)">
+                                            <option value="">Выберите причину отмены</option>
+                                            <option value="Непредвиденные обстоятельства">Непредвиденные обстоятельства</option>
+                                            <option value="Изменение приоритетов">Изменение приоритетов</option>
+                                            <option value="Личные причины">Личные причины</option>
+                                            <option value="Невозможность выполнения заказа">Невозможность выполнения заказа</option>
+                                            <option value="other">Другая причина</option>
+                                        </select>
+                                        <input type="text" name="custom_reason" class="form-control form-control-sm d-inline w-auto" placeholder="Введите свою причину" style="display: none;">
+                                        <button type="submit" class="btn btn-danger btn-sm">Отменить заказ</button>
+                                    </form>
+                                @endif
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -103,4 +123,14 @@
         </div>
     @endif
 </div>
+<script>
+    function toggleCustomReason(select) {
+        var customInput = select.nextElementSibling;
+        if (select.value === 'other') {
+            customInput.style.display = 'inline-block';
+        } else {
+            customInput.style.display = 'none';
+        }
+    }
+</script>
 @endsection

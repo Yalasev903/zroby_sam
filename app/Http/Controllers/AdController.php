@@ -63,11 +63,11 @@ class AdController extends Controller
     public function index()
     {
         $ads = Ad::with(['user', 'comments.user', 'order'])
-                 ->whereDoesntHave('order', function ($q) {
-                     $q->where('status', 'completed');
-                 })
-                 ->latest()
-                 ->paginate(10);
+        ->whereDoesntHave('order', function ($q) {
+            $q->whereIn('status', ['waiting', 'in_progress', 'pending_confirmation', 'completed']);
+        })
+        ->latest()
+        ->paginate(10);
 
         return view('ads.ads_card_page', compact('ads'));
     }
