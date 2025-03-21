@@ -10,6 +10,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NewsCategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\NotificationController;
 
 Route::get('/', function () {
     return view('home');
@@ -74,6 +75,9 @@ Route::middleware([
     Route::post('/orders/{order}/complete', [OrderController::class, 'completeOrder'])->name('orders.complete');
     Route::post('/orders/{order}/confirm', [OrderController::class, 'confirmOrder'])->name('orders.confirm');
     Route::post('/orders/{order}/cancel', [OrderController::class, 'cancelOrder'])->name('orders.cancel');
+
+    // Добавляем маршрут для уведомлений
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
 });
 
 // News Routes

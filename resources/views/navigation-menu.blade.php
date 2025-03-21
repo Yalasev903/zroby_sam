@@ -120,6 +120,11 @@
                                 {{ __('Головна') }}
                             </x-dropdown-link>
 
+                            <x-dropdown-link href="{{ route('notifications.index') }}">
+                                <i class="bi bi-bell mr-2"></i>
+                                {{ __('Повідомлення') }}
+                            </x-dropdown-link>
+
                             <x-dropdown-link href="{{ route('profile.show') }}">
                                 <i class="bi bi-person-circle mr-2"></i>
                                 {{ __('Налаштування Профілю') }}
@@ -230,6 +235,11 @@
                 <x-dropdown-link href="{{ route('home') }}">
                     <i class="bi bi-house-door mr-2"></i>
                     {{ __('Головна') }}
+                </x-dropdown-link>
+
+                <x-dropdown-link href="{{ route('notifications.index') }}">
+                    <i class="bi bi-bell mr-2"></i>
+                    {{ __('Повідомлення') }}
                 </x-dropdown-link>
 
                 <x-dropdown-link href="{{ route('profile.show') }}">
