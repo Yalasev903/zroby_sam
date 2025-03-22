@@ -103,4 +103,16 @@ public function ads()
         {
             return $this->role === 'admin';  // проверка роли
         }
+
+        public static function booted()
+        {
+            static::created(function (User $user) {
+                Notification::create([
+                    'notifiable_id'   => $user->id,
+                    'notifiable_type' => User::class,
+                    'title'           => 'Привіт, ' . $user->name . '!',
+                    'message'         => 'Ласкаво просимо на наш сайт!',
+                ]);
+            });
+    }
 }

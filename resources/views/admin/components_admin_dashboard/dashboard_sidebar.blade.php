@@ -107,6 +107,15 @@
                 </a>
             </li> --}}
             <li class="sidebar-list__item">
+                <a href="{{ route('admin.greetings') }}" class="sidebar-list__link">
+                    <span class="sidebar-list__icon">
+                        <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon7.svg') }}" alt="" class="icon">
+                        <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon-active7.svg') }}" alt="" class="icon icon-active">
+                    </span>
+                    <span class="text">Привітання</span>
+                </a>
+            </li>
+            <li class="sidebar-list__item">
                 <a href="login.html" class="sidebar-list__link">
                     <span class="sidebar-list__icon">
                         <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon13.svg') }}" alt="" class="icon">

@@ -35,12 +35,12 @@ Route::middleware([
         Route::post('/admin/users/{user}/update', [AdminController::class, 'updateUserRole'])->name('admin.users.update');
         Route::delete('/admin/users/{user}', [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
 
-        // Новые маршруты для управления заказами
+        // Управление заказами
         Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
         Route::post('/admin/orders/{order}/update', [AdminController::class, 'updateOrderStatus'])->name('admin.orders.update');
         Route::delete('/admin/orders/{order}', [AdminController::class, 'destroyOrder'])->name('admin.orders.destroy');
 
-         // Маршруты для управления оголошеннями
+        // Управление оголошеннями
         Route::get('/admin/ads', [AdminController::class, 'ads'])->name('admin.ads');
         Route::get('/admin/ads/{ad}/edit', [AdminController::class, 'editAd'])->name('admin.ads.edit');
         Route::post('/admin/ads/{ad}/update', [AdminController::class, 'updateAd'])->name('admin.ads.update');
@@ -49,11 +49,19 @@ Route::middleware([
         Route::get('/admin/chat-messages', [AdminController::class, 'chatMessages'])->name('admin.chat.messages');
         Route::delete('/admin/chat-messages/{id}', [AdminController::class, 'destroyChatMessage'])->name('admin.chat.messages.destroy');
 
-            // Новые маршруты для страниц
+        // Таблицы
         Route::get('/admin/ads-table', [AdminController::class, 'adsTable'])->name('admin.ads.table');
         Route::get('/admin/chat-table', [AdminController::class, 'chatTable'])->name('admin.chat.table');
         Route::get('/admin/orders-table', [AdminController::class, 'ordersTable'])->name('admin.orders.table');
         Route::get('/admin/users-table', [AdminController::class, 'usersTable'])->name('admin.users.table');
+
+        // Настройки адмінки (используем updateSettings из AdminController)
+        Route::get('/admin/settings', [AdminController::class, 'showSettingsForm'])->name('admin.settings');
+        Route::post('/admin/settings', [AdminController::class, 'updateSettings'])->name('admin.settings.update');
+
+        // Страница для работы с привітаннями
+        Route::get('/admin/greetings', [AdminController::class, 'greetings'])->name('admin.greetings');
+        Route::post('/admin/greetings/resend', [AdminController::class, 'resendGreeting'])->name('admin.greetings.resend');
     });
 
     Route::get('/executors', [ExecutorController::class, 'index'])->name('executors.index');
@@ -76,7 +84,7 @@ Route::middleware([
     Route::post('/orders/{order}/confirm', [OrderController::class, 'confirmOrder'])->name('orders.confirm');
     Route::post('/orders/{order}/cancel', [OrderController::class, 'cancelOrder'])->name('orders.cancel');
 
-    // Добавляем маршрут для уведомлений
+    // Маршрут для уведомлений
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
 });
 
