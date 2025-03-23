@@ -55,14 +55,18 @@ Route::middleware([
         Route::get('/admin/chat-table', [AdminController::class, 'chatTable'])->name('admin.chat.table');
         Route::get('/admin/orders-table', [AdminController::class, 'ordersTable'])->name('admin.orders.table');
         Route::get('/admin/users-table', [AdminController::class, 'usersTable'])->name('admin.users.table');
+        Route::get('/admin/tickets-table', [AdminController::class, 'ticketsTable'])->name('admin.tickets.table');
 
-        // Настройки адмінки (используем updateSettings из AdminController)
+        // Настройки адмінки
         Route::get('/admin/settings', [AdminController::class, 'showSettingsForm'])->name('admin.settings');
         Route::post('/admin/settings', [AdminController::class, 'updateSettings'])->name('admin.settings.update');
 
         // Страница для работы с привітаннями
         Route::get('/admin/greetings', [AdminController::class, 'greetings'])->name('admin.greetings');
         Route::post('/admin/greetings/resend', [AdminController::class, 'resendGreeting'])->name('admin.greetings.resend');
+
+        // Новый маршрут для отправки решения по скарзі
+        Route::post('/admin/tickets/{ticket}/resolve', [AdminController::class, 'resolveTicket'])->name('admin.tickets.resolve');
     });
 
     Route::get('/executors', [ExecutorController::class, 'index'])->name('executors.index');
@@ -88,7 +92,7 @@ Route::middleware([
     // Маршрут для уведомлений
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
 
-    // Маршруты для скарг
+    // Маршруты для скарг (для заказчиков)
     Route::get('/orders/{order}/ticket/create', [TicketController::class, 'create'])->name('tickets.create');
     Route::post('/orders/{order}/ticket', [TicketController::class, 'store'])->name('tickets.store');
 });

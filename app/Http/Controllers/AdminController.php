@@ -11,11 +11,12 @@ use App\Models\ServiceCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Notification;
+use App\Models\Ticket;
 
 class AdminController extends Controller
 {
     /**
-     * Отображает панель администратора с таблицами пользователей, заказов и объявлений.
+     * Отображает панель администратора с таблицами пользователей, заказов, объявлений и жалоб.
      */
     public function dashboard()
     {
@@ -23,8 +24,8 @@ class AdminController extends Controller
         $orders = Order::with(['customer', 'executor'])->get();
         $ads = Ad::with(['user', 'servicesCategory'])->get();
         $chatMessages = ChMessage::orderBy('created_at', 'desc')->get();
-
-        return view('admin.dashboard', compact('users', 'orders', 'ads', 'chatMessages'));
+        $tickets = Ticket::with(['user', 'order'])->orderBy('created_at', 'desc')->get();
+        return view('admin.dashboard', compact('users', 'orders', 'ads', 'chatMessages', 'tickets'));
     }
 
     /**
@@ -35,9 +36,7 @@ class AdminController extends Controller
         $validatedData = $request->validate([
             'role' => 'required|in:customer,executor,admin',
         ]);
-
         $user->update(['role' => $validatedData['role']]);
-
         return redirect()->back()->with('success', 'Роль користувача успішно оновлена.');
     }
 
@@ -67,9 +66,7 @@ class AdminController extends Controller
         $validatedData = $request->validate([
             'status' => 'required|in:new,waiting,in_progress,pending_confirmation,completed',
         ]);
-
         $order->update(['status' => $validatedData['status']]);
-
         return redirect()->back()->with('success', 'Статус замовлення успішно оновлено.');
     }
 
@@ -112,9 +109,7 @@ class AdminController extends Controller
             'services_category_id' => 'required|exists:services_categories,id',
             'photo'                => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
         ]);
-
         $data = $request->only(['title', 'description', 'city', 'services_category_id']);
-
         if ($request->hasFile('photo')) {
             if ($ad->photo_path) {
                 Storage::delete('public/' . $ad->photo_path);
@@ -122,9 +117,7 @@ class AdminController extends Controller
             $photoPath = $request->file('photo')->store('ads', 'public');
             $data['photo_path'] = $photoPath;
         }
-
         $ad->update($data);
-
         return redirect()->route('admin.ads')->with('success', 'Оголошення успішно оновлено.');
     }
 
@@ -154,7 +147,6 @@ class AdminController extends Controller
      */
     public function usersTable(Request $request)
     {
-        // Количество записей на странице из параметра запроса, по умолчанию 5
         $users = User::all();
         return view('admin.pages.users_table', compact('users'));
     }
@@ -187,6 +179,15 @@ class AdminController extends Controller
     }
 
     /**
+     * Отображает страницу с таблицей жалоб (скарг).
+     */
+    public function ticketsTable()
+    {
+        $tickets = Ticket::with(['user', 'order'])->orderBy('created_at', 'desc')->get();
+        return view('admin.pages.tickets_table', compact('tickets'));
+    }
+
+    /**
      * Отображает форму настроек администратора.
      */
     public function showSettingsForm()
@@ -210,7 +211,6 @@ class AdminController extends Controller
             'auto_greeting_enabled' => 'sometimes|boolean',
             'auto_greeting_text'    => 'nullable|string',
         ]);
-
         $adminSetting = AdminSetting::first();
         if ($adminSetting) {
             $adminSetting->update([
@@ -222,11 +222,10 @@ class AdminController extends Controller
     }
 
     /**
-     * Отображает страницу для работы с приветственными уведомлениями.
+     * Отображает страницу для работы с привітаннями.
      */
     public function greetings()
     {
-        // Получаем все уведомления с заголовком "Привітання"
         $greetings = Notification::where('title', 'Привітання')
             ->orderBy('created_at', 'desc')
             ->get();
@@ -234,9 +233,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Повторная отправка приветствия.
-     * Если параметр user_id не указан – отправляет приветствие всем пользователям.
-     * Если админ указал message, используем его вместо auto_greeting_text.
+     * Повторная отправка привітання.
      */
     public function resendGreeting(Request $request)
     {
@@ -244,16 +241,11 @@ class AdminController extends Controller
         if (!$adminSetting || !$adminSetting->auto_greeting_enabled) {
             return redirect()->back()->with('error', 'Автопривітання не ввімкнено.');
         }
-
-        // Если админ не ввёл сообщение, берём из настроек
         $greetingText = $request->input('message')
             ? $request->input('message')
             : ($adminSetting->auto_greeting_text ?? 'Вітаємо у нашому сервісі!');
-
         $userId = $request->input('user_id');
-
         if ($userId) {
-            // Отправляем уведомление конкретному пользователю
             $user = User::find($userId);
             if (!$user) {
                 return redirect()->back()->with('error', 'Користувача не знайдено.');
@@ -261,7 +253,7 @@ class AdminController extends Controller
             Notification::create([
                 'user_id' => $user->id,
                 'title'   => 'Повідомлення від адміністратора',
-                'message' => 'Привіт' . $user->name . '!' . $greetingText,
+                'message' => 'Привіт ' . $user->name . '! ' . $greetingText,
                 'read'    => false,
             ]);
         } else {
@@ -270,11 +262,28 @@ class AdminController extends Controller
                 Notification::create([
                     'user_id' => $user->id,
                     'title'   => 'Повідомлення від адміністратора',
-                    'message' => "$greetingText",
+                    'message' => $greetingText,
                     'read'    => false,
                 ]);
             }
         }
         return redirect()->back()->with('success', 'Повідомлення надіслано.');
     }
+
+    /**
+     * Обрабатывает решение по скарзі и отправляет уведомление пользователю.
+     */
+    public function resolveTicket(Request $request, Ticket $ticket)
+    {
+        $data = $request->validate([
+            'resolution' => 'required|string',
+        ]);
+        Notification::create([
+            'user_id' => $ticket->user_id,
+            'title'   => 'Вирішення скарги',
+            'message' => $data['resolution'],
+            'read'    => false,
+        ]);
+        return redirect()->back()->with('success', 'Рішення скарги надіслано.');
     }
+}

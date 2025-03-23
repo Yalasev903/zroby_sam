@@ -97,7 +97,7 @@
                                 </form>
                             @endif
 
-                            {{-- Форма отмены заказа для заказчика и исполнителя --}}
+                            {{-- Форма відміни замовлення для замовника та виконавця --}}
                             @if(!in_array($order->status, ['completed', 'cancelled']))
                                 @if((auth()->user()->role == 'customer' && auth()->id() == $order->user_id) ||
                                     (auth()->user()->role == 'executor' && auth()->id() == $order->executor_id))
@@ -116,12 +116,15 @@
                                     </form>
                                 @endif
                             @endif
-                            <!-- В блоке card-footer для каждого заказа -->
+
+                            <!-- Отображение кнопки скарги -->
                             @if($order->status === 'cancelled')
                                 @if(!$order->ticket)
                                     <a href="{{ route('tickets.create', $order) }}" class="btn btn-secondary btn-sm">Залишити скаргу</a>
                                 @else
-                                    <span class="text-muted">Скарга залишена</span>
+                                    @if(auth()->id() === $order->ticket->user_id)
+                                        <span class="text-muted">Скарга залишена</span>
+                                    @endif
                                 @endif
                             @endif
                         </div>

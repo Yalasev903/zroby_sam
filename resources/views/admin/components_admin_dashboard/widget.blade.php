@@ -57,11 +57,11 @@
 <img src="{{ asset('assets/admin_assets/images/shapes/widget-shape1.png') }}" alt="" class="dashboard-widget__shape one">
 <img src="{{ asset('assets/admin_assets/images/shapes/widget-shape2.png') }}" alt="" class="dashboard-widget__shape two">
 <span class="dashboard-widget__icon">
-<img src="{{ asset('/assets/admin_assets/images/icons/sidebar-icon10.svg') }}" alt="">
+<img src="{{ asset('/assets/admin_assets/images/icons/sidebar-icon12.svg') }}" alt="">
 </span>
 <div class="dashboard-widget__content flx-between gap-1 align-items-end">
 <div>
-<h4 class="dashboard-widget__number mb-1 mt-3">2,589</h4>
+<h4 class="dashboard-widget__number mb-1 mt-3">{{ \App\Models\Ticket::count() }}</h4>
 <span class="dashboard-widget__text font-14">Всього скарг</span>
 </div>
 <img src="{{ asset('assets/admin_assets/images/icons/chart-icon.svg') }}" alt="">
