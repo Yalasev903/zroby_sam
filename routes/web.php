@@ -11,6 +11,7 @@ use App\Http\Controllers\NewsCategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\TicketController;
 
 Route::get('/', function () {
     return view('home');
@@ -86,6 +87,10 @@ Route::middleware([
 
     // Маршрут для уведомлений
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+
+    // Маршруты для скарг
+    Route::get('/orders/{order}/ticket/create', [TicketController::class, 'create'])->name('tickets.create');
+    Route::post('/orders/{order}/ticket', [TicketController::class, 'store'])->name('tickets.store');
 });
 
 // News Routes

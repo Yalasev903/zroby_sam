@@ -50,4 +50,9 @@ class Order extends Model
     {
         return $this->belongsTo(\App\Models\User::class, 'executor_id');
     }
+
+    public function ticket()
+    {
+        return $this->hasOne(\App\Models\Ticket::class);
+    }
 }

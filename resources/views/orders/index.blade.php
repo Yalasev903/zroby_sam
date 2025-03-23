@@ -104,16 +104,24 @@
                                     <form method="POST" action="{{ route('orders.cancel', $order) }}" class="d-inline">
                                         @csrf
                                         <select name="cancellation_reason" class="form-control form-control-sm d-inline w-auto" onchange="toggleCustomReason(this)">
-                                            <option value="">Выберите причину отмены</option>
-                                            <option value="Непредвиденные обстоятельства">Непредвиденные обстоятельства</option>
-                                            <option value="Изменение приоритетов">Изменение приоритетов</option>
-                                            <option value="Личные причины">Личные причины</option>
-                                            <option value="Невозможность выполнения заказа">Невозможность выполнения заказа</option>
-                                            <option value="other">Другая причина</option>
+                                            <option value="">Виберіть причину скасування</option>
+                                            <option value="Непередбачені обставини">Непередбачені обставини</option>
+                                            <option value="Зміна пріоритетів">Зміна пріоритетів</option>
+                                            <option value="Особисті причини">Особисті причини</option>
+                                            <option value="Неможливість виконання замовлення">Неможливість виконання замовлення</option>
+                                            <option value="other">Інша причина</option>
                                         </select>
-                                        <input type="text" name="custom_reason" class="form-control form-control-sm d-inline w-auto" placeholder="Введите свою причину" style="display: none;">
-                                        <button type="submit" class="btn btn-danger btn-sm">Отменить заказ</button>
+                                        <input type="text" name="custom_reason" class="form-control form-control-sm d-inline w-auto" placeholder="Введіть свою причину" style="display: none;">
+                                        <button type="submit" class="btn btn-danger btn-sm">Відмінити</button>
                                     </form>
+                                @endif
+                            @endif
+                            <!-- В блоке card-footer для каждого заказа -->
+                            @if($order->status === 'cancelled')
+                                @if(!$order->ticket)
+                                    <a href="{{ route('tickets.create', $order) }}" class="btn btn-secondary btn-sm">Залишити скаргу</a>
+                                @else
+                                    <span class="text-muted">Скарга залишена</span>
                                 @endif
                             @endif
                         </div>
