@@ -155,8 +155,7 @@ class AdminController extends Controller
     public function usersTable(Request $request)
     {
         // Количество записей на странице из параметра запроса, по умолчанию 5
-        $perPage = $request->get('per_page', 5);
-        $users = User::paginate($perPage); // Пагинация
+        $users = User::all();
         return view('admin.pages.users_table', compact('users'));
     }
 
