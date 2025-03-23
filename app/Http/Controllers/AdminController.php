@@ -260,7 +260,7 @@ class AdminController extends Controller
             Notification::create([
                 'user_id' => $user->id,
                 'title'   => 'Повідомлення від адміністратора',
-                'message' => $greetingText,
+                'message' => 'Привіт' . $user->name . '!' . $greetingText,
                 'read'    => false,
             ]);
         } else {
@@ -269,7 +269,7 @@ class AdminController extends Controller
                 Notification::create([
                     'user_id' => $user->id,
                     'title'   => 'Повідомлення від адміністратора',
-                    'message' => $greetingText,
+                    'message' => "$greetingText",
                     'read'    => false,
                 ]);
             }

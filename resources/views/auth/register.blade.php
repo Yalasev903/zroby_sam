@@ -21,7 +21,7 @@
             }
         @endphp
 
-        <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data" id="registerForm">
             @csrf
 
             <!-- Поле для имени -->
@@ -127,7 +127,7 @@
                     {{ __('Вже зареєстровані?') }}
                 </a>
 
-                <x-button class="ms-4">
+                <x-button id="registerSubmitButton" class="ms-4">
                     {{ __('Зареєструватися') }}
                 </x-button>
             </div>
@@ -194,5 +194,15 @@
         // Инициализация: сброс видимости полей при загрузке страницы
         roleSelect.dispatchEvent(new Event('change'));
         servicesCategory.dispatchEvent(new Event('change'));
+
+        // Отключение кнопки отправки после первого сабмита формы для предотвращения двойного отправления
+        const registerForm = document.getElementById('registerForm');
+        const registerSubmitButton = document.getElementById('registerSubmitButton');
+        registerForm.addEventListener('submit', function(event) {
+            // Отключаем кнопку отправки
+            registerSubmitButton.disabled = true;
+            // Можно добавить индикацию загрузки, например:
+            registerSubmitButton.innerHTML = 'Обработка...';
+        });
     </script>
 </x-guest-layout>
