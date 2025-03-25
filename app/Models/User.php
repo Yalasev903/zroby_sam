@@ -65,17 +65,16 @@ class User extends Authenticatable
     }
 
     public function updateRating(int $points): void
-{
-    $this->increment('rating', $points);
-}
+    {
+        $this->increment('rating', $points);
+    }
 
-public function ads()
-{
-    return $this->hasMany(Ad::class);
+    public function ads()
+    {
+        return $this->hasMany(Ad::class);
+    }
 
-}
-
- /**
+    /**
      * Если необходимо, чтобы пользователь (например, исполнитель) мог получать комментарии.
      */
     public function receivedComments()
@@ -91,28 +90,14 @@ public function ads()
         return $this->hasMany(Comment::class);
     }
 
-        // Получение аватарки для Chatify
-        // public function getAvatarAttribute()
-        // {
-        //     return $this->profile_photo_path
-        //         ? asset('storage/profile-photos/' . $this->profile_photo_path) // Jetstream хранит аватарку тут
-        //         : asset('images/default-avatar.webp'); // Если нет аватарки, ставим дефолт
-        // }
+    // Добавляем связь для полученных отзывов (для исполнителя)
+    public function reviewsReceived()
+    {
+        return $this->hasMany(\App\Models\Review::class, 'executor_id');
+    }
 
-        public function isAdmin()
-        {
-            return $this->role === 'admin';  // проверка роли
-        }
-
-        // public static function booted()
-        // {
-        //     static::created(function (User $user) {
-        //         Notification::create([
-        //             'notifiable_id'   => $user->id,
-        //             'notifiable_type' => User::class,
-        //             'title'           => 'Привіт, ' . $user->name . '!',
-        //             'message'         => 'Ласкаво просимо на наш сайт!',
-        //         ]);
-        //     });
-        // }
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
 }

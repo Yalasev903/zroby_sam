@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
 <section class="lqd-section new-features py-30" id="profile-section">
     <div class="container">
         <div class="flex flex-col md:flex-row items-start">
@@ -41,7 +40,19 @@
                     <p>{{ $user->role }}</p>
                 </div>
 
-                <!-- Навыки или компания -->
+                <!-- Кнопка для чата -->
+                <a href="{{ url('/chat/' . $user->id) }}" class="btn btn-primary mb-3">
+                    Почати чат
+                </a>
+
+                <!-- Кнопка Відгуки с иконкой -->
+                @if($user->role === 'executor')
+                    <button type="button" class="btn btn-info mb-3" data-bs-toggle="modal" data-bs-target="#reviewsModal">
+                        <i class="fas fa-star"></i> Відгуки
+                    </button>
+                @endif
+
+                <!-- Остальные данные (навыки, компания, категория) -->
                 <div class="mb-6">
                     <h3>
                         @if($user->role === 'executor')
@@ -67,7 +78,6 @@
                     </div>
                 </div>
 
-                <!-- Категория услуг -->
                 <div>
                     <h3>Категорія послуг та послуги</h3>
                     <div class="flex flex-wrap">
@@ -82,13 +92,10 @@
                         @endif
                     </div>
                 </div>
-                <a href="{{ url('/chat/' . $user->id) }}" class="btn btn-primary">
-                    Почати чат
-                </a>
             </div>
         </div>
 
-        <!-- Добавляем секцию комментариев аналогично шаблону объявлений -->
+        <!-- Секция комментариев -->
         <div class="comments-section mt-4">
             <h5>Коментарі</h5>
             <div class="comments-list mb-3">
@@ -114,10 +121,8 @@
                     <p>Коментарів поки що немає.</p>
                 @endforelse
             </div>
-            <!-- Форма для добавления нового комментария -->
             <form action="{{ route('comments.store') }}" method="POST">
                 @csrf
-                <!-- Указываем, что комментарий относится к пользователю -->
                 <input type="hidden" name="commentable_id" value="{{ $user->id }}">
                 <input type="hidden" name="commentable_type" value="App\Models\User">
                 <div class="mb-3">
@@ -128,5 +133,45 @@
         </div>
     </div>
 </section>
+
+<!-- Модальное окно для отображения отзывов в профиле -->
+@if($user && $user->role === 'executor')
+<div class="modal fade" id="reviewsModal" tabindex="-1" aria-labelledby="reviewsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reviewsModalLabel">Ваші відгуки</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити"></button>
+      </div>
+      <div class="modal-body">
+        @php
+            $reviews = $user->reviewsReceived()->latest()->get();
+        @endphp
+
+        @if($reviews->isEmpty())
+            <p>Відгуки відсутні.</p>
+        @else
+            <ul class="list-group">
+                @foreach($reviews as $review)
+                    <li class="list-group-item">
+                        <strong>Замовник:</strong> {{ $review->customer->name }}<br>
+                        <strong>Оцінка:</strong> {{ $review->rating }}<br>
+                        @if($review->comment)
+                            <strong>Коментар:</strong> {{ $review->comment }}
+                        @endif
+                        <br>
+                        <small class="text-muted">{{ $review->created_at->diffForHumans() }}</small>
+                    </li>
+                @endforeach
+            </ul>
+        @endif
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+      </div>
+    </div>
+  </div>
+</div>
+@endif
 
 @endsection

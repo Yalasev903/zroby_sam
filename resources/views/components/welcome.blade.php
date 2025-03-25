@@ -13,22 +13,23 @@
         @if(!$user)
             <p>Пожалуйста, войдите в систему, чтобы увидеть контент.</p>
         @elseif($user->role === 'executor')
-        @php
-        $categoryFilter = request('category');
-        $categories = ServiceCategory::all();
-        // Выбираем объявления, исключая те, у которых заказ находится в активном состоянии или уже выполнен.
-        $adsQuery = Ad::with(['user', 'comments.user', 'order'])
-            ->whereDoesntHave('order', function ($q) {
-                $q->whereIn('status', ['waiting', 'in_progress', 'pending_confirmation', 'completed']);
-            })
-            ->orderBy('posted_at', 'desc');
+            @php
+                $categoryFilter = request('category');
+                $categories = ServiceCategory::all();
+                // Выбираем объявления, исключая те, у которых заказ находится в активном состоянии или уже выполнен.
+                $adsQuery = Ad::with(['user', 'comments.user', 'order'])
+                    ->whereDoesntHave('order', function ($q) {
+                        $q->whereIn('status', ['waiting', 'in_progress', 'pending_confirmation', 'completed']);
+                    })
+                    ->orderBy('posted_at', 'desc');
 
-        if (!empty($categoryFilter)) {
-            $adsQuery->where('services_category_id', $categoryFilter);
-        }
+                if (!empty($categoryFilter)) {
+                    $adsQuery->where('services_category_id', $categoryFilter);
+                }
 
-        $ads = $adsQuery->limit(6)->get();
-    @endphp
+                $ads = $adsQuery->limit(6)->get();
+            @endphp
+
             <form method="GET" action="{{ url()->current() }}" class="mb-4">
                 <label for="category" class="font-semibold">Фильтр по категории:</label>
                 <select name="category" id="category" onchange="this.form.submit()" class="ml-2 border rounded p-1">
@@ -110,60 +111,61 @@
                     </a>
                 </p>
 
-                <!-- Кнопка для копирования ссылки -->
                 <button onclick="copyToClipboard('{{ url('/user/' . $user->id) }}')" class="btn btn-secondary mt-2">
                     <i class="fas fa-share-alt"></i> Поділитися
                 </button>
+
+                <!-- Кнопка Відгуки с иконкой (Font Awesome) -->
+                @if($user->role === 'executor')
+                    <button type="button" class="btn btn-info mt-2" data-bs-toggle="modal" data-bs-target="#reviewsModal">
+                        <i class="fas fa-star"></i> Відгуки
+                    </button>
+                @endif
             </div>
-
-            <!-- Данные для исполнителя -->
-            @if($user->role === 'executor')
-                @php
-                    $skills = !empty($user->skills) ? explode(',', $user->skills) : [];
-                @endphp
-                <div class="mt-4">
-                    <h4 class="font-semibold">Навички</h4>
-                    @if(!empty($skills))
-                        <div class="flex flex-wrap">
-                            @foreach($skills as $skill)
-                                <div class="border border-gray-300 rounded-lg px-3 py-1 m-1">
-                                    {{ trim($skill) }}
-                                </div>
-                            @endforeach
-                        </div>
-                    @else
-                        <p class="text-gray-500">Навички не вказані.</p>
-                    @endif
-                </div>
-            @endif
-
-            <!-- Данные для заказчика -->
-            @if($user->role === 'customer')
-                <div class="mt-4">
-                    <h4 class="font-semibold">Компанія</h4>
-                    <div class="border border-gray-300 rounded-lg px-3 py-1 m-1">
-                        {{ $user->company_name ?? 'Не вказана' }}
-                    </div>
-                </div>
-            @endif
-
-            <!-- Категория услуг -->
-            @php
-                $userCategory = ServiceCategory::find($user->services_category);
-            @endphp
-            <div class="mt-4">
-                <h4 class="font-semibold">Категорія послуг</h4>
-                <div class="border border-gray-300 rounded-lg px-3 py-1 m-1">
-                    {{ $userCategory->name ?? 'Категорія не вказана' }}
-                </div>
-            </div>
-
-            <div class="text-center mt-4">
-                <a href="{{ url('/chat/' . $user->id) }}" class="btn btn-primary">Почати чат</a>
-            </div>
+            <!-- Остальные блоки данных пользователя ... -->
         @endif
     </aside>
 </div>
+
+<!-- Модальное окно для отображения отзывов -->
+@if($user && $user->role === 'executor')
+<div class="modal fade" id="reviewsModal" tabindex="-1" aria-labelledby="reviewsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reviewsModalLabel">Ваші відгуки</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити"></button>
+      </div>
+      <div class="modal-body">
+        @php
+            $reviews = $user->reviewsReceived()->latest()->get();
+        @endphp
+
+        @if($reviews->isEmpty())
+            <p>Відгуки відсутні.</p>
+        @else
+            <ul class="list-group">
+                @foreach($reviews as $review)
+                    <li class="list-group-item">
+                        <strong>Замовник:</strong> {{ $review->customer->name }}<br>
+                        <strong>Оцінка:</strong> {{ $review->rating }}<br>
+                        @if($review->comment)
+                            <strong>Коментар:</strong> {{ $review->comment }}
+                        @endif
+                        <br>
+                        <small class="text-muted">{{ $review->created_at->diffForHumans() }}</small>
+                    </li>
+                @endforeach
+            </ul>
+        @endif
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+      </div>
+    </div>
+  </div>
+</div>
+@endif
 
 <script>
     function copyToClipboard(text) {
