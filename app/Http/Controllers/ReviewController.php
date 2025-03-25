@@ -32,35 +32,36 @@ class ReviewController extends Controller
     // Сохранение отзыва
     public function store(Request $request, Order $order)
     {
-        if (Auth::user()->role !== 'customer' || Auth::id() !== $order->user_id) {
-            abort(403, 'Доступ заборонено.');
-        }
+    if (Auth::user()->role !== 'customer' || Auth::id() !== $order->user_id) {
+        abort(403, 'Доступ заборонено.');
+    }
 
-        if ($order->status !== 'completed') {
-            return redirect()->back()->with('error', 'Замовлення не завершено.');
-        }
+    if ($order->status !== 'completed') {
+        return redirect()->back()->with('error', 'Замовлення не завершено.');
+    }
 
-        if ($order->review) {
-            return redirect()->back()->with('error', 'Ви вже залишили відгук за це замовлення.');
-        }
+    if ($order->review) {
+        return redirect()->back()->with('error', 'Ви вже залишили відгук за це замовлення.');
+    }
 
-        $data = $request->validate([
-            'rating'  => 'required|integer|min:1|max:5',
-            'comment' => 'nullable|string',
-        ]);
+    $data = $request->validate([
+        'rating'  => 'required|integer|min:1|max:5',
+        'comment' => 'nullable|string',
+    ]);
 
-        $data['order_id'] = $order->id;
-        $data['customer_id'] = Auth::id();
-        $data['executor_id'] = $order->executor_id;
+    $data['order_id'] = $order->id;
+    $data['customer_id'] = Auth::id();
+    $data['executor_id'] = $order->executor_id;
 
-        // Создание отзыва
-        Review::create($data);
+    // Создание отзыва
+    Review::create($data);
 
-        // Если оценка отзыва больше 3, увеличиваем рейтинг исполнителя дополнительно на 1
-        if ($data['rating'] > 3 && $order->executor) {
-            $order->executor->updateRating(1);
-        }
+    // Если оценка отзыва больше 3, обновляем модель исполнителя и начисляем дополнительный балл
+    if ($data['rating'] > 3 && $order->executor) {
+        $executor = $order->executor->fresh();
+        $executor->updateRating(1);
+    }
 
-        return redirect()->route('orders.index')->with('success', 'Відгук успішно залишено.');
+    return redirect()->route('orders.index')->with('success', 'Відгук успішно залишено.');
     }
 }
