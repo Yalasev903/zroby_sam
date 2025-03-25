@@ -13,23 +13,22 @@
         @if(!$user)
             <p>Пожалуйста, войдите в систему, чтобы увидеть контент.</p>
         @elseif($user->role === 'executor')
-            @php
-                $categoryFilter = request('category');
-                $categories = ServiceCategory::all();
-                // Выбираем объявления, исключая те, у которых заказ в активном состоянии
-                $adsQuery = Ad::with(['user', 'comments.user', 'order'])
-                    ->whereDoesntHave('order', function ($q) {
-                        $q->whereIn('status', ['waiting', 'in_progress', 'pending_confirmation']);
-                    })
-                    ->orderBy('posted_at', 'desc');
+        @php
+        $categoryFilter = request('category');
+        $categories = ServiceCategory::all();
+        // Выбираем объявления, исключая те, у которых заказ находится в активном состоянии или уже выполнен.
+        $adsQuery = Ad::with(['user', 'comments.user', 'order'])
+            ->whereDoesntHave('order', function ($q) {
+                $q->whereIn('status', ['waiting', 'in_progress', 'pending_confirmation', 'completed']);
+            })
+            ->orderBy('posted_at', 'desc');
 
-                if (!empty($categoryFilter)) {
-                    $adsQuery->where('services_category_id', $categoryFilter);
-                }
+        if (!empty($categoryFilter)) {
+            $adsQuery->where('services_category_id', $categoryFilter);
+        }
 
-                $ads = $adsQuery->limit(6)->get();
-            @endphp
-
+        $ads = $adsQuery->limit(6)->get();
+    @endphp
             <form method="GET" action="{{ url()->current() }}" class="mb-4">
                 <label for="category" class="font-semibold">Фильтр по категории:</label>
                 <select name="category" id="category" onchange="this.form.submit()" class="ml-2 border rounded p-1">

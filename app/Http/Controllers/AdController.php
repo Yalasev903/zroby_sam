@@ -83,10 +83,14 @@ class AdController extends Controller
 
         return view('ads.completed_ads', compact('ads'));
     }
-
     public function myAds()
     {
-        $ads = Ad::where('user_id', auth()->id())->latest()->get();
+        $ads = Ad::where('user_id', auth()->id())
+                 ->whereDoesntHave('order', function ($q) {
+                     $q->where('status', 'completed');
+                 })
+                 ->latest()
+                 ->get();
         return view('ads.my_ads', compact('ads'));
     }
 
