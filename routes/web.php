@@ -12,6 +12,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\ReviewController;
 
 Route::get('/', function () {
     return view('home');
@@ -95,6 +96,11 @@ Route::middleware([
     // Маршруты для скарг (для заказчиков)
     Route::get('/orders/{order}/ticket/create', [TicketController::class, 'create'])->name('tickets.create');
     Route::post('/orders/{order}/ticket', [TicketController::class, 'store'])->name('tickets.store');
+
+    // Форма для создания отзыва
+    Route::get('/orders/{order}/review/create', [\App\Http\Controllers\ReviewController::class, 'create'])->name('reviews.create');
+    // Сохранение отзыва
+    Route::post('/orders/{order}/review', [\App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
 });
 
 // News Routes

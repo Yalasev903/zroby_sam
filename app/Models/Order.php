@@ -55,4 +55,9 @@ class Order extends Model
     {
         return $this->hasOne(\App\Models\Ticket::class);
     }
+
+    public function review()
+    {
+        return $this->hasOne(\App\Models\Review::class);
+    }
 }

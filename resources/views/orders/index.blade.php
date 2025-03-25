@@ -127,6 +127,10 @@
                                     @endif
                                 @endif
                             @endif
+
+                            @if(auth()->user()->role == 'customer' && $order->status == 'completed' && !$order->review)
+                                <a href="{{ route('reviews.create', $order) }}" class="btn btn-primary btn-sm">Залишити відгук</a>
+                            @endif
                         </div>
                     </div>
                 </div>
