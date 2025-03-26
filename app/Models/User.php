@@ -39,13 +39,10 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 
     public function skills()
     {
@@ -61,7 +58,7 @@ class User extends Authenticatable
     {
         return $this->profile_photo_path
             ? asset('storage/' . $this->profile_photo_path)
-            : asset('storage/avatars/default-avatar.webp'); // Путь к изображению по умолчанию
+            : asset('images/default-avatar.webp'); // Путь к изображению по умолчанию
     }
 
     public function updateRating(int $points): void
@@ -74,23 +71,16 @@ class User extends Authenticatable
         return $this->hasMany(Ad::class);
     }
 
-    /**
-     * Если необходимо, чтобы пользователь (например, исполнитель) мог получать комментарии.
-     */
     public function receivedComments()
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
 
-    /**
-     * Комментарии, оставленные пользователем.
-     */
     public function comments()
     {
         return $this->hasMany(Comment::class);
     }
 
-    // Добавляем связь для полученных отзывов (для исполнителя)
     public function reviewsReceived()
     {
         return $this->hasMany(\App\Models\Review::class, 'executor_id');

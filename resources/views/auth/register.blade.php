@@ -71,11 +71,11 @@
             </div>
 
             <!-- Поле для загрузки изображения (аватар) -->
-            <div class="mt-4">
+            {{-- <div class="mt-4">
                 <x-label for="profile_photo_path" value="{{ __('Завантажте фото профілю') }}" />
                 <x-input id="profile_photo_path" class="block mt-1 w-full border-none shadow-md"
                          type="file" name="avatar" accept="image/*" />
-            </div>
+            </div> --}}
 
             <!-- Вибір ролі -->
             <div class="mt-4">
