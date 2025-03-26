@@ -70,6 +70,15 @@
                         </a>
                     </li>
                     <li class="sidebar-list__item">
+                        <a href="{{ route('admin.settings') }}" class="sidebar-list__link">
+                            <span class="sidebar-list__icon">
+                                <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon10.svg') }}" alt="" class="icon">
+                                <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon-active10.svg') }}" alt="" class="icon icon-active">
+                            </span>
+                            <span class="text">Налаштування повідомлень</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-list__item">
                         <!-- Исправлено: правильное имя маршрута -->
                         <a href="{{ route('admin.tickets.table') }}" class="sidebar-list__link">
                             <span class="sidebar-list__icon">

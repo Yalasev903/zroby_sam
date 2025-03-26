@@ -31,42 +31,75 @@ Route::middleware([
             : view('dashboard');
     })->name('dashboard');
 
-    // Маршруты для админа (опущены для краткости) ...
+    // Маршруты для админа
+    Route::middleware(['role:admin'])->group(function () {
+        Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+        Route::post('/admin/users/{user}/update', [AdminController::class, 'updateUserRole'])->name('admin.users.update');
+        Route::delete('/admin/users/{user}', [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
+
+        // Управление заказами
+        Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
+        Route::post('/admin/orders/{order}/update', [AdminController::class, 'updateOrderStatus'])->name('admin.orders.update');
+        Route::delete('/admin/orders/{order}', [AdminController::class, 'destroyOrder'])->name('admin.orders.destroy');
+
+        // Управление объявлениями
+        Route::get('/admin/ads', [AdminController::class, 'ads'])->name('admin.ads');
+        Route::get('/admin/ads/{ad}/edit', [AdminController::class, 'editAd'])->name('admin.ads.edit');
+        Route::post('/admin/ads/{ad}/update', [AdminController::class, 'updateAd'])->name('admin.ads.update');
+        Route::delete('/admin/ads/{ad}', [AdminController::class, 'destroyAd'])->name('admin.ads.destroy');
+
+        Route::get('/admin/chat-messages', [AdminController::class, 'chatMessages'])->name('admin.chat.messages');
+        Route::delete('/admin/chat-messages/{id}', [AdminController::class, 'destroyChatMessage'])->name('admin.chat.messages.destroy');
+
+        // Таблицы
+        Route::get('/admin/ads-table', [AdminController::class, 'adsTable'])->name('admin.ads.table');
+        Route::get('/admin/chat-table', [AdminController::class, 'chatTable'])->name('admin.chat.table');
+        Route::get('/admin/orders-table', [AdminController::class, 'ordersTable'])->name('admin.orders.table');
+        Route::get('/admin/users-table', [AdminController::class, 'usersTable'])->name('admin.users.table');
+        Route::get('/admin/tickets-table', [AdminController::class, 'ticketsTable'])->name('admin.tickets.table');
+
+        // Настройки админки
+        Route::get('/admin/settings', [AdminController::class, 'showSettingsForm'])->name('admin.settings');
+        Route::post('/admin/settings', [AdminController::class, 'updateSettings'])->name('admin.settings.update');
+
+        // Приветствия
+        Route::get('/admin/greetings', [AdminController::class, 'greetings'])->name('admin.greetings');
+        Route::post('/admin/greetings/resend', [AdminController::class, 'resendGreeting'])->name('admin.greetings.resend');
+
+        // Разрешение тикетов
+        Route::post('/admin/tickets/{ticket}/resolve', [AdminController::class, 'resolveTicket'])->name('admin.tickets.resolve');
+    });
 
     Route::get('/executors', [ExecutorController::class, 'index'])->name('executors.index');
     Route::get('/my_profile/{user}', [ProfileController::class, 'showProfile'])->name('my_profile.show');
     Route::get('/my_profile/settings/{user}', [ProfileController::class, 'showProfileSettings'])->name('profile.settings');
-    Route::get('/ads/create', [AdController::class, 'create'])->name('ads.create');
-    Route::post('/ads', [AdController::class, 'store'])->name('ads.store');
-    Route::get('/ads', [AdController::class, 'index'])->name('ads.index');
-    Route::get('/ads/{ad}/edit', [AdController::class, 'edit'])->name('ads.edit');
-    Route::put('/ads/{ad}', [AdController::class, 'update'])->name('ads.update');
-    Route::delete('/ads/{ad}', [AdController::class, 'destroy'])->name('ads.destroy');
+
+    // Объявления
+    Route::resource('ads', AdController::class);
     Route::get('/my-ads', [AdController::class, 'myAds'])->name('ads.my');
+
+    // Комментарии
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 
-    // Маршруты для заказов
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::post('/orders/{ad}/take', [OrderController::class, 'takeOrder'])->name('orders.take');
+    // Заказы
+    Route::resource('orders', OrderController::class);
     Route::post('/orders/{order}/approve', [OrderController::class, 'approveOrder'])->name('orders.approve');
     Route::post('/orders/{order}/complete', [OrderController::class, 'completeOrder'])->name('orders.complete');
     Route::post('/orders/{order}/confirm', [OrderController::class, 'confirmOrder'])->name('orders.confirm');
     Route::post('/orders/{order}/cancel', [OrderController::class, 'cancelOrder'])->name('orders.cancel');
 
-    // Маршрут для уведомлений
+    // Уведомления
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
 
-    // Маршруты для скарг (для заказчиков)
-    Route::get('/orders/{order}/ticket/create', [TicketController::class, 'create'])->name('tickets.create');
-    Route::post('/orders/{order}/ticket', [TicketController::class, 'store'])->name('tickets.store');
+    // Скарги (тикеты)
+    Route::resource('tickets', TicketController::class);
 
-    // Отзывы от заказчика об исполнителе
-    Route::get('/orders/{order}/review/create', [ReviewController::class, 'create'])->name('reviews.create');
-    Route::post('/orders/{order}/review', [ReviewController::class, 'store'])->name('reviews.store');
-
-    // Отзывы от исполнителя о заказчике
-    Route::get('/orders/{order}/review-customer/create', [ReviewController::class, 'createCustomerReview'])->name('reviews.create_customer');
-    Route::post('/orders/{order}/review-customer', [ReviewController::class, 'storeCustomerReview'])->name('reviews.store_customer');
+    // Отзывы
+    Route::resource('reviews', ReviewController::class);
 });
 
-// News Routes (опущены для краткости)
+// Новости
+Route::resource('news', NewsController::class);
+Route::get('/news/{slug}/details', [NewsController::class, 'show'])->name('news.details');
+Route::get('/news/category/{id}', [NewsController::class, 'byCategory'])->name('news.byCategory');
+Route::get('/news/categories', [NewsCategoryController::class, 'index'])->name('news.categories');
