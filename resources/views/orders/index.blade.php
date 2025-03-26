@@ -127,10 +127,13 @@
                                     @endif
                                 @endif
                             @endif
+                            @if(auth()->user()->role == 'customer' && $order->status == 'completed' && !$order->reviews()->where('review_by', 'customer')->exists())
+                            <a href="{{ route('reviews.create', $order) }}" class="btn btn-primary btn-sm">Залишити відгук про виконавця</a>
+                        @endif
 
-                            @if(auth()->user()->role == 'customer' && $order->status == 'completed' && !$order->review)
-                                <a href="{{ route('reviews.create', $order) }}" class="btn btn-primary btn-sm">Залишити відгук</a>
-                            @endif
+                        @if(auth()->user()->role == 'executor' && $order->status == 'completed' && !$order->reviews()->where('review_by', 'executor')->exists())
+                            <a href="{{ route('reviews.create_customer', $order) }}" class="btn btn-primary btn-sm">Залишити відгук про замовника</a>
+                        @endif
                         </div>
                     </div>
                 </div>

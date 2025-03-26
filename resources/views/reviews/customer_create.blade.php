@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="container mt-4">
-    <h2>Залишити відгук про виконавця</h2>
-    <form action="{{ route('reviews.store', $order) }}" method="POST">
+    <h2>Залишити відгук про замовника</h2>
+    <form action="{{ route('reviews.store_customer', $order) }}" method="POST">
         @csrf
         <div class="mb-3">
             <label for="rating" class="form-label">Оцінка (1-5)</label>

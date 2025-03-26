@@ -13,25 +13,25 @@ class Review extends Model
          'order_id',
          'customer_id',
          'executor_id',
+         'review_by',
          'rating',
          'comment',
     ];
 
-    // Связь с заказом
     public function order()
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(\App\Models\Order::class);
     }
 
-    // Связь с заказчиком
+    // Отзыв, оставленный заказчиком (о исполнителе) – customer_id является автором
     public function customer()
     {
-        return $this->belongsTo(User::class, 'customer_id');
+        return $this->belongsTo(\App\Models\User::class, 'customer_id');
     }
 
-    // Связь с исполнителем
+    // Отзыв, оставленный исполнителем (о заказчике) – executor_id является автором
     public function executor()
     {
-        return $this->belongsTo(User::class, 'executor_id');
+        return $this->belongsTo(\App\Models\User::class, 'executor_id');
     }
 }

@@ -21,13 +21,10 @@ class Order extends Model
         'end_time',
     ];
 
-    // Приведение полей времени к типу datetime
     protected $casts = [
         'start_time' => 'datetime',
         'end_time'   => 'datetime',
     ];
-
-    // Остальные связи и методы модели...
 
     // Связь с объявлением
     public function ad()
@@ -35,7 +32,7 @@ class Order extends Model
         return $this->belongsTo(Ad::class, 'ad_id');
     }
 
-    // Связь с категорией послуг
+    // Связь с категорией услуг
     public function servicesCategory()
     {
         return $this->belongsTo(ServiceCategory::class, 'services_category_id');
@@ -56,8 +53,9 @@ class Order extends Model
         return $this->hasOne(\App\Models\Ticket::class);
     }
 
-    public function review()
+    // Отзывы по заказу (всего два: от заказчика и от исполнителя)
+    public function reviews()
     {
-        return $this->hasOne(\App\Models\Review::class);
+        return $this->hasMany(\App\Models\Review::class);
     }
 }

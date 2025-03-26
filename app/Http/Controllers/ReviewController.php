@@ -9,59 +9,112 @@ use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
-    // Форма для создания отзыва
+    /**
+     * Форма для создания отзыва заказчиком об исполнителе.
+     */
     public function create(Order $order)
     {
         // Проверяем, что пользователь – заказчик данного заказа
         if (Auth::user()->role !== 'customer' || Auth::id() !== $order->user_id) {
             abort(403, 'Доступ запрещен.');
         }
-
-        // Отзыв можно оставить только для завершённых заказов
         if ($order->status !== 'completed') {
             return redirect()->back()->with('error', 'Замовлення не завершено.');
         }
+        // Проверяем, что заказчик ещё не оставлял отзыв
+        if ($order->reviews()->where('review_by', 'customer')->exists()) {
+            return redirect()->back()->with('error', 'Ви вже залишили відгук за це замовлення.');
+        }
+        return view('reviews.create', compact('order'));
+    }
 
-        // Если отзыв уже существует, повторное добавление запрещено
-        if ($order->review) {
+    /**
+     * Сохранение отзыва заказчика об исполнителе.
+     */
+    public function store(Request $request, Order $order)
+    {
+        if (Auth::user()->role !== 'customer' || Auth::id() !== $order->user_id) {
+            abort(403, 'Доступ заборонено.');
+        }
+        if ($order->status !== 'completed') {
+            return redirect()->back()->with('error', 'Замовлення не завершено.');
+        }
+        if ($order->reviews()->where('review_by', 'customer')->exists()) {
             return redirect()->back()->with('error', 'Ви вже залишили відгук за це замовлення.');
         }
 
-        return view('reviews.create', compact('order'));
+        $data = $request->validate([
+            'rating'  => 'required|integer|min:1|max:5',
+            'comment' => 'nullable|string',
+        ]);
+
+        $data['order_id'] = $order->id;
+        $data['customer_id'] = Auth::id();
+        $data['executor_id'] = $order->executor_id;
+        $data['review_by'] = 'customer';
+
+        Review::create($data);
+
+        // Если оценка отзыва больше 3, начисляем дополнительный балл исполнителю
+        if ($data['rating'] > 3 && $order->executor) {
+            $order->executor->fresh()->updateRating(1);
+        }
+
+        return redirect()->route('orders.index')->with('success', 'Відгук успішно залишено.');
     }
-    // Сохранение отзыва
-    public function store(Request $request, Order $order)
+
+    /**
+     * Форма для создания отзыва исполнителем о заказчике.
+     */
+    public function createCustomerReview(Order $order)
     {
-    if (Auth::user()->role !== 'customer' || Auth::id() !== $order->user_id) {
-        abort(403, 'Доступ заборонено.');
+        // Проверяем, что пользователь – исполнитель данного заказа
+        if (Auth::user()->role !== 'executor' || Auth::id() !== $order->executor_id) {
+            abort(403, 'Доступ запрещен.');
+        }
+        if ($order->status !== 'completed') {
+            return redirect()->back()->with('error', 'Замовлення не завершено.');
+        }
+        // Проверяем, что исполнитель ещё не оставлял отзыв о заказчике
+        if ($order->reviews()->where('review_by', 'executor')->exists()) {
+            return redirect()->back()->with('error', 'Ви вже залишили відгук за це замовлення.');
+        }
+        return view('reviews.customer_create', compact('order'));
     }
 
-    if ($order->status !== 'completed') {
-        return redirect()->back()->with('error', 'Замовлення не завершено.');
-    }
+    /**
+     * Сохранение отзыва исполнителем о заказчике.
+     */
+    public function storeCustomerReview(Request $request, Order $order)
+    {
+        if (Auth::user()->role !== 'executor' || Auth::id() !== $order->executor_id) {
+            abort(403, 'Доступ заборонено.');
+        }
+        if ($order->status !== 'completed') {
+            return redirect()->back()->with('error', 'Замовлення не завершено.');
+        }
+        if ($order->reviews()->where('review_by', 'executor')->exists()) {
+            return redirect()->back()->with('error', 'Ви вже залишили відгук за це замовлення.');
+        }
 
-    if ($order->review) {
-        return redirect()->back()->with('error', 'Ви вже залишили відгук за це замовлення.');
-    }
+        $data = $request->validate([
+            'rating'  => 'required|integer|min:1|max:5',
+            'comment' => 'nullable|string',
+        ]);
 
-    $data = $request->validate([
-        'rating'  => 'required|integer|min:1|max:5',
-        'comment' => 'nullable|string',
-    ]);
+        $data['order_id'] = $order->id;
+        // При отзыве исполнителя объектом отзыва является заказчик
+        $data['customer_id'] = $order->user_id;
+        $data['executor_id'] = Auth::id();
+        $data['review_by'] = 'executor';
 
-    $data['order_id'] = $order->id;
-    $data['customer_id'] = Auth::id();
-    $data['executor_id'] = $order->executor_id;
+        Review::create($data);
 
-    // Создание отзыва
-    Review::create($data);
+        // Если оценка отзыва больше 3, начисляем дополнительный балл заказчику
+        if ($data['rating'] > 3 && $order->customer) {
+            $order->customer->fresh()->updateRating(1);
+        }
 
-    // Если оценка отзыва больше 3, обновляем модель исполнителя и начисляем дополнительный балл
-    if ($data['rating'] > 3 && $order->executor) {
-        $executor = $order->executor->fresh();
-        $executor->updateRating(1);
-    }
-
-    return redirect()->route('orders.index')->with('success', 'Відгук успішно залишено.');
+        return redirect()->route('orders.index')->with('success', 'Відгук успішно залишено.');
     }
 }

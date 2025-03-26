@@ -45,8 +45,8 @@
                     Почати чат
                 </a>
 
-                <!-- Кнопка Відгуки с иконкой -->
-                @if($user->role === 'executor')
+                <!-- Кнопка Відгуки с иконкой для исполнителей и заказчиков -->
+                @if(in_array($user->role, ['executor', 'customer']))
                     <button type="button" class="btn btn-info mb-3" data-bs-toggle="modal" data-bs-target="#reviewsModal">
                         <i class="fas fa-star"></i> Відгуки
                     </button>
@@ -64,12 +64,12 @@
                     <div class="flex flex-wrap">
                         @if($user->role === 'executor' && !empty($userServices))
                             @foreach($userServices as $service)
-                                <div class="border-1 border-black-10 mb-10 mr-10 py-10 px-15 rounded-6">
+                                <div class="border border-gray-300 rounded p-2 m-1">
                                     <h6>{{ $service }}</h6>
                                 </div>
                             @endforeach
                         @elseif($user->role === 'customer')
-                            <div class="border-1 border-black-10 mb-10 mr-10 py-10 px-15 rounded-6">
+                            <div class="border border-gray-300 rounded p-2 m-1">
                                 <h6>{{ $user->company_name ?? 'Не указана' }}</h6>
                             </div>
                         @else
@@ -82,11 +82,11 @@
                     <h3>Категорія послуг та послуги</h3>
                     <div class="flex flex-wrap">
                         @if(isset($userCategory) && $userCategory)
-                            <div class="border-1 border-black-10 mb-10 mr-10 py-10 px-15 rounded-6">
+                            <div class="border border-gray-300 rounded p-2 m-1">
                                 <h6>{{ $userCategory->name }}</h6>
                             </div>
                         @else
-                            <div class="border-1 border-black-10 mb-10 mr-10 py-10 px-15 rounded-6">
+                            <div class="border border-gray-300 rounded p-2 m-1">
                                 <h6>Категорія не вказана</h6>
                             </div>
                         @endif
@@ -134,8 +134,8 @@
     </div>
 </section>
 
-<!-- Модальное окно для отображения отзывов в профиле -->
-@if($user && $user->role === 'executor')
+<!-- Модальное окно для отображения отзывов в профиле для исполнителей и заказчиков -->
+@if($user && in_array($user->role, ['executor', 'customer']))
 <div class="modal fade" id="reviewsModal" tabindex="-1" aria-labelledby="reviewsModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
@@ -145,7 +145,16 @@
       </div>
       <div class="modal-body">
         @php
-            $reviews = $user->reviewsReceived()->latest()->get();
+            if($user->role === 'executor'){
+                // Отзывы для исполнителя: отзыв оставлен заказчиком (review_by = 'customer')
+                $reviews = $user->reviewsReceived()->where('review_by', 'customer')->latest()->get();
+            } else {
+                // Для заказчика: выбираем отзывы, где заказчик является объектом (customer_id) и отзыв оставлен исполнителем
+                $reviews = \App\Models\Review::where('customer_id', $user->id)
+                            ->where('review_by', 'executor')
+                            ->latest()
+                            ->get();
+            }
         @endphp
 
         @if($reviews->isEmpty())
@@ -153,14 +162,32 @@
         @else
             <ul class="list-group">
                 @foreach($reviews as $review)
-                    <li class="list-group-item">
-                        <strong>Замовник:</strong> {{ $review->customer->name }}<br>
-                        <strong>Оцінка:</strong> {{ $review->rating }}<br>
-                        @if($review->comment)
-                            <strong>Коментар:</strong> {{ $review->comment }}
+                    <li class="list-group-item d-flex align-items-start">
+                        <!-- Аватар автора отзыва -->
+                        @if($review->review_by === 'customer')
+                            <img src="{{ $review->customer->profile_photo_path ? asset('storage/' . $review->customer->profile_photo_path) : asset('images/default-avatar.webp') }}"
+                                 alt="{{ $review->customer->name }}"
+                                 class="rounded-circle me-2"
+                                 style="width:40px; height:40px; object-fit: cover;">
+                        @else
+                            <img src="{{ $review->executor->profile_photo_path ? asset('storage/' . $review->executor->profile_photo_path) : asset('images/default-avatar.webp') }}"
+                                 alt="{{ $review->executor->name }}"
+                                 class="rounded-circle me-2"
+                                 style="width:40px; height:40px; object-fit: cover;">
                         @endif
-                        <br>
-                        <small class="text-muted">{{ $review->created_at->diffForHumans() }}</small>
+
+                        <div>
+                            @if($review->review_by === 'customer')
+                                <strong>Замовник:</strong> {{ $review->customer->name }}<br>
+                            @else
+                                <strong>Виконавець:</strong> {{ $review->executor->name }}<br>
+                            @endif
+                            <strong>Оцінка:</strong> {{ $review->rating }}<br>
+                            @if($review->comment)
+                                <strong>Коментар:</strong> {{ $review->comment }}<br>
+                            @endif
+                            <small class="text-muted">{{ $review->created_at->diffForHumans() }}</small>
+                        </div>
                     </li>
                 @endforeach
             </ul>
@@ -174,4 +201,13 @@
 </div>
 @endif
 
+<script>
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(function() {
+            alert('Ссылка скопирована в буфер обмена!');
+        }).catch(function(err) {
+            alert('Ошибка при копировании: ' + err);
+        });
+    }
+</script>
 @endsection

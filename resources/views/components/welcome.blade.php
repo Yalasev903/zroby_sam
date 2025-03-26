@@ -51,11 +51,9 @@
             @php
                 $categoryFilter = request('category');
                 $executorsQuery = User::where('role', 'executor');
-
                 if (!empty($categoryFilter)) {
                     $executorsQuery->where('services_category', $categoryFilter);
                 }
-
                 $executors = $executorsQuery->orderBy('created_at', 'desc')->limit(6)->get();
                 $categories = ServiceCategory::all();
             @endphp
@@ -115,8 +113,8 @@
                     <i class="fas fa-share-alt"></i> Поділитися
                 </button>
 
-                <!-- Кнопка Відгуки с иконкой (Font Awesome) -->
-                @if($user->role === 'executor')
+                <!-- Кнопка Відгуки с иконкой для исполнителей и заказчиков -->
+                @if(in_array($user->role, ['executor', 'customer']))
                     <button type="button" class="btn btn-info mt-2" data-bs-toggle="modal" data-bs-target="#reviewsModal">
                         <i class="fas fa-star"></i> Відгуки
                     </button>
@@ -128,7 +126,7 @@
 </div>
 
 <!-- Модальное окно для отображения отзывов -->
-@if($user && $user->role === 'executor')
+@if($user && in_array($user->role, ['executor', 'customer']))
 <div class="modal fade" id="reviewsModal" tabindex="-1" aria-labelledby="reviewsModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
@@ -138,7 +136,14 @@
       </div>
       <div class="modal-body">
         @php
-            $reviews = $user->reviewsReceived()->latest()->get();
+            if($user->role === 'executor'){
+                $reviews = $user->reviewsReceived()->where('review_by', 'customer')->latest()->get();
+            } else {
+                $reviews = \App\Models\Review::where('customer_id', $user->id)
+                            ->where('review_by', 'executor')
+                            ->latest()
+                            ->get();
+            }
         @endphp
 
         @if($reviews->isEmpty())
@@ -146,14 +151,31 @@
         @else
             <ul class="list-group">
                 @foreach($reviews as $review)
-                    <li class="list-group-item">
-                        <strong>Замовник:</strong> {{ $review->customer->name }}<br>
-                        <strong>Оцінка:</strong> {{ $review->rating }}<br>
-                        @if($review->comment)
-                            <strong>Коментар:</strong> {{ $review->comment }}
+                    <li class="list-group-item d-flex align-items-start">
+                        <!-- Аватар автора отзыва -->
+                        @if($review->review_by === 'customer')
+                            <img src="{{ $review->customer->profile_photo_path ? asset('storage/' . $review->customer->profile_photo_path) : asset('images/default-avatar.webp') }}"
+                                 alt="{{ $review->customer->name }}"
+                                 class="rounded-circle me-2"
+                                 style="width:40px; height:40px; object-fit: cover;">
+                        @else
+                            <img src="{{ $review->executor->profile_photo_path ? asset('storage/' . $review->executor->profile_photo_path) : asset('images/default-avatar.webp') }}"
+                                 alt="{{ $review->executor->name }}"
+                                 class="rounded-circle me-2"
+                                 style="width:40px; height:40px; object-fit: cover;">
                         @endif
-                        <br>
-                        <small class="text-muted">{{ $review->created_at->diffForHumans() }}</small>
+                        <div>
+                            @if($review->review_by === 'customer')
+                                <strong>Замовник:</strong> {{ $review->customer->name }}<br>
+                            @else
+                                <strong>Виконавець:</strong> {{ $review->executor->name }}<br>
+                            @endif
+                            <strong>Оцінка:</strong> {{ $review->rating }}<br>
+                            @if($review->comment)
+                                <strong>Коментар:</strong> {{ $review->comment }}<br>
+                            @endif
+                            <small class="text-muted">{{ $review->created_at->diffForHumans() }}</small>
+                        </div>
                     </li>
                 @endforeach
             </ul>
