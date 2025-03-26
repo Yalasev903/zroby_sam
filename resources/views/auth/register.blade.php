@@ -143,7 +143,7 @@
         const servicesContainer = document.getElementById('services-container');
         const servicesCheckboxes = document.getElementById('services-checkboxes');
 
-        // Обработка изменения роли: для замовника показываем поле компании, для виконавця – поле навичок
+        // Обработка изменения роли
         roleSelect.addEventListener('change', function () {
             const role = this.value;
             if (role === 'customer') {
@@ -191,17 +191,15 @@
             }
         });
 
-        // Инициализация: сброс видимости полей при загрузке страницы
+        // Инициализация при загрузке
         roleSelect.dispatchEvent(new Event('change'));
         servicesCategory.dispatchEvent(new Event('change'));
 
-        // Отключение кнопки отправки после первого сабмита формы для предотвращения двойного отправления
+        // Предотвращаем повторную отправку формы
         const registerForm = document.getElementById('registerForm');
         const registerSubmitButton = document.getElementById('registerSubmitButton');
         registerForm.addEventListener('submit', function(event) {
-            // Отключаем кнопку отправки
             registerSubmitButton.disabled = true;
-            // Можно добавить индикацию загрузки, например:
             registerSubmitButton.innerHTML = 'Обработка...';
         });
     </script>
