@@ -61,6 +61,15 @@
                         </a>
                     </li>
                     <li class="sidebar-list__item">
+                        <a href="{{ route('admin.notification.table') }}" class="sidebar-list__link">
+                            <span class="sidebar-list__icon">
+                                <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon3.svg') }}" alt="" class="icon">
+                                <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon-active3.svg') }}" alt="" class="icon icon-active">
+                            </span>
+                            <span class="text">Повідомлення</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-list__item">
                         <a href="{{ route('admin.greetings') }}" class="sidebar-list__link">
                             <span class="sidebar-list__icon">
                                 <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon7.svg') }}" alt="" class="icon">

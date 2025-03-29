@@ -1,0 +1,6 @@
+@include('admin.components_admin_dashboard.header')
+@include('admin.components_admin_dashboard.mobile_menu')
+@include('admin.components_admin_dashboard.dashboard_sidebar')
+@include('admin.components_admin_dashboard.dashboard_nav')
+@include('admin.components_admin_dashboard.notification_table_widget')
+@include('admin.components_admin_dashboard.footer')

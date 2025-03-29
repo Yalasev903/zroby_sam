@@ -20,12 +20,16 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
-        $users = User::all();
-        $orders = Order::with(['customer', 'executor'])->get();
-        $ads = Ad::with(['user', 'servicesCategory'])->get();
+        $users        = User::all();
+        $orders       = Order::with(['customer', 'executor'])->get();
+        $ads          = Ad::with(['user', 'servicesCategory'])->get();
         $chatMessages = ChMessage::orderBy('created_at', 'desc')->get();
-        $tickets = Ticket::with(['user', 'order'])->orderBy('created_at', 'desc')->get();
-        return view('admin.dashboard', compact('users', 'orders', 'ads', 'chatMessages', 'tickets'));
+        $tickets      = Ticket::with(['user', 'order'])->orderBy('created_at', 'desc')->get();
+
+        // Добавляем выборку уведомлений (все уведомления для админа)
+        $notifications = \App\Models\Notification::orderBy('created_at', 'desc')->get();
+
+        return view('admin.dashboard', compact('users', 'orders', 'ads', 'chatMessages', 'tickets', 'notifications'));
     }
 
     /**

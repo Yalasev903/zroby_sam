@@ -8,5 +8,6 @@
 @include('admin.components_admin_dashboard.ads_table_widget')
 @include('admin.components_admin_dashboard.orders_table_widget')
 @include('admin.components_admin_dashboard.tickets_table_widget')
+@include('admin.components_admin_dashboard.notification_table_widget')
 @include('admin.components_admin_dashboard.chat_message_table_widget')
 @include('admin.components_admin_dashboard.footer')

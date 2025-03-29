@@ -36,15 +36,31 @@ class NotificationController extends Controller
             }
 
     public function clearUserNotifications(Request $request)
-{
-    $user = auth()->user();
+    {
+        $user = auth()->user();
 
-    // Обновляем только уведомления, предназначенные данному пользователю и не очищённые ранее
-    Notification::where('user_id', $user->id)
-        ->whereNull('cleared_at')
-        ->update(['cleared_at' => now()]);
+        // Обновляем только уведомления, предназначенные данному пользователю и не очищённые ранее
+        Notification::where('user_id', $user->id)
+            ->whereNull('cleared_at')
+            ->update(['cleared_at' => now()]);
 
-    return redirect()->route('notifications.index')->with('status', 'Уведомления успешно очищены');
-}
+        return redirect()->route('notifications.index')->with('status', 'Уведомления успешно очищены');
+    }
 
+    public function notificationTable()
+    {
+        $notifications = \App\Models\Notification::orderBy('created_at', 'desc')->get();
+        return view('admin.pages.notification_table', compact('notifications'));
+    }
+
+    public function destroy($id)
+    {
+        // Поиск уведомления по id
+        $notification = \App\Models\Notification::findOrFail($id);
+
+        // Удаляем уведомление
+        $notification->delete();
+
+        return redirect()->route('admin.notification.table')->with('success', 'Повідомлення успішно видалено.');
+    }
 }

@@ -68,6 +68,14 @@ Route::middleware([
 
         // Разрешение тикетов
         Route::post('/admin/tickets/{ticket}/resolve', [AdminController::class, 'resolveTicket'])->name('admin.tickets.resolve');
+
+        // Маршрут для отображения таблицы уведомлений (админ)
+        Route::get('/admin/notifications-table', [\App\Http\Controllers\NotificationController::class, 'notificationTable'])
+        ->name('admin.notification.table');
+
+        // Удаление уведомления (для администратора)
+        Route::delete('/admin/notifications/{notification}/destroy', [\App\Http\Controllers\NotificationController::class, 'destroy'])
+        ->name('admin.notifications.destroy');
     });
 
     Route::get('/executors', [ExecutorController::class, 'index'])->name('executors.index');
