@@ -90,6 +90,7 @@ Route::middleware([
 
     // Уведомления
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/clear', [NotificationController::class, 'clearUserNotifications'])->name('notifications.clear');
 
     // Скарги (тикеты)
     Route::resource('tickets', TicketController::class);

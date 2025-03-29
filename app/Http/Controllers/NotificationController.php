@@ -11,15 +11,40 @@ class NotificationController extends Controller
     {
         $user = auth()->user();
 
-        // Выбираем только те уведомления, которые предназначены именно этому пользователю (без общих уведомлений)
-        $notifications = Notification::where('user_id', $user->id)
-            ->orWhere(function ($query) use ($user) {
-                $query->whereNull('user_id')
-                      ->where('created_at', '>=', $user->created_at); // Только уведомления после регистрации
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        return view('notifications.index', compact('notifications'));
+        if ($user->isAdmin()) {
+            // Для администратора: показываем все уведомления, включая скрытые, если они не старше 60 дней
+            $notifications = Notification::orderBy('created_at', 'desc')
+                ->where(function ($query) {
+                    $query->whereNull('cleared_at')
+                          ->orWhere('cleared_at', '>=', now()->subDays(60));
+                })
+                ->get();
+        } else {
+            // Для обычного пользователя: показываем уведомления, где cleared_at равен NULL
+            $notifications = Notification::where(function ($query) use ($user) {
+                    $query->where('user_id', $user->id)
+                          ->orWhere(function ($query) use ($user) {
+                              $query->whereNull('user_id')
+                                    ->where('created_at', '>=', $user->created_at);
+                          });
+                })
+                ->whereNull('cleared_at')
+                ->orderBy('created_at', 'desc')
+                ->get();
     }
+                return view('notifications.index', compact('notifications'));
+            }
+
+    public function clearUserNotifications(Request $request)
+{
+    $user = auth()->user();
+
+    // Обновляем только уведомления, предназначенные данному пользователю и не очищённые ранее
+    Notification::where('user_id', $user->id)
+        ->whereNull('cleared_at')
+        ->update(['cleared_at' => now()]);
+
+    return redirect()->route('notifications.index')->with('status', 'Уведомления успешно очищены');
+}
+
 }

@@ -16,10 +16,13 @@
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-bold text-gray-700">Ваші повідомлення</h3>
                 @if($notifications->isNotEmpty())
-                    <button class="text-sm text-red-600 hover:underline" onclick="confirm('Ви впевнені?')">
+                <form action="{{ route('notifications.clear') }}" method="POST" onsubmit="return confirm('Ви впевнені?')">
+                    @csrf
+                    <button type="submit" class="text-sm text-red-600 hover:underline">
                         Очистити всі
                     </button>
-                @endif
+                </form>
+            @endif
             </div>
 
             @if($notifications->isNotEmpty())
