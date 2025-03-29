@@ -102,6 +102,11 @@
                             $unreadMessages = \App\Models\ChMessage::where('to_id', Auth::id())
                                 ->where('seen', 0)
                                 ->count();
+
+                                $unreadNotifications = \App\Models\Notification::where('user_id', Auth::id())
+                                    ->where('read', false)
+                                    ->whereNull('cleared_at')
+                                    ->count();
                         @endphp
 
                         <x-slot name="content">
@@ -118,6 +123,11 @@
                             <x-dropdown-link href="{{ route('notifications.index') }}">
                                 <i class="bi bi-bell mr-2"></i>
                                 {{ __('Повідомлення') }}
+                                @if($unreadNotifications > 0)
+                                    <span class="ml-1 bg-red-500 text-white rounded-full px-2 py-0.5 text-xs">
+                                        {{ $unreadNotifications }}
+                                    </span>
+                                @endif
                             </x-dropdown-link>
 
                             <x-dropdown-link href="{{ route('profile.show') }}">
@@ -251,6 +261,11 @@
                 <x-dropdown-link href="{{ route('notifications.index') }}">
                     <i class="bi bi-bell mr-2"></i>
                     {{ __('Повідомлення') }}
+                    @if($unreadNotifications > 0)
+                        <span class="ml-1 bg-red-500 text-white rounded-full px-2 py-0.5 text-xs">
+                            {{ $unreadNotifications }}
+                        </span>
+                    @endif
                 </x-dropdown-link>
 
                 <x-dropdown-link href="{{ route('profile.show') }}">

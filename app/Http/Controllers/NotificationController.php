@@ -11,30 +11,43 @@ class NotificationController extends Controller
     {
         $user = auth()->user();
 
+        // Находим все непрочитанные уведомления пользователя
+        $unreadNotifications = \App\Models\Notification::where('user_id', $user->id)
+            ->where('read', false)
+            ->whereNull('cleared_at')
+            ->get();
+
+        // Помечаем их как прочитанные
+        foreach ($unreadNotifications as $notification) {
+            $notification->read = true;
+            $notification->save();
+        }
+
+        // Дальше получаем все уведомления (или фильтруем, как вам нужно)
+        // В данном примере берём все уведомления, неочищённые или очищённые не старше 60 дней
+        // (Это условие вы уже использовали для админа/пользователя)
         if ($user->isAdmin()) {
-            // Для администратора: показываем все уведомления, включая скрытые, если они не старше 60 дней
-            $notifications = Notification::orderBy('created_at', 'desc')
+            $notifications = \App\Models\Notification::orderBy('created_at', 'desc')
                 ->where(function ($query) {
                     $query->whereNull('cleared_at')
-                          ->orWhere('cleared_at', '>=', now()->subDays(60));
+                        ->orWhere('cleared_at', '>=', now()->subDays(60));
                 })
                 ->get();
         } else {
-            // Для обычного пользователя: показываем уведомления, где cleared_at равен NULL
-            $notifications = Notification::where(function ($query) use ($user) {
+            $notifications = \App\Models\Notification::where(function ($query) use ($user) {
                     $query->where('user_id', $user->id)
-                          ->orWhere(function ($query) use ($user) {
-                              $query->whereNull('user_id')
+                        ->orWhere(function ($query) use ($user) {
+                            $query->whereNull('user_id')
                                     ->where('created_at', '>=', $user->created_at);
-                          });
+                        });
                 })
                 ->whereNull('cleared_at')
                 ->orderBy('created_at', 'desc')
                 ->get();
-    }
-                return view('notifications.index', compact('notifications'));
-            }
+        }
 
+        return view('notifications.index', compact('notifications'));
+    }
     public function clearUserNotifications(Request $request)
     {
         $user = auth()->user();
