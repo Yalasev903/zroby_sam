@@ -13,6 +13,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\PortfolioProjectController;
 
 Route::get('/', function () {
     return view('home');
@@ -91,6 +92,7 @@ Route::middleware([
 
     // Заказы
     Route::resource('orders', OrderController::class);
+    Route::post('/orders/{ad}/take', [OrderController::class, 'takeOrder'])->name('orders.take');
     Route::post('/orders/{order}/approve', [OrderController::class, 'approveOrder'])->name('orders.approve');
     Route::post('/orders/{order}/complete', [OrderController::class, 'completeOrder'])->name('orders.complete');
     Route::post('/orders/{order}/confirm', [OrderController::class, 'confirmOrder'])->name('orders.confirm');
@@ -105,6 +107,12 @@ Route::middleware([
 
     // Отзывы
     Route::resource('reviews', ReviewController::class);
+
+    //Портфолио
+    Route::middleware('auth')->group(function () {
+        Route::get('/portfolio/create', [PortfolioProjectController::class, 'create'])->name('portfolio.create');
+        Route::post('/portfolio', [PortfolioProjectController::class, 'store'])->name('portfolio.store');
+    });
 });
 
 // Новости
