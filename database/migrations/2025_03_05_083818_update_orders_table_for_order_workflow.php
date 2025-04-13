@@ -9,48 +9,50 @@ class UpdateOrdersTableForOrderWorkflow extends Migration
     public function up(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            // Если ранее существовал столбец category, удаляем его
             if (Schema::hasColumn('orders', 'category')) {
                 $table->dropColumn('category');
             }
 
-            // Привязка заказа к объявлению
             $table->foreignId('ad_id')
-                  ->nullable()
-                  ->constrained('ads')
-                  ->onDelete('cascade');
+                ->nullable()
+                ->constrained('ads')
+                ->onDelete('cascade');
 
-            // Привязка заказа к исполнителю
             $table->foreignId('executor_id')
-                  ->nullable()
-                  ->constrained('users')
-                  ->onDelete('cascade');
+                ->nullable()
+                ->constrained('users')
+                ->onDelete('cascade');
 
-            // Статус заказа с добавлением нового статуса "cancelled"
             $table->enum('status', ['new', 'waiting', 'in_progress', 'pending_confirmation', 'completed', 'cancelled'])
-                  ->default('new');
+                ->default('new');
 
-            // Связь с категорией услуг
             $table->foreignId('services_category_id')
-                  ->nullable()
-                  ->constrained('services_category')
-                  ->onDelete('set null');
+                ->nullable()
+                ->constrained('services_category')
+                ->onDelete('set null');
 
-            // Время начала и окончания заказа
             $table->timestamp('start_time')->nullable();
             $table->timestamp('end_time')->nullable();
 
-            // Новые поля для отмены заказа
             $table->text('cancellation_reason')->nullable();
-            $table->string('cancelled_by')->nullable(); // значение: 'customer' или 'executor'
+            $table->string('cancelled_by')->nullable();
             $table->timestamp('cancelled_at')->nullable();
+
+            $table->enum('payment_type', ['none', 'guarantee'])->nullable()->default('none');
+            $table->decimal('guarantee_amount', 10, 2)->nullable();
+            $table->string('guarantee_card_number')->nullable();
+
+            $table->enum('guarantee_payment_status', ['pending', 'paid', 'transferring', 'transferred'])
+                ->nullable()
+                ->default('pending');
+            $table->timestamp('guarantee_paid_at')->nullable();
+            $table->timestamp('guarantee_transferred_at')->nullable();
         });
     }
 
     public function down(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            // Удаляем внешние ключи и столбцы, добавленные в up()
             $table->dropForeign(['ad_id']);
             $table->dropColumn('ad_id');
 
@@ -60,7 +62,20 @@ class UpdateOrdersTableForOrderWorkflow extends Migration
             $table->dropForeign(['services_category_id']);
             $table->dropColumn('services_category_id');
 
-            $table->dropColumn(['status', 'start_time', 'end_time', 'cancellation_reason', 'cancelled_by', 'cancelled_at']);
+            $table->dropColumn([
+                'status',
+                'start_time',
+                'end_time',
+                'cancellation_reason',
+                'cancelled_by',
+                'cancelled_at',
+                'payment_type',
+                'guarantee_amount',
+                'guarantee_card_number',
+                'guarantee_payment_status',
+                'guarantee_paid_at',
+                'guarantee_transferred_at',
+            ]);
         });
     }
 }

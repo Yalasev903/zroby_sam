@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Review;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ReviewController extends Controller
 {
@@ -68,17 +69,18 @@ class ReviewController extends Controller
      */
     public function createCustomerReview(Order $order)
     {
-        // Проверяем, что пользователь – исполнитель данного заказа
         if (Auth::user()->role !== 'executor' || Auth::id() !== $order->executor_id) {
-            abort(403, 'Доступ запрещен.');
+            abort(403, 'Доступ заборонено.');
         }
+
         if ($order->status !== 'completed') {
             return redirect()->back()->with('error', 'Замовлення не завершено.');
         }
-        // Проверяем, что исполнитель ещё не оставлял отзыв о заказчике
+
         if ($order->reviews()->where('review_by', 'executor')->exists()) {
             return redirect()->back()->with('error', 'Ви вже залишили відгук за це замовлення.');
         }
+
         return view('reviews.customer_create', compact('order'));
     }
 
@@ -90,9 +92,11 @@ class ReviewController extends Controller
         if (Auth::user()->role !== 'executor' || Auth::id() !== $order->executor_id) {
             abort(403, 'Доступ заборонено.');
         }
+
         if ($order->status !== 'completed') {
             return redirect()->back()->with('error', 'Замовлення не завершено.');
         }
+
         if ($order->reviews()->where('review_by', 'executor')->exists()) {
             return redirect()->back()->with('error', 'Ви вже залишили відгук за це замовлення.');
         }
@@ -103,14 +107,12 @@ class ReviewController extends Controller
         ]);
 
         $data['order_id'] = $order->id;
-        // При отзыве исполнителя объектом отзыва является заказчик
         $data['customer_id'] = $order->user_id;
         $data['executor_id'] = Auth::id();
         $data['review_by'] = 'executor';
 
         Review::create($data);
 
-        // Если оценка отзыва больше 3, начисляем дополнительный балл заказчику
         if ($data['rating'] > 3 && $order->customer) {
             $order->customer->fresh()->updateRating(1);
         }

@@ -21,6 +21,9 @@ Route::get('/', function () {
 
 Route::post('/register', [RegisteredUserController::class, 'store'])->name('register');
 
+// Вебхуки и редирект после оплаты
+Route::post('/orders/{order}/payment/callback', [OrderController::class, 'paymentCallback'])->name('orders.paymentCallback');
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -97,6 +100,15 @@ Route::middleware([
     Route::post('/orders/{order}/complete', [OrderController::class, 'completeOrder'])->name('orders.complete');
     Route::post('/orders/{order}/confirm', [OrderController::class, 'confirmOrder'])->name('orders.confirm');
     Route::post('/orders/{order}/cancel', [OrderController::class, 'cancelOrder'])->name('orders.cancel');
+    Route::post('/orders/{order}/guarantee/transfer', [OrderController::class, 'confirmGuaranteeTransfer'])->name('orders.confirmGuarantee');
+    Route::get('/orders/{order}/guarantee/approve', [OrderController::class, 'approveGuarantee'])->name('orders.approveGuarantee');
+    Route::post('/orders/{order}/guarantee/set', [OrderController::class, 'setGuarantee'])->name('orders.setGuarantee');
+
+    Route::get('/orders/{order}/payment/confirm', [OrderController::class, 'confirmPayment'])->name('orders.confirmPayment');
+    Route::get('/reviews/{order}/create_customer', [ReviewController::class, 'createCustomerReview'])->name('reviews.create_customer');
+    Route::post('/reviews/{order}/store_customer', [ReviewController::class, 'storeCustomerReview'])->name('reviews.store_customer');
+    Route::get('/reviews/{order}/create', [ReviewController::class, 'create'])->name('reviews.create');
+    Route::post('/reviews/{order}', [ReviewController::class, 'store'])->name('reviews.store');
 
     // Уведомления
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
@@ -106,7 +118,7 @@ Route::middleware([
     Route::resource('tickets', TicketController::class);
 
     // Отзывы
-    Route::resource('reviews', ReviewController::class);
+    // Route::resource('reviews', ReviewController::class);
 
     //Портфолио
     Route::middleware('auth')->group(function () {
