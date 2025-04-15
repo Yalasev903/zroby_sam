@@ -94,6 +94,7 @@ Route::middleware([
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 
     // Заказы
+    Route::post('/orders/{order}/no-guarantee', [OrderController::class, 'setNoGuarantee'])->name('orders.setNoGuarantee');
     Route::resource('orders', OrderController::class);
     Route::post('/orders/{ad}/take', [OrderController::class, 'takeOrder'])->name('orders.take');
     Route::post('/orders/{order}/approve', [OrderController::class, 'approveOrder'])->name('orders.approve');
@@ -115,7 +116,10 @@ Route::middleware([
     Route::post('/notifications/clear', [NotificationController::class, 'clearUserNotifications'])->name('notifications.clear');
 
     // Скарги (тикеты)
-    Route::resource('tickets', TicketController::class);
+    Route::get('/tickets/create/{order}', [TicketController::class, 'create'])->name('tickets.create');
+    Route::post('/tickets/{order}', [TicketController::class, 'store'])->name('tickets.store');
+
+    // Route::resource('tickets', TicketController::class);
 
     // Отзывы
     // Route::resource('reviews', ReviewController::class);

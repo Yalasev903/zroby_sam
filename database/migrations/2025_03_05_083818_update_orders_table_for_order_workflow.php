@@ -38,7 +38,8 @@ class UpdateOrdersTableForOrderWorkflow extends Migration
             $table->string('cancelled_by')->nullable();
             $table->timestamp('cancelled_at')->nullable();
 
-            $table->enum('payment_type', ['none', 'guarantee'])->nullable()->default('none');
+            // ✅ Добавили 'no_guarantee' в список значений ENUM
+            $table->enum('payment_type', ['none', 'guarantee', 'no_guarantee'])->nullable()->default('none');
             $table->decimal('guarantee_amount', 10, 2)->nullable();
             $table->string('guarantee_card_number')->nullable();
 

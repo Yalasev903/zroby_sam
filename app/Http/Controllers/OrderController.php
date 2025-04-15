@@ -123,6 +123,19 @@ class OrderController extends Controller
         return back()->with('success', 'Замовлення підтверджено. Гроші перераховуються виконавцю.');
     }
 
+    public function setNoGuarantee(Order $order)
+    {
+        if (Auth::id() !== $order->executor_id || $order->payment_type !== 'none') {
+            abort(403);
+        }
+
+        $order->update([
+            'payment_type' => 'no_guarantee',
+        ]);
+
+        return back()->with('success', 'Робота без гаранта підтверджена.');
+    }
+
     public function cancelOrder(Request $request, Order $order)
     {
         $user = Auth::user();

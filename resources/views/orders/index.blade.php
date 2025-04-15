@@ -50,17 +50,17 @@
                                     @else — @endif
                                 </li>
                                 @if($order->isGuarantee())
-                                @if($order->guarantee_payment_status === 'transferring')
-                                    <li><strong>💸 Виплата:</strong> В процесі переказу...</li>
-                                @elseif($order->guarantee_payment_status === 'transferred')
-                                    <li>
-                                        <strong>💸 Виконано виплату:</strong>
-                                        {{ $order->guarantee_transferred_at->format('d.m.Y H:i') }} на карту
-                                        {{ $order->maskedCard() }} —
-                                        <span class="text-success">{{ number_format($order->guarantee_amount * 0.9, 2) }} грн</span>
-                                    </li>
+                                    @if($order->guarantee_payment_status === 'transferring')
+                                        <li><strong>💸 Виплата:</strong> В процесі переказу...</li>
+                                    @elseif($order->guarantee_payment_status === 'transferred')
+                                        <li>
+                                            <strong>💸 Виконано виплату:</strong>
+                                            {{ $order->guarantee_transferred_at->format('d.m.Y H:i') }} на карту
+                                            {{ $order->maskedCard() }} —
+                                            <span class="text-success">{{ number_format($order->guarantee_amount * 0.9, 2) }} грн</span>
+                                        </li>
+                                    @endif
                                 @endif
-                            @endif
                             </ul>
                         </div>
 
@@ -74,6 +74,10 @@
                                     <input type="text" name="guarantee_card_number" class="form-control form-control-sm mb-1" placeholder="Номер карти (16 цифр)" required>
                                     <button type="submit" class="btn btn-outline-secondary btn-sm">Запропонувати гаранта</button>
                                 </form>
+                                <form method="POST" action="{{ route('orders.setNoGuarantee', $order) }}">
+                                    @csrf
+                                    <button type="submit" class="btn btn-outline-primary btn-sm mt-2">Працювати без гаранта</button>
+                                </form>
                             @endif
 
                             {{-- Заказчик оплачивает гаранту --}}
@@ -81,8 +85,8 @@
                                 <a href="{{ route('orders.approveGuarantee', $order) }}" class="btn btn-success btn-sm">Оплатити гаранту</a>
                             @endif
 
-                            {{-- Подтвердить начало (если без гаранта) --}}
-                            @if(auth()->user()->role == 'customer' && $order->status == 'waiting' && !$order->isGuarantee())
+                            {{-- Подтвердить начало (если вибрано без гаранта) --}}
+                            @if(auth()->user()->role == 'customer' && $order->status == 'waiting' && $order->isNoGuarantee())
                                 <form method="POST" action="{{ route('orders.approve', $order) }}" class="d-inline">
                                     @csrf
                                     <button type="submit" class="btn btn-success btn-sm">Одобрити початок</button>
@@ -97,7 +101,7 @@
                                 </form>
                             @endif
 
-                            {{-- Подтвердить завершение и инициировать выплату --}}
+                            {{-- Подтвердить завершение --}}
                             @if(auth()->user()->role == 'customer' && $order->status == 'pending_confirmation')
                                 <form method="POST" action="{{ route('orders.confirm', $order) }}" class="d-inline">
                                     @csrf
@@ -105,7 +109,7 @@
                                 </form>
                             @endif
 
-                            {{-- Отмена заказа --}}
+                            {{-- Отмена --}}
                             @if(!in_array($order->status, ['completed', 'cancelled']))
                                 @if(auth()->id() === $order->user_id || auth()->id() === $order->executor_id)
                                     <form method="POST" action="{{ route('orders.cancel', $order) }}" class="d-inline">
@@ -126,14 +130,14 @@
 
                             {{-- Жалоба --}}
                             @if($order->status === 'cancelled' && !$order->ticket)
-                                <a href="{{ route('tickets.create', $order) }}" class="btn btn-secondary btn-sm">Залишити скаргу</a>
+                            <a href="/tickets/create/{{ $order->id }}" class="btn btn-secondary btn-sm">Залишити скаргу</a>
                             @elseif($order->ticket && auth()->id() === $order->ticket->user_id)
                                 <span class="text-muted">Скарга залишена</span>
                             @endif
 
                             {{-- Отзывы --}}
                             @if(auth()->user()->role === 'customer' && $order->status === 'completed' && !$order->reviews()->where('review_by', 'customer')->exists())
-                            <a href="{{ route('reviews.create', ['order' => $order->id]) }}" class="btn btn-primary btn-sm">Відгук про виконавця</a>
+                                <a href="{{ route('reviews.create', ['order' => $order->id]) }}" class="btn btn-primary btn-sm">Відгук про виконавця</a>
                             @endif
 
                             @if(auth()->user()->role === 'executor' && $order->status === 'completed' && !$order->reviews()->where('review_by', 'executor')->exists())

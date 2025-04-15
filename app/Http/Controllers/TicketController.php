@@ -35,14 +35,20 @@ class TicketController extends Controller
             abort(403, 'Скаргу можна залишити лише для скасованого замовлення.');
         }
 
+
+        if (Ticket::where('order_id', $order->id)->where('user_id', Auth::id())->exists()) {
+            return redirect()->route('orders.index')->with('error', 'Ви вже залишили скаргу на це замовлення.');
+        }
+
         $data = $request->validate([
             'complaint' => 'required|string',
         ]);
 
         Ticket::create([
-            'order_id'  => $order->id,
-            'user_id'   => Auth::id(),
-            'complaint' => $data['complaint'],
+            'order_id'   => $order->id,
+            'user_id'    => Auth::id(),
+            'complaint'  => $data['complaint'],
+            'created_by' => Auth::user()->role,
         ]);
 
         return redirect()->route('orders.index')->with('success', 'Скарга успішно залишена.');

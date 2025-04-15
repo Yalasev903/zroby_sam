@@ -87,4 +87,8 @@ class Order extends Model
         if (!$this->guarantee_card_number) return null;
         return str_repeat('*', 12) . substr($this->guarantee_card_number, -4);
     }
+    public function isNoGuarantee()
+    {
+        return $this->payment_type === 'no_guarantee';
+    }
 }

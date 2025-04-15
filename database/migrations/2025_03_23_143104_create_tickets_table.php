@@ -10,12 +10,17 @@ class CreateTicketsTable extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
+
             $table->foreignId('order_id')
                   ->constrained('orders')
                   ->onDelete('cascade');
+
             $table->foreignId('user_id')
                   ->constrained('users')
                   ->onDelete('cascade');
+
+            $table->string('created_by'); // 👈 добавили поле: customer / executor
+
             $table->text('complaint');
             $table->timestamps();
         });
