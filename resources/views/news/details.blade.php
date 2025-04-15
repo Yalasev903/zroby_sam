@@ -1,5 +1,7 @@
+{{-- Header и хлебные крошки --}}
 @include('news.component_news.header')
 @include('news.component_news.breadcrumb', ['breadcrumbs' => $breadcrumbs])
+
 <!-- ======================= Blog Details Section Start ========================= -->
 <section class="blog-details padding-y-120 position-relative overflow-hidden">
     <div class="container container-two">
@@ -9,9 +11,7 @@
                 <div class="blog-details-top mb-64">
                     <div class="blog-details-top__info flx-align gap-3 mb-4">
                         <div class="blog-details-top__thumb flx-align gap-2">
-                            <!-- Здесь можно вывести аватар автора, если он есть. Пока используется картинка по умолчанию -->
                             <img src="{{ asset('assets/images/thumbs/blog-details-user.png') }}" alt="">
-                            <!-- Выводим название категории новости или другого автора, если понадобится -->
                             <span class="text-heading fw-500">{{ $article->category->name ?? 'News' }}</span>
                         </div>
                         <span class="blog-details-top__date flx-align gap-2">
@@ -25,20 +25,22 @@
                 <!-- blog details top End -->
             </div>
         </div>
+
         <div class="row justify-content-center">
             <div class="col-lg-10">
                 <!-- blog details content Start -->
                 <div class="blog-details-content">
                     <div class="blog-details-content__thumb mb-32">
-                        <img src="{{ $article->image_url ?: asset('assets/images/thumbs/default-details.png') }}" alt="{{ $article->title }}">
+                        @php
+                        $imagePath = public_path($article->image_url);
+                    @endphp
+
+                    <img src="{{ $article->image_url ? asset($article->image_url) : asset('assets/images/thumbs/default-details.png') }}" alt="{{ $article->title }}">
                     </div>
                     <div class="blog-details-content__desc mb-40">
                         {!! $article->content !!}
                     </div>
 
-                    <!-- Можно добавить дополнительные динамические блоки, например, вывод тегов, комментариев и т.д. -->
-
-                    <!-- Пример: блок тегов -->
                     @if(isset($article->tags) && $article->tags->isNotEmpty())
                         <div class="post-tag flx-align gap-3 mb-40 mt-40">
                             <span class="post-tag__text text-heading fw-500">Post Tag: </span>
@@ -52,9 +54,8 @@
                         </div>
                     @endif
 
-                    <!-- Блок для социальных кнопок (статичный или динамический) -->
                     <div class="socail-share flx-align gap-3 mb-40">
-                        <span class="socail-share__text text-heading fw-500">Share On: </span>
+                        <span class="socail-share__text text-heading fw-500">Share On: hjj</span>
                         <ul class="social-list colorful-style">
                             <li class="social-list__item">
                                 <a href="https://www.facebook.com" class="social-list__link text-heading font-16 flex-center"><i class="fab fa-facebook-f"></i></a>
@@ -67,10 +68,6 @@
                             </li>
                         </ul>
                     </div>
-
-                    <!-- Дополнительно: комментарии, форма оставления комментария и т.д. -->
-                    <!-- Если они реализованы, динамически подключайте соответствующие компоненты -->
-
                 </div>
                 <!-- blog details content End -->
             </div>
@@ -88,9 +85,8 @@
             </div>
             <a href="{{ route('news.index') }}" class="btn btn-outline-light btn-lg pill">Browse All Articles</a>
         </div>
-        <!-- Здесь можно добавить блок похожих статей (рекомендуемых) -->
+
         <div class="article-item-wrapper">
-            <!-- Если реализована логика похожих новостей, можно передать переменную $relatedArticles и вывести их циклом -->
             @if(isset($relatedArticles) && $relatedArticles->isNotEmpty())
                 @foreach($relatedArticles as $related)
                     <div class="article-item">
@@ -117,12 +113,14 @@
                                 </div>
 
                                 <div class="article-item__thumb">
-                                    <img src="{{ $related->image_url ?: asset('assets/images/thumbs/default.png') }}" alt="">
+                                    <img src="{{ $related->image_url ? asset('storage/' . $related->image_url) : asset('assets/images/thumbs/default.png') }}" alt="{{ $related->title }}">
                                 </div>
                             </div>
                         </div>
                         <div class="article-item__end flex-shrink-0">
-                            <a href="{{ route('news.show', $related->slug) }}" class="btn-simple">Read More <span class="icon font-26"><i class="las la-arrow-right"></i></span> </a>
+                            <a href="{{ route('news.show', $related->slug) }}" class="btn-simple">
+                                Read More <span class="icon font-26"><i class="las la-arrow-right"></i></span>
+                            </a>
                         </div>
                     </div>
                 @endforeach
@@ -136,27 +134,18 @@
 <div class="brand">
     <div class="container container">
         <div class="brand-slider">
+            @for ($i = 1; $i <= 5; $i++)
+                <div class="brand-item d-flex align-items-center justify-content-center">
+                    <img src="{{ asset("assets/images/thumbs/brand-img{$i}.png") }}" alt="Brand Image {{ $i }}">
+                </div>
+            @endfor
             <div class="brand-item d-flex align-items-center justify-content-center">
-                <img src="{{ asset('assets/images/thumbs/brand-img1.png') }}" alt="">
-            </div>
-            <div class="brand-item d-flex align-items-center justify-content-center">
-                <img src="{{ asset('assets/images/thumbs/brand-img2.png') }}" alt="">
-            </div>
-            <div class="brand-item d-flex align-items-center justify-content-center">
-                <img src="{{ asset('assets/images/thumbs/brand-img3.png') }}" alt="">
-            </div>
-            <div class="brand-item d-flex align-items-center justify-content-center">
-                <img src="{{ asset('assets/images/thumbs/brand-img4.png') }}" alt="">
-            </div>
-            <div class="brand-item d-flex align-items-center justify-content-center">
-                <img src="{{ asset('assets/images/thumbs/brand-img5.png') }}" alt="">
-            </div>
-            <div class="brand-item d-flex align-items-center justify-content-center">
-                <img src="{{ asset('assets/images/thumbs/brand-img3.png') }}" alt="">
+                <img src="{{ asset('assets/images/thumbs/brand-img3.png') }}" alt="Brand Image">
             </div>
         </div>
     </div>
 </div>
 <!-- ======================== Brand Section End ========================= -->
 
+{{-- Footer --}}
 @include('news.component_news.footer')

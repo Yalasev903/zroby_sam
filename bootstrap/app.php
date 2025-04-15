@@ -27,4 +27,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         // Обработка исключений
     })
+    ->withCommands([
+        \App\Console\Commands\GenerateDailyNews::class,
+        \App\Console\Commands\OptimizeNews::class, 
+    ])
     ->create();

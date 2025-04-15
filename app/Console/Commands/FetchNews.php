@@ -15,13 +15,9 @@ class FetchNews extends Command
 
     public function handle()
     {
-        // Получаем ключ NewsAPI из конфигурации
         $newsApiKey = config('services.newsapi.key');
-        dump($newsApiKey);
+        $gnewsApiKey = '36737fd641cb692ee30ef3f4fc59aab2';
 
-        // Задаём запросы:
-        // Категория 1: Стройка/ремонт в Украине через NewsAPI (everything)
-        // Категория 2: Красота в Украине через GNews API (запрос изменён на "beauty Ukraine")
         $queries = [
             ['q' => 'Ukraine construction', 'category_id' => 1],
             ['q' => 'beauty', 'category_id' => 2, 'api' => 'gnews'],
@@ -29,7 +25,6 @@ class FetchNews extends Command
 
         foreach ($queries as $queryData) {
             if ($queryData['category_id'] == 1) {
-                // Используем NewsAPI (everything) для категории 1
                 $response = Http::get("https://newsapi.org/v2/everything", [
                     'q'        => $queryData['q'],
                     'language' => 'en',
@@ -37,82 +32,78 @@ class FetchNews extends Command
                     'sortBy'   => 'relevancy',
                     'apiKey'   => $newsApiKey,
                 ]);
-
                 if ($response->failed()) {
-                    $this->error("Ошибка при получении данных по запросу: {$queryData['q']} (NewsAPI)");
+                    $this->error("Ошибка: {$queryData['q']} (NewsAPI)");
                     continue;
                 }
                 $articles = $response->json()['articles'] ?? [];
             } elseif ($queryData['category_id'] == 2) {
-                // Используем GNews API для категории 2
-                $gnewsApiKey = '36737fd641cb692ee30ef3f4fc59aab2';
                 $response = Http::get("https://gnews.io/api/v4/search", [
                     'q'       => $queryData['q'],
                     'lang'    => 'en',
-                    'country' => null,
                     'token'   => $gnewsApiKey,
                     'max'     => 10,
                     'sortby'  => 'relevance',
                 ]);
                 if ($response->failed()) {
-                    $this->error("Ошибка при получении данных по запросу: {$queryData['q']} (GNews API)");
+                    $this->error("Ошибка: {$queryData['q']} (GNews)");
                     continue;
                 }
-                // У GNews новости находятся в ключе "articles"
                 $articles = $response->json()['articles'] ?? [];
             } else {
                 continue;
             }
 
-            dump($articles);
-
             foreach ($articles as $article) {
-                if ($queryData['category_id'] == 1) {
-                    // Маппинг для NewsAPI
-                    $title       = $article['title'] ?? null;
-                    $description = $article['description'] ?? null;
-                    $content     = $article['content'] ?? null;
-                    $imageUrl    = $article['urlToImage'] ?? null;
-                    $publishedAt = $article['publishedAt'] ?? null;
-                } elseif ($queryData['category_id'] == 2) {
-                    // Маппинг для GNews API
-                    $title       = $article['title'] ?? null;
-                    $description = $article['description'] ?? null;
-                    $content     = $article['content'] ?? null;
-                    $imageUrl    = $article['image'] ?? null;
-                    $publishedAt = $article['publishedAt'] ?? null;
-                }
+                $title       = $article['title'] ?? null;
+                $description = $article['description'] ?? null;
+                $content     = $article['content'] ?? null;
+                $imageUrl    = $article['urlToImage'] ?? ($article['image'] ?? null);
+                $publishedAt = $article['publishedAt'] ?? null;
+                $sourceName  = strtolower($article['source']['name'] ?? '');
 
-                // Если описания нет, используем контент как запасной вариант
                 $description = $description ?? $content ?? null;
 
-                // Пропускаем новости без заголовка или с коротким описанием
-                if (!$title || mb_strlen($title, 'UTF-8') < 10 || !$description || mb_strlen($description, 'UTF-8') < 30) {
+                // Явная фильтрация — только английский язык
+                if (!isset($article['language']) && $queryData['category_id'] == 1) {
+                    // NewsAPI не указывает язык, проверяем по title
+                    if (!preg_match('/[a-z]{3,}/i', $title)) continue;
+                }
+
+                // Фильтрация по длине
+                if (
+                    !$title || mb_strlen($title, 'UTF-8') < 10 ||
+                    !$description || mb_strlen($description, 'UTF-8') < 50 ||
+                    !$content || mb_strlen($content, 'UTF-8') < 100
+                ) {
                     continue;
                 }
 
-                // Фильтрация по ключевым словам:
-                if ($queryData['category_id'] == 1) {
-                    $keywords = ['construction', 'building', 'renovation', 'repair'];
-                } else {
-                    $keywords = ['beauty', 'cosmetics', 'makeup', 'skincare', 'salon'];
-                }
-                $titleLower = mb_strtolower($title, 'UTF-8');
-                $descLower  = mb_strtolower($description, 'UTF-8');
-                if (!collect($keywords)->some(fn($keyword) => str_contains($titleLower, $keyword) || str_contains($descLower, $keyword))) {
+                // Фильтрация по источнику
+                $tabloidSources = ['the sun', 'buzzfeed', 'mirror', 'coupon', 'promo', 'newsletter'];
+                if (collect($tabloidSources)->some(fn($name) => str_contains($sourceName, $name))) {
                     continue;
                 }
 
-                // Генерация уникального slug
+                // Фильтрация по ключевым словам
+                $keywords = $queryData['category_id'] == 1
+                    ? ['ukraine', 'kyiv', 'construction', 'repair', 'renovation']
+                    : ['beauty', 'skincare', 'cosmetics', 'makeup', 'ukraine', 'україна'];
+
+                $textToSearch = mb_strtolower($title . ' ' . $description, 'UTF-8');
+                if (!collect($keywords)->some(fn($kw) => str_contains($textToSearch, $kw))) {
+                    continue;
+                }
+
+                // Уникальный slug
                 $slug = Str::slug($title);
                 $originalSlug = $slug;
                 $counter = 1;
                 while (News::where('slug', $slug)->exists()) {
-                    $slug = $originalSlug . '-' . $counter;
-                    $counter++;
+                    $slug = $originalSlug . '-' . $counter++;
                 }
 
-                // Сохранение новости в базу данных
+                // Сохранение
                 News::create([
                     'title'            => $title,
                     'slug'             => $slug,
@@ -121,10 +112,11 @@ class FetchNews extends Command
                     'news_category_id' => $queryData['category_id'],
                     'image_url'        => $imageUrl,
                     'published_at'     => $publishedAt ? Carbon::parse($publishedAt)->format('Y-m-d H:i:s') : null,
+                    'processed'        => false,
                 ]);
             }
 
-            $this->info("Новости по запросу '{$queryData['q']}' успешно загружены в категорию ID {$queryData['category_id']}.");
+            $this->info("✅ Новости по '{$queryData['q']}' загружены (категория ID {$queryData['category_id']}).");
         }
     }
 }
