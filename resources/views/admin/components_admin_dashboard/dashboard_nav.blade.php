@@ -26,13 +26,16 @@
     </button>
     <ul class="user-profile-dropdown">
         <li class="sidebar-list__item">
-            <a href="login.html" class="sidebar-list__link">
-                <span class="sidebar-list__icon">
-                    <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon13.svg') }}" alt="" class="icon">
-                    <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon-active13.svg') }}" alt="" class="icon icon-active">
-                </span>
-                <span class="text">Вихід</span>
-            </a>
+            <form method="POST" action="{{ route('logout') }}" x-data>
+                @csrf
+                <button type="submit" class="sidebar-list__link w-100 text-start" style="border: none; background: transparent; padding: 0;">
+                    <span class="sidebar-list__icon">
+                        <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon13.svg') }}" alt="" class="icon">
+                        <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon-active13.svg') }}" alt="" class="icon icon-active">
+                    </span>
+                    <span class="text">Вихід</span>
+                </button>
+            </form>
         </li>
     </ul>
 </div>

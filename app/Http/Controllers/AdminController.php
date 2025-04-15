@@ -6,288 +6,261 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Ad;
 use App\Models\ChMessage;
+use App\Models\Notification;
+use App\Models\Ticket;
 use App\Models\AdminSetting;
 use App\Models\ServiceCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Notification;
-use App\Models\Ticket;
 
 class AdminController extends Controller
 {
     /**
-     * Отображает панель администратора с таблицами пользователей, заказов, объявлений и жалоб.
+     * Главная панель администратора.
      */
     public function dashboard()
     {
-        $users        = User::all();
-        $orders       = Order::with(['customer', 'executor'])->get();
-        $ads          = Ad::with(['user', 'servicesCategory'])->get();
-        $chatMessages = ChMessage::orderBy('created_at', 'desc')->get();
-        $tickets      = Ticket::with(['user', 'order'])->orderBy('created_at', 'desc')->get();
-
-        // Добавляем выборку уведомлений (все уведомления для админа)
-        $notifications = \App\Models\Notification::orderBy('created_at', 'desc')->get();
-
-        return view('admin.dashboard', compact('users', 'orders', 'ads', 'chatMessages', 'tickets', 'notifications'));
+        return view('admin.dashboard', [
+            'users' => User::all(),
+            'orders' => Order::with(['customer', 'executor'])->latest()->get(),
+            'ads' => Ad::with(['user', 'servicesCategory'])->latest()->get(),
+            'chatMessages' => ChMessage::latest()->get(),
+            'tickets' => Ticket::with(['user', 'order'])->latest()->get(),
+            'notifications' => Notification::latest()->get(),
+        ]);
     }
 
-    /**
-     * Обновляет роль пользователя.
-     */
+    // ---------- ПОЛЬЗОВАТЕЛИ ----------
+
+    public function usersTable()
+    {
+        return view('admin.pages.users_table', ['users' => User::all()]);
+    }
+
     public function updateUserRole(Request $request, User $user)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'role' => 'required|in:customer,executor,admin',
         ]);
-        $user->update(['role' => $validatedData['role']]);
-        return redirect()->back()->with('success', 'Роль користувача успішно оновлена.');
+        $user->update(['role' => $request->role]);
+        return back()->with('success', 'Роль оновлено.');
     }
 
-    /**
-     * Удаляет пользователя.
-     */
     public function destroyUser(User $user)
     {
         $user->delete();
-        return redirect()->back()->with('success', 'Користувача успішно видалено.');
+        return back()->with('success', 'Користувача видалено.');
     }
 
-    /**
-     * Отображает список заказов для управления.
-     */
+    // ---------- ЗАКАЗЫ ----------
+
     public function orders()
     {
-        $orders = Order::with(['customer', 'executor'])->get();
+        $orders = Order::with(['customer', 'executor'])->latest()->get();
         return view('admin.orders', compact('orders'));
     }
 
-    /**
-     * Обновляет статус заказа.
-     */
-    public function updateOrderStatus(Request $request, Order $order)
+    public function ordersTable()
     {
-        $validatedData = $request->validate([
-            'status' => 'required|in:new,waiting,in_progress,pending_confirmation,completed',
-        ]);
-        $order->update(['status' => $validatedData['status']]);
-        return redirect()->back()->with('success', 'Статус замовлення успішно оновлено.');
+        $orders = Order::with(['customer', 'executor'])->latest()->get();
+        return view('admin.pages.orders_table', compact('orders'));
     }
 
-    /**
-     * Удаляет заказ.
-     */
+    public function updateOrderStatus(Request $request, Order $order)
+    {
+        $request->validate([
+            'status' => 'required|in:new,waiting,in_progress,pending_confirmation,completed,cancelled',
+        ]);
+        $order->update(['status' => $request->status]);
+        return back()->with('success', 'Статус замовлення оновлено.');
+    }
+
     public function destroyOrder(Order $order)
     {
         $order->delete();
-        return redirect()->back()->with('success', 'Замовлення успішно видалено.');
+        return back()->with('success', 'Замовлення видалено.');
     }
 
-    /**
-     * Отображает список объявлений для управления.
-     */
+    // ---------- ОГОЛОШЕННЯ ----------
+
     public function ads()
     {
-        $ads = Ad::with(['user', 'servicesCategory'])->get();
+        $ads = Ad::with(['user', 'servicesCategory'])->latest()->get();
         return view('admin.ads', compact('ads'));
     }
 
-    /**
-     * Отображает форму редактирования объявления (администратор).
-     */
-    public function editAd(Request $request, Ad $ad)
+    public function adsTable()
     {
-        $categories = ServiceCategory::all();
-        return view('admin.components_admin_dashboard.edit_ad', compact('ad', 'categories'));
+        $ads = Ad::with(['user', 'servicesCategory'])->latest()->get();
+        return view('admin.pages.ads_table', compact('ads'));
     }
 
-    /**
-     * Обновляет объявление (администратор).
-     */
+    public function editAd(Ad $ad)
+    {
+        return view('admin.components_admin_dashboard.edit_ad', [
+            'ad' => $ad,
+            'categories' => ServiceCategory::all(),
+        ]);
+    }
+
     public function updateAd(Request $request, Ad $ad)
     {
-        $validatedData = $request->validate([
-            'title'                => 'required|string|max:255',
-            'description'          => 'required|string',
-            'city'                 => 'required|string|max:100',
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'city' => 'required|string|max:100',
             'services_category_id' => 'required|exists:services_categories,id',
-            'photo'                => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
-        $data = $request->only(['title', 'description', 'city', 'services_category_id']);
+
         if ($request->hasFile('photo')) {
             if ($ad->photo_path) {
                 Storage::delete('public/' . $ad->photo_path);
             }
-            $photoPath = $request->file('photo')->store('ads', 'public');
-            $data['photo_path'] = $photoPath;
+            $data['photo_path'] = $request->file('photo')->store('ads', 'public');
         }
+
         $ad->update($data);
-        return redirect()->route('admin.ads')->with('success', 'Оголошення успішно оновлено.');
+
+        return redirect()->route('admin.ads')->with('success', 'Оголошення оновлено.');
     }
 
-    /**
-     * Удаляет объявление.
-     */
     public function destroyAd(Ad $ad)
     {
         if ($ad->photo_path) {
             Storage::delete('public/' . $ad->photo_path);
         }
         $ad->delete();
-        return redirect()->back()->with('success', 'Оголошення успішно видалено.');
+        return back()->with('success', 'Оголошення видалено.');
     }
 
-    /**
-     * Отображает список сообщений для управления.
-     */
-    public function chatMessages()
-    {
-        $chatMessages = ChMessage::orderBy('created_at', 'desc')->get();
-        return view('admin.components_admin_dashboard.chat_message_table_widget', compact('chatMessages'));
-    }
+    // ---------- СКАРГИ ----------
 
-    /**
-     * Отображает таблицу пользователей.
-     */
-    public function usersTable(Request $request)
-    {
-        $users = User::all();
-        return view('admin.pages.users_table', compact('users'));
-    }
-
-    /**
-     * Отображает страницу с таблицей объявлений.
-     */
-    public function adsTable()
-    {
-        $ads = Ad::with(['user', 'servicesCategory'])->get();
-        return view('admin.pages.ads_table', compact('ads'));
-    }
-
-    /**
-     * Отображает страницу с таблицей сообщений чата.
-     */
-    public function chatTable()
-    {
-        $chatMessages = ChMessage::orderBy('created_at', 'desc')->get();
-        return view('admin.pages.chat_table', compact('chatMessages'));
-    }
-
-    /**
-     * Отображает страницу с таблицей заказов.
-     */
-    public function ordersTable()
-    {
-        $orders = Order::with(['customer', 'executor'])->get();
-        return view('admin.pages.orders_table', compact('orders'));
-    }
-
-    /**
-     * Отображает страницу с таблицей жалоб (скарг).
-     */
     public function ticketsTable()
     {
-        $tickets = Ticket::with(['user', 'order'])->orderBy('created_at', 'desc')->get();
+        $tickets = Ticket::with(['user', 'order'])->latest()->get();
         return view('admin.pages.tickets_table', compact('tickets'));
     }
 
-    /**
-     * Отображает форму настроек администратора.
-     */
-    public function showSettingsForm()
+    public function resolveTicket(Request $request, Ticket $ticket)
     {
-        $adminSetting = AdminSetting::first();
-        if (!$adminSetting) {
-            $adminSetting = AdminSetting::create([
-                'auto_greeting_enabled' => false,
-                'auto_greeting_text'    => '',
-            ]);
-        }
-        return view('admin.pages.settings', compact('adminSetting'));
-    }
+        $request->validate(['resolution' => 'required|string']);
 
-    /**
-     * Обновляет настройки администратора.
-     */
-    public function updateSettings(Request $request)
-    {
-        $validated = $request->validate([
-            'auto_greeting_enabled' => 'sometimes|boolean',
-            'auto_greeting_text'    => 'nullable|string',
+        Notification::create([
+            'user_id' => $ticket->user_id,
+            'title' => 'Вирішення скарги',
+            'message' => $request->resolution,
+            'read' => false,
         ]);
-        $adminSetting = AdminSetting::first();
-        if ($adminSetting) {
-            $adminSetting->update([
-                'auto_greeting_enabled' => $request->has('auto_greeting_enabled'),
-                'auto_greeting_text'    => $validated['auto_greeting_text'] ?? null,
-            ]);
-        }
-        return redirect()->back()->with('success', 'Налаштування збережено.');
+
+        return back()->with('success', 'Скаргу оброблено.');
     }
 
-    /**
-     * Отображает страницу для работы с привітаннями.
-     */
+    // ---------- ЧАТ ----------
+
+    public function chatMessages()
+    {
+        $chatMessages = ChMessage::latest()->get();
+        return view('admin.components_admin_dashboard.chat_message_table_widget', compact('chatMessages'));
+    }
+
+    public function chatTable()
+    {
+        $chatMessages = ChMessage::latest()->get();
+        return view('admin.pages.chat_table', compact('chatMessages'));
+    }
+
+    public function destroyChatMessage($id)
+    {
+        $msg = ChMessage::findOrFail($id);
+        $msg->delete();
+        return back()->with('success', 'Повідомлення видалено.');
+    }
+
+    // ---------- УВЕДОМЛЕНИЯ ----------
+
+    public function notificationTable()
+    {
+        $notifications = Notification::latest()->get();
+        return view('admin.pages.notifications_table', compact('notifications'));
+    }
+
+    public function destroy(Notification $notification)
+    {
+        $notification->delete();
+        return back()->with('success', 'Уведомлення видалено.');
+    }
+
+    // ---------- ПРИВІТАННЯ ----------
+
     public function greetings()
     {
-        $greetings = Notification::where('title', 'Привітання')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $greetings = Notification::where('title', 'Привітання')->latest()->get();
         return view('admin.pages.greetings', compact('greetings'));
     }
 
-    /**
-     * Повторная отправка привітання.
-     */
     public function resendGreeting(Request $request)
     {
         $adminSetting = AdminSetting::first();
+
         if (!$adminSetting || !$adminSetting->auto_greeting_enabled) {
-            return redirect()->back()->with('error', 'Автопривітання не ввімкнено.');
+            return back()->with('error', 'Автопривітання вимкнено.');
         }
-        $greetingText = $request->input('message')
-            ? $request->input('message')
-            : ($adminSetting->auto_greeting_text ?? 'Вітаємо у нашому сервісі!');
+
+        $message = $request->input('message') ?: ($adminSetting->auto_greeting_text ?? 'Вітаємо!');
         $userId = $request->input('user_id');
+
         if ($userId) {
             $user = User::find($userId);
-            if (!$user) {
-                return redirect()->back()->with('error', 'Користувача не знайдено.');
-            }
+            if (!$user) return back()->with('error', 'Користувача не знайдено.');
+
             Notification::create([
                 'user_id' => $user->id,
-                'title'   => 'Повідомлення від адміністратора',
-                'message' => 'Привіт ' . $user->name . '! ' . $greetingText,
-                'read'    => false,
+                'title' => 'Привітання',
+                'message' => 'Привіт ' . $user->name . '! ' . $message,
+                'read' => false,
             ]);
         } else {
-            $users = User::all();
-            foreach ($users as $user) {
+            foreach (User::all() as $user) {
                 Notification::create([
                     'user_id' => $user->id,
-                    'title'   => 'Повідомлення від адміністратора',
-                    'message' => $greetingText,
-                    'read'    => false,
+                    'title' => 'Привітання',
+                    'message' => $message,
+                    'read' => false,
                 ]);
             }
         }
-        return redirect()->back()->with('success', 'Повідомлення надіслано.');
+
+        return back()->with('success', 'Привітання надіслано.');
     }
 
-    /**
-     * Обрабатывает решение по скарзі и отправляет уведомление пользователю.
-     */
-    public function resolveTicket(Request $request, Ticket $ticket)
+    // ---------- НАЛАШТУВАННЯ ----------
+
+    public function showSettingsForm()
     {
-        $data = $request->validate([
-            'resolution' => 'required|string',
+        $adminSetting = AdminSetting::first() ?? AdminSetting::create([
+            'auto_greeting_enabled' => false,
+            'auto_greeting_text' => '',
         ]);
-        Notification::create([
-            'user_id' => $ticket->user_id,
-            'title'   => 'Вирішення скарги',
-            'message' => $data['resolution'],
-            'read'    => false,
+
+        return view('admin.pages.settings', compact('adminSetting'));
+    }
+
+    public function updateSettings(Request $request)
+    {
+        $request->validate([
+            'auto_greeting_enabled' => 'sometimes|boolean',
+            'auto_greeting_text' => 'nullable|string',
         ]);
-        return redirect()->back()->with('success', 'Рішення скарги надіслано.');
+
+        $setting = AdminSetting::first();
+        if ($setting) {
+            $setting->update([
+                'auto_greeting_enabled' => $request->has('auto_greeting_enabled'),
+                'auto_greeting_text' => $request->auto_greeting_text,
+            ]);
+        }
+
+        return back()->with('success', 'Налаштування збережено.');
     }
 }

@@ -1,83 +1,83 @@
 <!-- dashboard body Item Start -->
 <div class="dashboard-body__item">
     @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+        <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
     <h3>Замовлення</h3>
-    <!-- Поле поиска -->
+
     <input type="text" id="searchInput" class="form-control mb-3" placeholder="Пошук...">
 
-    <!-- Выбор количества строк на странице -->
-    <button>
-    <select id="pageSize" class="form-control mb-3" onchange="updateTable()">
+    <select id="pageSize" class="form-control mb-3 w-auto d-inline" onchange="updateTable()">
         <option value="5">5 на сторінці</option>
         <option value="10">10 на сторінці</option>
         <option value="20">20 на сторінці</option>
         <option value="50">50 на сторінці</option>
         <option value="100">100 на сторінці</option>
-        <option value="200">200 на сторінці</option>
     </select>
-    </button>
 
     <div class="table-responsive">
         <table class="table style-two" id="ordersTable">
             <thead>
                 <tr>
-                    <th onclick="sortTable(0)">ID ▲▼</th>
-                    <th onclick="sortTable(1)">Заголовок ▲▼</th>
-                    <th onclick="sortTable(2)">Статус ▲▼</th>
-                    <th onclick="sortTable(3)">Замовник ▲▼</th>
-                    <th onclick="sortTable(4)">Виконавець ▲▼</th>
+                    <th onclick="sortTable(0)">#</th>
+                    <th>Заголовок</th>
+                    <th>Статус</th>
+                    <th>Тип оплати</th>
+                    <th>Замовник</th>
+                    <th>Виконавець</th>
                     <th>Дія</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($orders as $order)
-                <tr class="orderRow">
-                    <td>{{ $order->id }}</td>
-                    <td>{{ $order->title }}</td>
-                    <td>
-                        <form action="{{ route('admin.orders.update', $order) }}" method="POST" style="display: inline-block;">
-                            @csrf
-                            <select name="status" onchange="this.form.submit()">
-                                <option value="new" {{ $order->status === 'new' ? 'selected' : '' }}>New</option>
-                                <option value="waiting" {{ $order->status === 'waiting' ? 'selected' : '' }}>Waiting</option>
-                                <option value="in_progress" {{ $order->status === 'in_progress' ? 'selected' : '' }}>In Progress</option>
-                                <option value="pending_confirmation" {{ $order->status === 'pending_confirmation' ? 'selected' : '' }}>Pending Confirmation</option>
-                                <option value="completed" {{ $order->status === 'completed' ? 'selected' : '' }}>Completed</option>
-                            </select>
-                        </form>
-                    </td>
-                    <td>
-                        @if($order->customer)
-                            <a href="{{ route('my_profile.show', $order->customer->id) }}">{{ $order->customer->name }}</a>
-                        @else
-                            —
-                        @endif
-                    </td>
-                    <td>
-                        @if($order->executor)
-                            <a href="{{ route('my_profile.show', $order->executor->id) }}">{{ $order->executor->name }}</a>
-                        @else
-                            —
-                        @endif
-                    </td>
-                    <td>
-                        <form action="{{ route('admin.orders.destroy', $order) }}" method="POST" onsubmit="return confirm('Ви впевнені, що хочете видалити замовлення?');" style="display: inline-block;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Видалити</button>
-                        </form>
-                    </td>
-                </tr>
+                    <tr class="orderRow">
+                        <td>{{ $order->id }}</td>
+                        <td>{{ $order->title }}</td>
+                        <td>
+                            <form method="POST" action="{{ route('admin.orders.update', $order) }}">
+                                @csrf
+                                <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                                    <option value="new" {{ $order->status == 'new' ? 'selected' : '' }}>new</option>
+                                    <option value="waiting" {{ $order->status == 'waiting' ? 'selected' : '' }}>waiting</option>
+                                    <option value="in_progress" {{ $order->status == 'in_progress' ? 'selected' : '' }}>in progress</option>
+                                    <option value="pending_confirmation" {{ $order->status == 'pending_confirmation' ? 'selected' : '' }}>pending</option>
+                                    <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>completed</option>
+                                    <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>cancelled</option>
+                                </select>
+                            </form>
+                        </td>
+                        <td>
+                            @if($order->isGuarantee())
+                                <span class="badge bg-info">Гарант</span>
+                            @elseif($order->isNoGuarantee())
+                                <span class="badge bg-secondary">Без гаранта</span>
+                            @else
+                                <span class="badge bg-light text-dark">Не вказано</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if($order->customer)
+                                <a href="{{ route('my_profile.show', $order->customer->id) }}">{{ $order->customer->name }}</a>
+                            @else — @endif
+                        </td>
+                        <td>
+                            @if($order->executor)
+                                <a href="{{ route('my_profile.show', $order->executor->id) }}">{{ $order->executor->name }}</a>
+                            @else — @endif
+                        </td>
+                        <td>
+                            <form action="{{ route('admin.orders.destroy', $order) }}" method="POST" onsubmit="return confirm('Видалити замовлення #{{ $order->id }}?')">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-sm btn-danger">Видалити</button>
+                            </form>
+                        </td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
 
-        <!-- Пагинация -->
         <div id="pagination" class="pagination mt-3"></div>
     </div>
 </div>
@@ -88,100 +88,96 @@
     let currentPage = 1;
     let pageSize = 5;
 
-    // Обновляем таблицу
     function updateTable() {
         pageSize = parseInt(document.getElementById('pageSize').value);
-        currentPage = 1; // Сброс текущей страницы на 1 при изменении размера страницы
+        currentPage = 1;
         renderTable();
         renderPagination();
     }
 
-    // Отображение таблицы
     function renderTable() {
-        const tableBody = document.querySelector("#ordersTable tbody");
-        tableBody.innerHTML = ''; // Очищаем текущие строки таблицы
+        const tbody = document.querySelector("#ordersTable tbody");
+        tbody.innerHTML = '';
 
-        // Фильтрация по поисковому запросу
         const filter = document.getElementById("searchInput").value.toLowerCase();
-        const filteredOrders = ordersData.filter(order =>
+
+        const filtered = ordersData.filter(order =>
             order.title.toLowerCase().includes(filter) ||
-            (order.customer ? order.customer.name.toLowerCase().includes(filter) : false) ||
-            (order.executor ? order.executor.name.toLowerCase().includes(filter) : false)
+            (order.customer && order.customer.name.toLowerCase().includes(filter)) ||
+            (order.executor && order.executor.name.toLowerCase().includes(filter))
         );
 
-        // Расчет индексов для текущей страницы
-        const startIndex = (currentPage - 1) * pageSize;
-        const endIndex = Math.min(startIndex + pageSize, filteredOrders.length);
-        const currentPageOrders = filteredOrders.slice(startIndex, endIndex);
+        const start = (currentPage - 1) * pageSize;
+        const end = start + pageSize;
+        const pageItems = filtered.slice(start, end);
 
-        // Заполняем таблицу
-        currentPageOrders.forEach(order => {
-            const row = document.createElement("tr");
-            row.classList.add("orderRow");
-            row.innerHTML = `
-                <td>${order.id}</td>
-                <td>${order.title}</td>
-                <td>
-                    <form action="/admin/orders/${order.id}/update" method="POST" style="display: inline-block;">
-                        <select name="status" onchange="this.form.submit()">
-                            <option value="new" ${order.status === 'new' ? 'selected' : ''}>New</option>
-                            <option value="waiting" ${order.status === 'waiting' ? 'selected' : ''}>Waiting</option>
-                            <option value="in_progress" ${order.status === 'in_progress' ? 'selected' : ''}>In Progress</option>
-                            <option value="pending_confirmation" ${order.status === 'pending_confirmation' ? 'selected' : ''}>Pending Confirmation</option>
-                            <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>Completed</option>
-                        </select>
-                    </form>
-                </td>
-                <td>
-                    ${order.customer ? `<a href="/my_profile/show/${order.customer.id}">${order.customer.name}</a>` : '—'}
-                </td>
-                <td>
-                    ${order.executor ? `<a href="/my_profile/show/${order.executor.id}">${order.executor.name}</a>` : '—'}
-                </td>
-                <td>
-                    <form action="/admin/orders/${order.id}/destroy" method="POST" onsubmit="return confirm('Ви впевнені, що хочете видалити замовлення?');" style="display: inline-block;">
-                        <button type="submit" class="btn btn-danger">Видалити</button>
-                    </form>
-                </td>
+        pageItems.forEach(order => {
+            tbody.innerHTML += `
+                <tr>
+                    <td>${order.id}</td>
+                    <td>${order.title}</td>
+                    <td>
+                        <form method="POST" action="/admin/orders/${order.id}/update">
+                            <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').getAttribute('content')}">
+                            <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                                <option value="new" ${order.status === 'new' ? 'selected' : ''}>new</option>
+                                <option value="waiting" ${order.status === 'waiting' ? 'selected' : ''}>waiting</option>
+                                <option value="in_progress" ${order.status === 'in_progress' ? 'selected' : ''}>in progress</option>
+                                <option value="pending_confirmation" ${order.status === 'pending_confirmation' ? 'selected' : ''}>pending</option>
+                                <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>completed</option>
+                                <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>cancelled</option>
+                            </select>
+                        </form>
+                    </td>
+                    <td>
+                        ${order.payment_type === 'guarantee' ? '<span class="badge bg-info">Гарант</span>' :
+                          order.payment_type === 'no_guarantee' ? '<span class="badge bg-secondary">Без гаранта</span>' :
+                          '<span class="badge bg-light text-dark">Не вказано</span>'}
+                    </td>
+                    <td>${order.customer ? `<a href="/my_profile/${order.customer.id}">${order.customer.name}</a>` : '—'}</td>
+                    <td>${order.executor ? `<a href="/my_profile/${order.executor.id}">${order.executor.name}</a>` : '—'}</td>
+                    <td>
+                        <form method="POST" action="/admin/orders/${order.id}" onsubmit="return confirm('Видалити замовлення #${order.id}?')">
+                            <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').getAttribute('content')}">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button class="btn btn-sm btn-danger">Видалити</button>
+                        </form>
+                    </td>
+                </tr>
             `;
-            tableBody.appendChild(row);
         });
     }
 
-    // Пагинация
     function renderPagination() {
         const pagination = document.getElementById('pagination');
-        const filteredOrders = ordersData.filter(order =>
-            order.title.toLowerCase().includes(document.getElementById("searchInput").value.toLowerCase()) ||
-            (order.customer ? order.customer.name.toLowerCase().includes(document.getElementById("searchInput").value.toLowerCase()) : false) ||
-            (order.executor ? order.executor.name.toLowerCase().includes(document.getElementById("searchInput").value.toLowerCase()) : false)
+        const filter = document.getElementById("searchInput").value.toLowerCase();
+
+        const filtered = ordersData.filter(order =>
+            order.title.toLowerCase().includes(filter) ||
+            (order.customer && order.customer.name.toLowerCase().includes(filter)) ||
+            (order.executor && order.executor.name.toLowerCase().includes(filter))
         );
 
-        const totalPages = Math.ceil(filteredOrders.length / pageSize);
+        const totalPages = Math.ceil(filtered.length / pageSize);
         pagination.innerHTML = '';
 
         for (let i = 1; i <= totalPages; i++) {
-            const pageLink = document.createElement("button");
-            pageLink.textContent = i;
-            pageLink.classList.add('page-link');
-            if (i === currentPage) {
-                pageLink.classList.add('active');
-            }
-            pageLink.addEventListener("click", function() {
+            const btn = document.createElement('button');
+            btn.textContent = i;
+            btn.className = 'btn btn-sm mx-1 ' + (i === currentPage ? 'btn-primary' : 'btn-outline-primary');
+            btn.onclick = () => {
                 currentPage = i;
                 renderTable();
                 renderPagination();
-            });
-            pagination.appendChild(pageLink);
+            };
+            pagination.appendChild(btn);
         }
     }
 
-    // Поиск по таблице с подсветкой
-    document.getElementById("searchInput").addEventListener("keyup", function() {
+    document.getElementById("searchInput").addEventListener("keyup", () => {
         renderTable();
         renderPagination();
     });
 
-    // Инициализация таблицы
     updateTable();
 </script>
