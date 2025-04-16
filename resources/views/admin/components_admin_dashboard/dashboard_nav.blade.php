@@ -9,10 +9,10 @@
 <button type="button" class="icon-btn arrow-icon text-heading bg-gray-seven flx-center">
     <img src="{{ asset('assets/admin_assets/images/icons/angle-right.svg') }}" alt="">
 </button>
-<form action="#" class="search-input d-sm-block d-none">
+{{-- <form action="#" class="search-input d-sm-block d-none">
     <span class="icon"><img src="{{ asset('assets/admin_assets/images/icons/search-dark.svg') }}" alt=""></span>
     <input type="text" class="common-input common-input--md common-input--bg pill w-100" placeholder="Search here...">
-</form>
+</form> --}}
 </div>
 <div class="dashboard-nav__right">
 <div class="header-right flx-align">
