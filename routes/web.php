@@ -14,10 +14,23 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\PortfolioProjectController;
+use Illuminate\Support\Facades\File;
 
 Route::get('/', function () {
     return view('home');
 })->name('home');
+
+Route::get('/policy', function () {
+    $policyPath = base_path('policy.md');
+    $policy = File::exists($policyPath) ? File::get($policyPath) : 'Політика конфіденційності наразі недоступна.';
+    return view('policy', ['policy' => Str::markdown($policy)]);
+})->name('policy');
+
+Route::get('/agreement', function () {
+    $termsPath = base_path('terms.md');
+    $terms = File::exists($termsPath) ? File::get($termsPath) : 'Умови користування наразі недоступні.';
+    return view('terms', ['terms' => Str::markdown($terms)]);
+})->name('agreement');
 
 Route::post('/register', [RegisteredUserController::class, 'store'])->name('register');
 

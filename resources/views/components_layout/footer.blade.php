@@ -34,15 +34,15 @@
                                     </a>
                                 </li>
                                 <li class="tracking-1 mr-35">
-                                    <a class="uppercase tracking-1/5" href="{{ url('policy') }}">
+                                    <a class="uppercase tracking-1/5" href="{{ route('policy') }}">
                                         <span class="link-icon inline-flex hide-if-empty left-icon icon-next-to-label"></span>
-                                        Полис
+                                        Політика конфіденційності
                                     </a>
                                 </li>
                                 <li class="tracking-1 mr-35">
-                                    <a class="uppercase tracking-1/5" href="{{ url('agreement') }}">
+                                    <a class="uppercase tracking-1/5" href="{{ route('agreement') }}">
                                         <span class="link-icon inline-flex hide-if-empty left-icon icon-next-to-label"></span>
-                                        Соглашение
+                                        Умови користування
                                     </a>
                                 </li>
                                 <li class="tracking-1 mr-35">
