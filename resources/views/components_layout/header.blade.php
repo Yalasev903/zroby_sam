@@ -11,7 +11,13 @@
         <meta property="og:title" content="Zroby_Sam | Інноваційна платформа для майстрів та замовників">
         <meta property="og:description" content="Платформа для майстрів та замовників: представлення профілів, демонстрація портфоліо, створення оголошень та узгодження проектів у чаті. Високий рейтинг майстрів гарантує якість послуг.">
         <meta property="og:image" content="{{ asset('images/logo.png') }}">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
+
+        <!-- Lity modal library -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/lity/2.4.1/lity.min.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lity/2.4.1/lity.min.js"></script>
 
 
 		<link rel="stylesheet" href="./assets/vendors/liquid-icon/lqd-essentials/lqd-essentials.min.css">
@@ -248,10 +254,10 @@
 						</div>
 					</div>
 				</div>
-				<div class="lqd-stickybar-wrap lqd-stickybar-right w-auto items-end pointer-events-none">
+				<div class="lqd-stickybar-wrap lqd-stickybar-right w-auto items-end pointer-events-auto">
 					<div class="static flex flex-col flex-grow-1 items-end justify-center vertical-rl p-10 mr-60">
-						<a href="#contact-modal" class="btn btn-solid btn-sm btn-icon-left btn-icon-circle btn-icon-custom-size btn-icon-solid pointer-events-auto horizontal-tb -ml-60 bg-white text-15 font-medium text-gray-600 shadow-md rounded-100 hover:text-white hover:bg-primary" data-lity="#contact-modal">
-							<span class="btn-txt" data-text="Contact us">Зв'язок з нами</span>
+                        <a href="#support-modal" class="btn" data-lity>
+                            <span class="btn-txt" data-text="Support">Підтримка</span>
 							<span class="btn-icon mr-15 w-35 h-35 text-blue-300 bg-blue-100">
 								<svg class="w-20" xmlns="http://www.w3.org/2000/svg" width="19.955" height="16.522" viewbox="0 0 19.955 16.522" fill="currentColor">
 									<g transform="translate(-6.045 -8.06)">

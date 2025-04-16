@@ -15,6 +15,7 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\PortfolioProjectController;
 use Illuminate\Support\Facades\File;
+use App\Http\Controllers\SupportChatController;
 
 Route::get('/', function () {
     return view('home');
@@ -31,6 +32,8 @@ Route::get('/agreement', function () {
     $terms = File::exists($termsPath) ? File::get($termsPath) : 'Умови користування наразі недоступні.';
     return view('terms', ['terms' => Str::markdown($terms)]);
 })->name('agreement');
+
+Route::post('/support/chat', [SupportChatController::class, 'handle']);
 
 Route::post('/register', [RegisteredUserController::class, 'store'])->name('register');
 

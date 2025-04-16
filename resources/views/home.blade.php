@@ -288,7 +288,63 @@
 				<button class="lity-close" type="button" aria-label="Close (Press escape to close)" data-lity-close>&times;</button>
 			</div>
 		</div>
+        <div id="support-modal" class="lity-hide">
+            <div style="
+                background: white;
+                padding: 2rem;
+                max-width: 600px;
+                width: 90%;
+                margin: auto;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+                font-family: 'Be Vietnam Pro', sans-serif;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            ">
+                <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">Чат підтримки</h2>
+                <form id="support-form" style="width: 100%; display: flex; flex-direction: column; gap: 1rem;">
+                    <textarea id="support-question" placeholder="Напишіть ваше питання..." required
+                        style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 6px; resize: vertical; min-height: 100px;"></textarea>
+                    <button type="submit"
+                        style="background-color: #005f88; color: white; border: none; padding: 0.75rem; border-radius: 6px; font-weight: bold; cursor: pointer;">
+                        Надіслати
+                    </button>
+                </form>
+                <div id="support-answer" style="margin-top: 1rem; white-space: pre-wrap; color: #333;"></div>
+            </div>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const form = document.getElementById('support-form');
+                const questionInput = document.getElementById('support-question');
+                const answerDiv = document.getElementById('support-answer');
 
+                if (form) {
+                    form.addEventListener('submit', async function (e) {
+                        e.preventDefault(); // 🚫 отключаем отправку формы
+
+                        const question = questionInput.value;
+                        answerDiv.innerHTML = "⏳ Очікуйте відповідь...";
+
+                        try {
+                            const response = await fetch("/support/chat", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                },
+                                body: JSON.stringify({ question })
+                            });
+
+                            const data = await response.json();
+                            answerDiv.innerHTML = data.answer;
+                        } catch (error) {
+                            answerDiv.innerHTML = "❌ Сталася помилка. Спробуйте пізніше.";
+                        }
+                    });
+                }
+            });
+            </script>
 	</body>
-
-</html>
+    </html>
