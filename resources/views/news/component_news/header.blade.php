@@ -1,28 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Title -->
-    <title> Digital Market Place HTML Template</title>
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('assets/images/logo/favicon.png') }}">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="{{ asset('assets/news/assets/css/bootstrap.min.css') }}">
-    <!-- Fontawesome -->
-    <link rel="stylesheet" href="{{ asset('assets/news/assets/css/fontawesome-all.min.css') }}">
-    <!-- Slick -->
-    <link rel="stylesheet" href="{{ asset('assets/news/assets/css/slick.css') }}">
-    <!-- magnific popup -->
-    <link rel="stylesheet" href="{{ asset('assets/news/assets/css/magnific-popup.cs') }}s">
-    <!-- line awesome -->
-    <link rel="stylesheet" href="{{ asset('assets/news/assets/css/line-awesome.min.css') }}">
-    <!-- Main css -->
-    <link rel="stylesheet" href="{{ asset('assets/news/assets/css/main.css') }}">
+        {{-- SEO --}}
+        <title>{{ $title }}</title>
+        <meta name="description" content="{{ $description }}">
+        <meta name="keywords" content="майстри, замовники, ремонт, будівництво, послуги, портфоліо, Zroby_Sam">
+        <meta name="author" content="Zroby_Sam">
 
-</head>
+        {{-- Open Graph --}}
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="{{ $title }}">
+        <meta property="og:description" content="{{ $description }}">
+        <meta property="og:image" content="{{ asset('images/logo.png') }}">
+        <meta property="og:url" content="{{ url()->current() }}">
+        <meta property="og:site_name" content="Zroby_Sam">
+
+        {{-- Twitter Card --}}
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ $title }}">
+        <meta name="twitter:description" content="{{ $description }}">
+        <meta name="twitter:image" content="{{ asset('images/logo.png') }}">
+
+        {{-- JSON-LD Structured Data --}}
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "Zroby_Sam",
+          "url": "{{ url('/') }}",
+          "logo": "{{ asset('images/logo.png') }}",
+          "sameAs": [
+            "https://facebook.com/yourpage",
+            "https://twitter.com/yourpage",
+            "https://github.com/yourpage"
+          ]
+        }
+        </script>
+
+        {{-- CSRF --}}
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+        {{-- Favicon --}}
+        <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
+        <link rel="apple-touch-icon" href="{{ asset('images/favicon.png') }}">
+        <meta name="theme-color" content="#ffffff">
+
+        {{-- Styles --}}
+        <link rel="stylesheet" href="{{ asset('assets/news/assets/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/news/assets/css/fontawesome-all.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/news/assets/css/slick.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/news/assets/css/magnific-popup.css') }}"> {{-- тут было .cs --}}
+        <link rel="stylesheet" href="{{ asset('assets/news/assets/css/line-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/news/assets/css/main.css') }}">
+    </head>
 <body>
 
 <!--==================== Preloader Start ====================-->

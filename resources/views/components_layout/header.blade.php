@@ -3,15 +3,47 @@
 
 	<head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Zroby_Sam | Інноваційна платформа для майстрів та замовників</title>
-        <meta name="keywords" content="майстри, замовники, інноваційна платформа, профілі майстрів, портфоліо, оголошення, чат, рейтинг, замовлення послуг, Zroby_Sam">
-        <meta name="description" content="Наш додаток – це інноваційна платформа, що забезпечує ефективну взаємодію між майстрами та замовниками. Майстри демонструють свої профілі та портфоліо, а замовники створюють оголошення або узгоджують деталі проектів у чаті.">
-        <meta name="author" content="Zroby_Sam">
-        <meta property="og:title" content="Zroby_Sam | Інноваційна платформа для майстрів та замовників">
-        <meta property="og:description" content="Платформа для майстрів та замовників: представлення профілів, демонстрація портфоліо, створення оголошень та узгодження проектів у чаті. Високий рейтинг майстрів гарантує якість послуг.">
-        <meta property="og:image" content="{{ asset('images/logo.png') }}">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {{-- SEO --}}
+    <title>{{ $title }}</title>
+    <meta name="description" content="{{ $description }}">
+    <meta name="keywords" content="майстри, замовники, ремонт, будівництво, послуги, портфоліо, Zroby_Sam">
+    <meta name="author" content="Zroby_Sam">
+
+    {{-- Open Graph --}}
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ $title }}">
+    <meta property="og:description" content="{{ $description }}">
+    <meta property="og:image" content="{{ asset('images/logo.png') }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:site_name" content="Zroby_Sam">
+
+    {{-- Twitter Card --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $title }}">
+    <meta name="twitter:description" content="{{ $description }}">
+    <meta name="twitter:image" content="{{ asset('images/logo.png') }}">
+
+    {{-- JSON-LD Structured Data --}}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Zroby_Sam",
+      "url": "{{ url('/') }}",
+      "logo": "{{ asset('images/logo.png') }}",
+      "sameAs": [
+        "https://facebook.com/yourpage",
+        "https://twitter.com/yourpage",
+        "https://github.com/yourpage"
+      ]
+    }
+    </script>
+
+    {{-- CSRF --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 
 
         <!-- Lity modal library -->

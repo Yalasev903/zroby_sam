@@ -12,13 +12,12 @@ class NewsController extends Controller
     /**
      * Вывод списка новостей с возможностью фильтрации.
      */
-
-     public function index(Request $request)
+    public function index(Request $request)
     {
         $query = News::latest();
         $breadcrumbs = [
             ['title' => 'Головна', 'url' => route('home')],
-            ['title' => 'Новина', 'url' => route('news.index')],
+            ['title' => 'Новини', 'url' => route('news.index')],
         ];
 
         // Фильтрация по категории
@@ -34,8 +33,18 @@ class NewsController extends Controller
         $news = $query->paginate(10)->appends($request->except('page'));
         $categories = NewsCategory::all();
 
-        return view('news.index', compact('news', 'categories', 'breadcrumbs'));
+        // SEO
+        $title = $selectedCategory
+            ? "Новини категорії: {$selectedCategory->name} | Zroby_Sam"
+            : "Останні новини | Zroby_Sam";
+
+        $description = $selectedCategory
+            ? "Читайте свіжі новини з категорії «{$selectedCategory->name}» на платформі Zroby_Sam."
+            : "Читайте актуальні новини на платформі Zroby_Sam: поради, інновації, історії успіху та більше.";
+
+        return view('news.index', compact('news', 'categories', 'breadcrumbs', 'title', 'description'));
     }
+
 
     /**
      * Форма создания новости.
@@ -63,7 +72,7 @@ class NewsController extends Controller
 
         $breadcrumbs = [
             ['title' => 'Головна', 'url' => route('home')],
-            ['title' => 'Новина', 'url' => route('news.index')],
+            ['title' => 'Новини', 'url' => route('news.index')],
         ];
 
         if ($category) {
@@ -72,8 +81,13 @@ class NewsController extends Controller
 
         $breadcrumbs[] = ['title' => $news->title, 'url' => route('news.show', $news->slug)];
 
-        return view('news.show', compact('news', 'breadcrumbs'));
+        // SEO
+        $title = "{$news->title} | Zroby_Sam";
+        $description = Str::limit(strip_tags($news->text), 160); // обрезаем до 160 символов
+
+        return view('news.show', compact('news', 'breadcrumbs', 'title', 'description'));
     }
+
 
     /**
      * Форма редактирования новости.
@@ -105,6 +119,10 @@ class NewsController extends Controller
             ['title' => $category->name, 'url' => route('news.byCategory', $category->id)],
         ];
 
-        return view('news.index', compact('news', 'breadcrumbs'));
+        // SEO
+        $title = "Новини: {$category->name} | Zroby_Sam";
+        $description = "Читайте найактуальніші новини з категорії {$category->name} на платформі Zroby_Sam.";
+
+        return view('news.index', compact('news', 'breadcrumbs', 'title', 'description'));
     }
 }
