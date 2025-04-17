@@ -134,7 +134,18 @@
                             @elseif($order->ticket && auth()->id() === $order->ticket->user_id)
                                 <span class="text-muted">Скарга залишена</span>
                             @endif
-
+                            {{-- Кнопка чата --}}
+                            @if($order->customer && $order->executor)
+                                @if(auth()->id() === $order->executor_id)
+                                    <a href="{{ route('user', $order->user_id) }}" class="btn btn-outline-dark btn-sm">
+                                        💬 Чат із замовником
+                                    </a>
+                                @elseif(auth()->id() === $order->user_id)
+                                    <a href="{{ route('user', $order->executor_id) }}" class="btn btn-outline-dark btn-sm">
+                                        💬 Чат з виконавцем
+                                    </a>
+                                @endif
+                            @endif
                             {{-- Отзывы --}}
                             @if(auth()->user()->role === 'customer' && $order->status === 'completed' && !$order->reviews()->where('review_by', 'customer')->exists())
                                 <a href="{{ route('reviews.create', ['order' => $order->id]) }}" class="btn btn-primary btn-sm">Відгук про виконавця</a>
