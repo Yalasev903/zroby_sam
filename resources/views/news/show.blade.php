@@ -30,7 +30,7 @@
                         @php
                             $imagePath = public_path($news->image_url);
                         @endphp
-                        <img src="{{ $news->image_url && file_exists($imagePath) ? asset($news->image_url) : asset('assets/images/thumbs/default-details.png') }}" alt="{{ $news->title }}">
+                        <img src="{{ $news->image_url && file_exists(filename: $imagePath) ? asset($news->image_url) : asset('assets/images/thumbs/default-details.png') }}" alt="{{ $news->title }}">
                     </div>
 
                     <div class="blog-details-content__desc mb-40">

@@ -77,6 +77,7 @@ Route::middleware([
         Route::get('/admin/orders-table', [AdminController::class, 'ordersTable'])->name('admin.orders.table');
         Route::get('/admin/users-table', [AdminController::class, 'usersTable'])->name('admin.users.table');
         Route::get('/admin/tickets-table', [AdminController::class, 'ticketsTable'])->name('admin.tickets.table');
+        Route::get('/admin/news-table', [AdminController::class, 'newsTable'])->name('admin.news.table');
 
         // Настройки админки
         Route::get('/admin/settings', [AdminController::class, 'showSettingsForm'])->name('admin.settings');
@@ -96,6 +97,14 @@ Route::middleware([
         // Удаление уведомления (для администратора)
         Route::delete('/admin/notifications/{notification}/destroy', [\App\Http\Controllers\NotificationController::class, 'destroy'])
         ->name('admin.notifications.destroy');
+
+        // удаление и настройка новостей
+        Route::get('/admin/news-table', [AdminController::class, 'newsTable'])->name('admin.news.table');
+        Route::get('/admin/news/create', [AdminController::class, 'createNews'])->name('admin.news.create');
+        Route::post('/admin/news/store', [AdminController::class, 'storeNews'])->name('admin.news.store');
+        Route::get('/admin/news/{news}/edit', [AdminController::class, 'editNews'])->name('admin.news.edit');
+        Route::post('/admin/news/{news}/update', [AdminController::class, 'updateNews'])->name('admin.news.update');
+        Route::delete('/admin/news/{news}/destroy', [AdminController::class, 'destroyNews'])->name('admin.news.destroy');
     });
 
     Route::get('/executors', [ExecutorController::class, 'index'])->name('executors.index');
@@ -148,7 +157,7 @@ Route::middleware([
 });
 
 // Новости
-Route::resource('news', NewsController::class);
+Route::resource('news', NewsController::class)->except(['create']);
 Route::get('/news/{slug}/details', [NewsController::class, 'show'])->name('news.details');
 Route::get('/news/category/{id}', [NewsController::class, 'byCategory'])->name('news.byCategory');
 Route::get('/news/categories', [NewsCategoryController::class, 'index'])->name('news.categories');

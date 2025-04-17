@@ -21,6 +21,16 @@
     <link rel="stylesheet" href="{{ asset('assets/admin_assets/css/line-awesome.min.css') }}">
     <!-- Main css -->
     <link rel="stylesheet" href="{{ asset('assets/admin_assets/css/main.css') }}">
+    <script src="https://cdn.tiny.cloud/1/zz5yzfkvutel7xxsey78ithzogwrudzczlqmwlyft73cupew/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea[name="content"]',
+            height: 400,
+            plugins: 'link image code lists table',
+            toolbar: 'undo redo | styleselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | code',
+            language: 'uk'
+        });
+    </script>
 
 </head>
 <body>

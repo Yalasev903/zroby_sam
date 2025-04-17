@@ -49,18 +49,18 @@ class NewsController extends Controller
     /**
      * Форма создания новости.
      */
-    public function create()
-    {
-        $categories = NewsCategory::all();
+    // public function create()
+    // {
+    //     $categories = NewsCategory::all();
 
-        $breadcrumbs = [
-            ['title' => 'Головна', 'url' => route('home')],
-            ['title' => 'Новини', 'url' => route('news.index')],
-            ['title' => 'Додати новину', 'url' => route('news.create')],
-        ];
+    //     $breadcrumbs = [
+    //         ['title' => 'Головна', 'url' => route('home')],
+    //         ['title' => 'Новини', 'url' => route('news.index')],
+    //         ['title' => 'Додати новину', 'url' => route('news.create')],
+    //     ];
 
-        return view('news.create', compact('categories', 'breadcrumbs'));
-    }
+    //     return view('news.create', compact('categories', 'breadcrumbs'));
+    // }
 
     /**
      * Отображение конкретной новости.

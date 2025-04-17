@@ -12,6 +12,9 @@ use App\Models\AdminSetting;
 use App\Models\ServiceCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\News;
+use App\Models\NewsCategory;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -27,8 +30,28 @@ class AdminController extends Controller
             'chatMessages' => ChMessage::latest()->get(),
             'tickets' => Ticket::with(['user', 'order'])->latest()->get(),
             'notifications' => Notification::latest()->get(),
+            // 🛠 Сериализация новостей для JavaScript
+            'news' => News::with('category')->latest()->get()->map(function ($item) {
+                $imagePath = public_path($item->image_url);
+                return [
+                    'id' => $item->id,
+                    'title' => $item->title,
+                    'image_url' => file_exists($imagePath) ? asset($item->image_url) : asset('images/no-image.png'),
+                    'created_at' => $item->created_at->toDateTimeString(),
+                    'category' => [
+                        'name' => optional($item->category)->name
+                    ]
+                ];
+            })->toArray(),
         ]);
     }
+
+    public function destroyNews(News $news)
+    {
+        $news->delete();
+        return back()->with('success', 'Новину видалено.');
+    }
+
 
     // ---------- ПОЛЬЗОВАТЕЛИ ----------
 
@@ -262,5 +285,74 @@ class AdminController extends Controller
         }
 
         return back()->with('success', 'Налаштування збережено.');
+    }
+
+    public function editNews(News $news)
+    {
+        $categories = NewsCategory::all();
+        return view('admin.components_admin_dashboard.edit_news', compact('news', 'categories'));
+    }
+
+    public function updateNews(Request $request, News $news)
+    {
+        $data = $request->validate([
+            'title' => 'required|string|max:500',
+            'excerpt' => 'nullable|string',
+            'content' => 'required|string',
+            'news_category_id' => 'required|integer',
+            'image_url' => 'nullable|string',
+        ]);
+
+        $news->update($data);
+
+        return back()->with('success', 'Новину оновлено.');
+    }
+
+    public function createNews()
+    {
+        $categories = NewsCategory::all();
+        return view('admin.components_admin_dashboard.create_news', compact('categories'));
+    }
+
+    public function storeNews(Request $request)
+    {
+        $data = $request->validate([
+            'title' => 'required|string|max:500',
+            'excerpt' => 'nullable|string',
+            'content' => 'required|string',
+            'news_category_id' => 'required|exists:news_categories,id',
+            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+
+        $data['slug'] = Str::slug($data['title']) . '-' . time();
+
+        if ($request->hasFile('image_url')) {
+            $data['image_url'] = $request->file('image_url')->store('news', 'public');
+            $data['image_url'] = 'storage/' . $data['image_url'];
+        }
+
+        News::create($data);
+
+        return redirect()->route('admin.dashboard')->with('success', 'Новину створено успішно.');
+    }
+
+    public function newsTable()
+    {
+        $news = News::with('category')->latest()->get();
+
+        return view('admin.pages.news_table', [
+            'news' => $news->map(function ($item) {
+                $imagePath = public_path($item->image_url);
+                return [
+                    'id' => $item->id,
+                    'title' => $item->title,
+                    'image_url' => file_exists($imagePath) ? asset($item->image_url) : asset('images/no-image.png'),
+                    'created_at' => $item->created_at->toDateTimeString(),
+                    'category' => [
+                        'name' => optional($item->category)->name
+                    ]
+                ];
+            })->toArray()
+        ]);
     }
 }

@@ -98,6 +98,16 @@
                         </a>
                     </li>
                     <li class="sidebar-list__item">
+                        <!-- Исправлено: правильное имя маршрута -->
+                        <a href="{{ route('admin.news.table') }}" class="sidebar-list__link">
+                            <span class="sidebar-list__icon">
+                                <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon12.svg') }}" alt="" class="icon">
+                                <img src="{{ asset('assets/admin_assets/images/icons/sidebar-icon-active12.svg') }}" alt="" class="icon icon-active">
+                            </span>
+                            <span class="text">Новини</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-list__item">
                         <form method="POST" action="{{ route('logout') }}" x-data>
                             @csrf
                             <button type="submit" class="sidebar-list__link w-100 text-start" style="border: none; background: transparent; padding: 0;">
