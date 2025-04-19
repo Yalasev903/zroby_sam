@@ -17,9 +17,11 @@
                     </h6>
                 </div>
                 <div class="ld-fancy-heading relative">
+                   <a href="{{ url('/news') }}">
                     <h2 class="ld-fh-element mb-0/5em inline-block relative text-40 text-gray-600">
                         Останні публікації
                     </h2>
+                    </a>
                 </div>
             </div>
             <div class="col col-12 col-md-6 animation-element">

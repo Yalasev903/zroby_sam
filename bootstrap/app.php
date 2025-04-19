@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,6 +13,15 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Доверие ко всем прокси (ngrok, cloudflare и т.д.)
+        $middleware->trustProxies(
+            at: '*',
+            headers: Request::HEADER_X_FORWARDED_FOR |
+                     Request::HEADER_X_FORWARDED_HOST |
+                     Request::HEADER_X_FORWARDED_PORT |
+                     Request::HEADER_X_FORWARDED_PROTO
+        );
+
         // Исключение маршрутов из защиты CSRF
         $middleware->validateCsrfTokens(except: [
             'stripe/*', // Вебхуки Stripe
@@ -29,6 +39,6 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withCommands([
         \App\Console\Commands\GenerateDailyNews::class,
-        \App\Console\Commands\OptimizeNews::class, 
+        \App\Console\Commands\OptimizeNews::class,
     ])
     ->create();

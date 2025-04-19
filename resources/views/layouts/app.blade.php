@@ -32,8 +32,10 @@
 		<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&family=DM+Serif+Text:ital@1&family=Rubik:wght@600&display=swap" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <!-- Vite manual include -->
+        <link rel="stylesheet" href="{{ asset('build/assets/app-CyiPxqEv.css') }}">
+        <link rel="stylesheet" href="{{ asset('build/assets/app-BgfknelF.css') }}">
+        <script type="module" src="{{ asset('build/assets/app-DFP44zVe.js') }}"></script>
 
         <!-- Styles -->
         @livewireStyles

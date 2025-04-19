@@ -180,7 +180,7 @@
         @endauth
     </nav>
 @endif
-    <div class="language-select flx-align select-has-icon">
+    {{-- <div class="language-select flx-align select-has-icon">
         <img src="assets/images/icons/globe.svg" alt="" class="globe-icon">
         <select class="select py-0 ps-2 border-0 fw-500">
             <option value="1">Eng</option>
@@ -188,7 +188,7 @@
             <option value="3">Eur</option>
             <option value="4">Urd</option>
         </select>
-    </div>
+    </div> --}}
             </div>
         </div>
     </div>
@@ -273,10 +273,10 @@
 
             <!-- Header Right start -->
             <div class="header-right flx-align">
-    <a href="cart.html" class="header-right__button cart-btn position-relative">
+    {{-- <a href="cart.html" class="header-right__button cart-btn position-relative">
         <img src="assets/images/icons/cart.svg" alt="">
         <span class="qty-badge font-12">0</span>
-    </a>
+    </a> --}}
     <div class="header-right__inner gap-3 flx-align d-lg-flex d-none">
 
     @if (Route::has('login'))
@@ -307,7 +307,7 @@
         @endauth
     </nav>
 @endif
-    <div class="language-select flx-align select-has-icon">
+    {{-- <div class="language-select flx-align select-has-icon">
         <img src="assets/images/icons/globe.svg" alt="" class="globe-icon">
         <select class="select py-0 ps-2 border-0 fw-500">
             <option value="1">Eng</option>
@@ -315,7 +315,7 @@
             <option value="3">Eur</option>
             <option value="4">Urd</option>
         </select>
-    </div>
+    </div> --}}
     </div>
     <button type="button" class="toggle-mobileMenu d-lg-none"> <i class="las la-bars"></i> </button>
 </div>
