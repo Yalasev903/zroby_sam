@@ -31,9 +31,9 @@
             @endphp
 
             <form method="GET" action="{{ url()->current() }}" class="mb-4">
-                <label for="category" class="font-semibold">Фильтр по категории:</label>
+                <label for="category" class="font-semibold">Фільтр по категорії:</label>
                 <select name="category" id="category" onchange="this.form.submit()" class="ml-2 border rounded p-1">
-                    <option value="">Все категории</option>
+                    <option value="">Усі категорії</option>
                     @foreach($categories as $cat)
                         <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>
                             {{ $cat->name }}
@@ -45,7 +45,7 @@
             @include('components_ads.content', ['ads' => $ads])
 
             <div class="text-center mt-4">
-                <a href="{{ route('ads.index') }}" class="btn btn-primary">Показать все объявления</a>
+                <a href="{{ route('ads.index') }}" class="btn btn-primary">Показати усі оголошення</a>
             </div>
         @elseif($user->role === 'customer')
             @php
@@ -61,7 +61,7 @@
             <form method="GET" action="{{ url()->current() }}" class="mb-4">
                 <label for="category" class="font-semibold">Фільтр по категории:</label>
                 <select name="category" id="category" onchange="this.form.submit()" class="ml-2 border rounded p-1">
-                    <option value="">Все категории</option>
+                    <option value="">Усі категорії</option>
                     @foreach($categories as $cat)
                         <option value="{{ $cat->name }}" {{ request('category') == $cat->name ? 'selected' : '' }}>
                             {{ $cat->name }}

@@ -55,7 +55,7 @@
 														<h6 class="ld-fh-element relative font-normal mb-0/75em">Наша пошта</h6>
 													</div>
 													<div class="ld-fancy-heading relative">
-														<h2 class="ld-fh-element relative text-nightblue text-20 mb-0">zroby_sam@gmail.com</h2>
+														<h2 class="ld-fh-element relative text-nightblue text-20 mb-0">robotapro@gmail.com</h2>
 													</div>
 												</div>
 											</div>

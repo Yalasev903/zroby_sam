@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         // Включаем поддержку внешних ключей для SQLite
-        DB::statement('PRAGMA foreign_keys = ON;');
+     //    DB::statement('PRAGMA foreign_keys = ON;');
 
         Schema::create('news', function (Blueprint $table) {
             $table->id();
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('excerpt')->nullable();
             $table->longText('content');
-            $table->integer('news_category_id'); // Исправлено для SQLite
+            $table->unsignedBigInteger('news_category_id'); // Исправлено для SQLite
             $table->string('image_url')->nullable();
             $table->timestamp('published_at')->nullable();
             $table->timestamps();

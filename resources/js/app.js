@@ -1,16 +1,16 @@
-// Подключаем Bootstrap и его компоненты, включая JavaScript
 import './bootstrap';
-import 'bootstrap/dist/js/bootstrap.min.js'; // Подключаем сам Bootstrap JS
-import 'bootstrap/dist/css/bootstrap.min.css'; // Стили Bootstrap
+import '../css/app.css';
+// ✅ Bootstrap
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-// Подключаем Popper.js (необходим для некоторых компонентов Bootstrap, включая модальные окна)
-import { createPopper } from '@popperjs/core'; // Убедись, что Popper.js подключен правильно
+// ✅ Alpine.js (Jetstream)
+import Alpine from 'alpinejs';
+window.Alpine = Alpine;
+Alpine.start();
 
-// Подключаем jQuery, если он нужен для других компонентов
-import $ from 'jquery'; // Загружаем jQuery
-
-// Устанавливаем глобальные переменные для jQuery
+// ✅ jQuery (если нужно)
+import $ from 'jquery';
 window.$ = window.jQuery = $;
 
-// Логируем, что Bootstrap загружен, чтобы проверить подключение
+// Проверка
 console.log('Bootstrap Loaded:', typeof bootstrap !== 'undefined');

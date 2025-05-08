@@ -25,7 +25,7 @@
 											</div>
 											<div class="ld-fancy-heading relative">
 												<p class="ld-fh-element mb-0/5em inline-block relative">
-													<a href="#" class="text-16 font-bold leading-1/2em">slasev903@gmail.com </a>
+													<a href="#" class="text-16 font-bold leading-1/2em">robotapro@gmail.com </a>
 												</p>
 											</div>
 										</div>

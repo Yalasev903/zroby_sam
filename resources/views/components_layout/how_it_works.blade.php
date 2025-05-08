@@ -4,7 +4,7 @@
                     <div class="row">
                         <div class="col col-12">
                             <div class="whitespace-nowrap ld-fancy-heading relative" data-parallax="true" data-parallax-options='{"ease": "linear", "start": "top bottom", "end": "bottom+=0px top"}' data-parallax-from='{"x": "1vw"}' data-parallax-to='{"x": "-20vw"}'>
-                                <h2 class="ld-fh-element mb-0/5em inline-block relative">Зроби Сам</h2>
+                                <h2 class="ld-fh-element mb-0/5em inline-block relative">Robota Pro</h2>
                             </div>
                         </div>
                     </div>

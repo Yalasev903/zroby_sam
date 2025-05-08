@@ -27,10 +27,10 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
-        DB::statement('PRAGMA foreign_keys = ON;');
+     //    DB::statement('PRAGMA foreign_keys = ON;');
 
          View::composer('*', function ($view) {
-            $title = $view->getData()['title'] ?? 'Zroby_Sam | Інноваційна платформа для майстрів та замовників';
+            $title = $view->getData()['title'] ?? 'Robotapro | Інноваційна платформа для майстрів та замовників';
             $description = $view->getData()['description'] ?? 'Інноваційна платформа для майстрів та замовників: профілі, портфоліо, чат, оголошення, замовлення.';
 
             $view->with(compact('title', 'description'));

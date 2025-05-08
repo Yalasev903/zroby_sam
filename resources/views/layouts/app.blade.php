@@ -24,7 +24,7 @@
         <link rel="stylesheet" href="{{ asset('assets/css/utility.min.css') }}">
         {{-- <link rel="stylesheet" href="{{ asset('assets/css/demo/start-hub-4/base.css') }}"> --}}
         {{-- <link rel="stylesheet" href="{{ asset('assets/css/demo/start-hub-4/start-hub-4.css') }}"> --}}
-		<link rel="stylesheet" href="./assets/css/demo/start-hub-2.css">
+		{{-- <link rel="stylesheet" href="./assets/css/demo/start-hub-2.css"> --}}
 
 		<!-- Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,9 +33,10 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
         <!-- Vite manual include -->
-        <link rel="stylesheet" href="{{ asset('build/assets/app-CyiPxqEv.css') }}">
+        {{-- <link rel="stylesheet" href="{{ asset('build/assets/app-CyiPxqEv.css') }}">
         <link rel="stylesheet" href="{{ asset('build/assets/app-BgfknelF.css') }}">
-        <script type="module" src="{{ asset('build/assets/app-DFP44zVe.js') }}"></script>
+        <script type="module" src="{{ asset('build/assets/app-DFP44zVe.js') }}"></script> --}}
+        @vite(['resources/js/app.js'])
 
         <!-- Styles -->
         @livewireStyles

@@ -12,9 +12,10 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Vite manual include -->
-        <link rel="stylesheet" href="{{ asset('build/assets/app-CyiPxqEv.css') }}">
+        {{-- <link rel="stylesheet" href="{{ asset('build/assets/app-CyiPxqEv.css') }}">
         <link rel="stylesheet" href="{{ asset('build/assets/app-BgfknelF.css') }}">
-        <script type="module" src="{{ asset('build/assets/app-DFP44zVe.js') }}"></script>
+        <script type="module" src="{{ asset('build/assets/app-DFP44zVe.js') }}"></script> --}}
+        @vite(['resources/js/app.js'])
 
         <!-- Styles -->
         @livewireStyles

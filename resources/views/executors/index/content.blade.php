@@ -66,15 +66,13 @@
                             overflow: hidden;
                         }
                     </style>
-                    <div class="card-footer text-center">
-                        <button class="btn btn-sm blue" data-text="Подрібніше" data-split-text="true"
-                                data-split-options='{"type": "chars, words"}' data-bs-toggle="modal"
-                                data-bs-target="#executorModal{{ $executor->id }}">
-                            Подрібніше
-                        </button>
-                        <a href="{{ url('/chat/' . $executor->id) }}" class="btn btn-primary">
-                            Почати чат
-                        </a>
+                    <div class="card-footer text-center d-flex justify-content-center gap-2 mt-2">
+                         <button class="btn btn-sm blue px-3 py-2" style="font-size: 12px;" ...>
+                         Подрібніше
+                         </button>
+                         <a href="{{ url('/chat/' . $executor->id) }}" class="btn btn-primary px-3 py-2" style="font-size: 12px;">
+                         Почати чат
+                         </a>
                     </div>
                 </div>
             </div>

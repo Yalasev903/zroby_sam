@@ -6,23 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    public function up()
+    {
+        Schema::table('users', function (Blueprint $table) {
+            // Добавляем роль admin к допустимым значениям
+            $table->enum('role', ['customer', 'executor', 'admin'])->default('customer')->change();
+        });
+    }
 
-     public function up()
-{
-    Schema::table('users', function (Blueprint $table) {
-        $table->enum('role', ['customer', 'executor'])->default('customer')->change(); // Задаємо значення за замовчуванням
-    });
-}
-
-public function down()
-{
-    Schema::table('users', function (Blueprint $table) {
-        $table->enum('role', ['customer', 'executor'])->nullable()->change(); // Відновлюємо колишнє налаштування
-    });
-}
-
-
+    public function down()
+    {
+        Schema::table('users', function (Blueprint $table) {
+            // Восстановление без admin — не обязательно, но можно
+            $table->enum('role', ['customer', 'executor'])->nullable()->change();
+        });
+    }
 };
