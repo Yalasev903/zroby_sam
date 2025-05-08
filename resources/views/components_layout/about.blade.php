@@ -4,7 +4,7 @@
         <div class="row text-center justify-center">
             <div class="col col-12 col-md-8 col-lg-6 mb-70 text-center relative p-0 module-title">
                 <div class="ld-fancy-heading relative animation-element">
-                    <h2 class="ld-fh-element m-0 inline-block relative">Зроби Сам – платформа для </h2>
+                    <h2 class="ld-fh-element m-0 inline-block relative">Robota Pro – платформа для </h2>
                 </div>
                 <div class="ld-fancy-heading relative animation-element">
                     <h2 class=" ld-fh-element relative ld-gradient-heading bg-transparent leading-1/2em mb-0/5em" data-text-rotator="true" style="background-image: linear-gradient(10deg, #F14DFF 0%, #E38300 85%);">

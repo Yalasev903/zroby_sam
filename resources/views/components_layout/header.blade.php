@@ -62,7 +62,19 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet">
 
-		<title>Зроби Сам</title>
+		<title>RobotaPro</title>
+          <style>
+               h1.ld-fh-element {
+                    animation: none;
+               }
+               @media screen and (max-width: 767px) {
+                   h1.ld-fh-element {
+                       font-size: 22px !important;
+                       line-height: 1.4em !important;
+                       animation: none;
+                   }
+               }
+           </style>
 	</head>
 
 	<body data-mobile-nav-breakpoint="1199" data-mobile-nav-style="modern" data-mobile-nav-scheme="dark" data-mobile-nav-trigger-alignment="right" data-mobile-header-scheme="gray" data-mobile-logo-alignment="default" data-mobile-header-builder="true" data-overlay-onmobile="true" data-disable-animations-onmobile="true">

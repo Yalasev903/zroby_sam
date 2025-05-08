@@ -91,7 +91,7 @@
 <div class="bottom-footer">
     <div class="container container-two">
         <div class="bottom-footer__inner flx-between gap-3">
-            <p class="bottom-footer__text font-14">Copyright &copy; {{ now()->year }} Zroby_Sam. Всі права захищені.</p>
+            <p class="bottom-footer__text font-14">Copyright &copy; {{ now()->year }} RobotaPro. Всі права захищені.</p>
             <div class="footer-links">
                 <a href="{{ route('policy') }}" class="footer-link font-14" target="_blank">Політика конфіденційності</a>
                 <a href="{{ route('agreement') }}" class="footer-link font-14" target="_blank">Умови використання</a>

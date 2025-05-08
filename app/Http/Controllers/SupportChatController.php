@@ -15,7 +15,7 @@ class SupportChatController extends Controller
         $policy = File::exists(base_path('policy.md')) ? File::get(base_path('policy.md')) : '';
         $terms = File::exists(base_path('terms.md')) ? File::get(base_path('terms.md')) : '';
 
-        $systemPrompt = "Ти — чат підтримки платформи ZrobySam. Відповідай ввічливо, коротко, зрозуміло, спираючись на Політику конфіденційності та Умови користування:";
+        $systemPrompt = "Ти — чат підтримки платформи RobotaPro. Відповідай ввічливо, коротко, зрозуміло, спираючись на Політику конфіденційності та Умови користування:";
         $context = $policy . "\n\n" . $terms;
 
         $models = ['gpt-4o', 'gpt-4', 'gpt-3.5-turbo'];

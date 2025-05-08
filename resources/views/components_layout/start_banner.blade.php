@@ -62,10 +62,14 @@
                                             </span>
                                         </span>
                                     </h1>
-                                                                              </div>
-                                <div class="ld-fancy-heading relative mx-25percent sm:m-0 animation-element">
-                                    <p class="ld-fh-element relative text-20 mb-1/65em leading-1/25em font-medium">Наш додаток створений для того, щоб з'єднати виконавців та замовників у різних сферах діяльності. Тут ви можете знайти професіонала для будь-якої справи чи ж записатися на завдання, щоб продемонструвати свої навички та заробити рейтинг.</p>
-                                </div>
+                                   </div>
+                                   <div class="ld-fancy-heading relative mx-25percent sm:m-0 animation-element">
+                                        <p class="ld-fh-element relative text-20 mb-1/65em leading-1/25em font-medium"
+                                           style="background-color: rgba(0, 0, 0, 0.4); color: #ffffff; padding: 1rem 1.25rem; border-radius: 12px; font-size: 1rem; line-height: 1.6;">
+                                            Наш додаток створений для того, щоб з'єднати виконавців та замовників у різних сферах діяльності.
+                                            Тут ви можете знайти професіонала для будь-якої справи чи ж записатися на завдання, щоб продемонструвати свої навички та заробити рейтинг.
+                                        </p>
+                                    </div>
                                 <div class="mb-35 relative animation-element">
                                     <a href="#contact-modal" class="btn btn-solid btn-hover-txt-liquid-x-alt rounded-100 bg-white font-medium text-15 leading-1/25em text-red-700 module-btn-md" data-lity="#contact-modal">
                                         <span class="btn-txt text-start" data-split-text="true" data-split-options='{"type":  "chars, words"}'>
