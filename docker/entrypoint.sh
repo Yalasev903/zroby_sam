@@ -1,7 +1,16 @@
 #!/bin/bash
 
-# Генерация nginx.conf из шаблона с подстановкой $PORT
+echo "🌐 PORT = $PORT"
+
+# Генерация nginx.conf
+if [ -z "$PORT" ]; then
+    echo "❌ PORT is not set"; exit 1
+fi
+
 envsubst '${PORT}' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
 
-# Запуск supervisor, который управляет nginx, php-fpm и cron
+echo "✅ NGINX config generated at /etc/nginx/nginx.conf:"
+cat /etc/nginx/nginx.conf
+
+# Запуск supervisor
 exec /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
