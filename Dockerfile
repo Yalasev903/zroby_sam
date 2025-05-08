@@ -8,13 +8,13 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     unzip \
+    gettext \
     libzip-dev \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
     libcurl4-openssl-dev \
     zip \
-    gettext \
     && docker-php-ext-install pdo_mysql zip gd bcmath
 
 # Установка Composer
@@ -28,17 +28,15 @@ COPY . .
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader \
     && chown -R www-data:www-data /var/www/robotapro/storage /var/www/robotapro/bootstrap/cache
 
-# Копируем конфиги
+# Копирование конфигураций
 COPY docker/nginx.conf.template /etc/nginx/nginx.conf.template
 COPY docker/supervisord.conf /etc/supervisor/supervisord.conf
 COPY docker/crontab /etc/cron.d/laravel-cron
 COPY docker/entrypoint.sh /etc/entrypoint.sh
 
-# Настройка cron и прав
 RUN chmod 0644 /etc/cron.d/laravel-cron && crontab /etc/cron.d/laravel-cron
 RUN chmod +x /etc/entrypoint.sh
 
-# Railway требует PORT как переменную окружения
 ENV PORT=8080
 
 EXPOSE 8080
