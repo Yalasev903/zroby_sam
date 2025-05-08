@@ -1,8 +1,8 @@
 SHELL=/bin/bash
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-# Запуск fetch сразу
+# Запуск news:fetch при старте контейнера
 @reboot cd /var/www/robotapro && php artisan news:fetch
 
-# Оптимизация через минуту после старта и далее раз в сутки
+# news:optimize через 1 минуту и раз в сутки
 * * * * * root sleep 60 && cd /var/www/robotapro && php artisan news:optimize >> /var/log/cron.log 2>&1

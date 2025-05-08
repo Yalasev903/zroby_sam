@@ -28,16 +28,18 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader \
     && chown -R www-data:www-data /var/www/robotapro/storage /var/www/robotapro/bootstrap/cache
 
 # Копируем конфиги
-COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY docker/nginx.conf.template /etc/nginx/nginx.conf.template
 COPY docker/supervisord.conf /etc/supervisor/supervisord.conf
 COPY docker/crontab /etc/cron.d/laravel-cron
+COPY docker/entrypoint.sh /etc/entrypoint.sh
 
-# Cron и Supervisor
+# Настройка cron и прав
 RUN chmod 0644 /etc/cron.d/laravel-cron && crontab /etc/cron.d/laravel-cron
+RUN chmod +x /etc/entrypoint.sh
 
-# Railway PORT
+# Railway требует PORT как переменную окружения
 ENV PORT=8080
 
 EXPOSE 8080
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+ENTRYPOINT ["/etc/entrypoint.sh"]
