@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libcurl4-openssl-dev \
     zip \
-    && docker-php-ext-install pdo_mysql zip gd
+    && docker-php-ext-install pdo_mysql zip gd bcmath
 
 # Установка Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -32,7 +32,11 @@ COPY docker/nginx.conf /etc/nginx/nginx.conf
 COPY docker/supervisord.conf /etc/supervisor/supervisord.conf
 COPY docker/crontab /etc/cron.d/laravel-cron
 
+# Cron и Supervisor
 RUN chmod 0644 /etc/cron.d/laravel-cron && crontab /etc/cron.d/laravel-cron
+
+# Railway PORT
+ENV PORT=8080
 
 EXPOSE 8080
 
