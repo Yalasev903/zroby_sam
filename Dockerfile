@@ -25,10 +25,13 @@ WORKDIR /var/www/robotapro
 COPY . .
 
 # Установка зависимостей Laravel
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader \
-    && chown -R www-data:www-data /var/www/robotapro/storage /var/www/robotapro/bootstrap/cache
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Копирование конфигураций
+# Настройка прав
+RUN chown -R www-data:www-data /var/www/robotapro/storage /var/www/robotapro/bootstrap/cache \
+    && chmod -R ug+w /var/www/robotapro/storage /var/www/robotapro/bootstrap/cache
+
+# Копирование конфигов
 COPY docker/nginx.conf.template /etc/nginx/nginx.conf.template
 COPY docker/supervisord.conf /etc/supervisor/supervisord.conf
 COPY docker/crontab /etc/cron.d/laravel-cron
