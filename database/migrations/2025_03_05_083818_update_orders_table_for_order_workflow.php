@@ -4,32 +4,46 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateOrdersTableForOrderWorkflow extends Migration
+return new class extends Migration
 {
     public function up(): void
     {
         Schema::table('orders', function (Blueprint $table) {
+            // Удаляем колонку безопасно (через try)
             if (Schema::hasColumn('orders', 'category')) {
-                $table->dropColumn('category');
+                try {
+                    $table->dropColumn('category');
+                } catch (\Throwable $e) {
+                    // Laravel может ругаться, если dropColumn применяется до создания таблицы
+                    // Поэтому в раннем деплое можно просто пропустить
+                }
             }
 
-            $table->foreignId('ad_id')
-                ->nullable()
-                ->constrained('ads')
-                ->onDelete('cascade');
+            if (!Schema::hasColumn('orders', 'ad_id')) {
+                $table->foreignId('ad_id')
+                    ->nullable()
+                    ->constrained('ads')
+                    ->onDelete('cascade');
+            }
 
-            $table->foreignId('executor_id')
-                ->nullable()
-                ->constrained('users')
-                ->onDelete('cascade');
+            if (!Schema::hasColumn('orders', 'executor_id')) {
+                $table->foreignId('executor_id')
+                    ->nullable()
+                    ->constrained('users')
+                    ->onDelete('cascade');
+            }
 
-            $table->enum('status', ['new', 'waiting', 'in_progress', 'pending_confirmation', 'completed', 'cancelled'])
-                ->default('new');
+            if (!Schema::hasColumn('orders', 'status')) {
+                $table->enum('status', ['new', 'waiting', 'in_progress', 'pending_confirmation', 'completed', 'cancelled'])
+                    ->default('new');
+            }
 
-            $table->foreignId('services_category_id')
-                ->nullable()
-                ->constrained('services_category')
-                ->onDelete('set null');
+            if (!Schema::hasColumn('orders', 'services_category_id')) {
+                $table->foreignId('services_category_id')
+                    ->nullable()
+                    ->constrained('services_category')
+                    ->onDelete('set null');
+            }
 
             $table->timestamp('start_time')->nullable();
             $table->timestamp('end_time')->nullable();
@@ -38,7 +52,6 @@ class UpdateOrdersTableForOrderWorkflow extends Migration
             $table->string('cancelled_by')->nullable();
             $table->timestamp('cancelled_at')->nullable();
 
-            // ✅ Добавили 'no_guarantee' в список значений ENUM
             $table->enum('payment_type', ['none', 'guarantee', 'no_guarantee'])->nullable()->default('none');
             $table->decimal('guarantee_amount', 10, 2)->nullable();
             $table->string('guarantee_card_number')->nullable();
@@ -79,4 +92,4 @@ class UpdateOrdersTableForOrderWorkflow extends Migration
             ]);
         });
     }
-}
+};
