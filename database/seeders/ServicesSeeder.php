@@ -7,12 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 class ServicesSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // Данные: ключ – название категории, значение – массив услуг
         $data = [
             'Будівництво/Ремонт' => [
                 'Будівництво',
@@ -39,25 +35,24 @@ class ServicesSeeder extends Seeder
         ];
 
         foreach ($data as $categoryName => $services) {
-            // ✅ Найдём или создадим категорию
-            $categoryId = DB::table('services_category')->updateOrInsert(
+            // Найдём или создадим категорию
+            DB::table('services_category')->updateOrInsert(
                 ['name' => $categoryName],
                 ['updated_at' => now(), 'created_at' => now()]
             );
 
-            // Получаем ID из категории (в updateOrInsert insertGetId не возвращает)
+            // Получаем ID созданной/найденной категории
             $category = DB::table('services_category')->where('name', $categoryName)->first();
 
-            // ✅ Для каждой услуги из категории найдём или создадим запись
             foreach ($services as $serviceName) {
                 DB::table('services')->updateOrInsert(
                     [
                         'services_category_id' => $category->id,
-                        'name' => $serviceName
+                        'name' => $serviceName,
                     ],
                     [
+                        'updated_at' => now(),
                         'created_at' => now(),
-                        'updated_at' => now()
                     ]
                 );
             }
