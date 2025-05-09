@@ -39,21 +39,27 @@ class ServicesSeeder extends Seeder
         ];
 
         foreach ($data as $categoryName => $services) {
-            // Создаём категорию и получаем её ID
-            $categoryId = DB::table('services_category')->insertGetId([
-                'name'       => $categoryName,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+            // ✅ Найдём или создадим категорию
+            $categoryId = DB::table('services_category')->updateOrInsert(
+                ['name' => $categoryName],
+                ['updated_at' => now(), 'created_at' => now()]
+            );
 
-            // Для каждой услуги из категории вставляем запись в таблицу services
+            // Получаем ID из категории (в updateOrInsert insertGetId не возвращает)
+            $category = DB::table('services_category')->where('name', $categoryName)->first();
+
+            // ✅ Для каждой услуги из категории найдём или создадим запись
             foreach ($services as $serviceName) {
-                DB::table('services')->insert([
-                    'services_category_id' => $categoryId,
-                    'name'                 => $serviceName,
-                    'created_at'           => now(),
-                    'updated_at'           => now(),
-                ]);
+                DB::table('services')->updateOrInsert(
+                    [
+                        'services_category_id' => $category->id,
+                        'name' => $serviceName
+                    ],
+                    [
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]
+                );
             }
         }
     }
