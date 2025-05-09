@@ -47,12 +47,14 @@ class OptimizeNews extends Command
 
             $text = trim($response->choices[0]->message->content ?? '');
 
+            // Проверка: короткий текст — удалить
             if (mb_strlen($text) < 150) {
                 $this->warn("🗑 Короткий текст GPT [ID {$news->id}]");
                 $news->delete();
                 continue;
             }
 
+            // Проверка: наличие "мусорных" фраз
             $garbage = ['я не можу', 'не маю доступу', 'на жаль', 'не можу надати', 'керівництво'];
             if (collect($garbage)->some(fn($g) => str_contains(mb_strtolower($text), $g))) {
                 $this->warn("🗑 GPT згенерував некорисний текст [ID {$news->id}]");
@@ -60,6 +62,7 @@ class OptimizeNews extends Command
                 continue;
             }
 
+            // Парсинг на заголовок, анотацію і текст
             preg_match('/^(.+?)\n\n(.+?)\n\n(.+)$/s', $text, $matches);
             if (count($matches) !== 4) {
                 $this->warn("❌ Неможливо розпарсити [ID {$news->id}]");
@@ -70,6 +73,7 @@ class OptimizeNews extends Command
 
             [$_, $title, $excerpt, $content] = $matches;
 
+            // Проверка на дубли
             if (News::where('title', $title)->exists()) {
                 $this->warn("🚫 Дублікат заголовка: {$title}");
                 $news->delete();
@@ -80,8 +84,6 @@ class OptimizeNews extends Command
             $imagePath = null;
             try {
                 $imagePrompt = "Журналістське фото до теми: '{$title}'. Без тексту, без логотипів, денне освітлення.";
-                Log::info("📤 DALL-E prompt for ID {$news->id}: {$imagePrompt}");
-
                 $imgResponse = OpenAI::images()->create([
                     'model' => 'dall-e-3',
                     'prompt' => $imagePrompt,
@@ -91,23 +93,15 @@ class OptimizeNews extends Command
                 ]);
 
                 $imgUrl = $imgResponse->data[0]->url ?? null;
-                Log::info("📥 DALL-E response for ID {$news->id}: " . ($imgUrl ?? 'NO URL'));
-
                 if ($imgUrl) {
                     $imgData = file_get_contents($imgUrl);
                     $filename = 'news_images/' . Str::uuid() . '.jpg';
                     Storage::disk('public')->put($filename, $imgData);
                     $imagePath = 'storage/' . $filename;
-                    $this->info("🖼 Зображення збережено: {$imagePath}");
-                } else {
-                    $imagePath = 'images/default-news.jpg';
-                    $this->warn("⚠️ DALL-E не повернув URL. Встановлено заглушку.");
                 }
-
             } catch (Throwable $e) {
-                $this->warn("⚠️ Помилка зображення для ID {$news->id}: " . $e->getMessage());
+                $this->warn("⚠️ Помилка зображення для ID {$news->id}");
                 Log::error("DALL-E помилка [ID {$news->id}]: " . $e->getMessage());
-                $imagePath = 'images/default-news.jpg';
             }
 
             // Оновлення запису
