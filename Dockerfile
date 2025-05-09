@@ -37,6 +37,7 @@ COPY docker/supervisord.conf /etc/supervisor/supervisord.conf
 COPY docker/crontab /etc/cron.d/laravel-cron
 COPY docker/entrypoint.sh /etc/entrypoint.sh
 
+# Разрешения
 RUN chmod 0644 /etc/cron.d/laravel-cron && crontab /etc/cron.d/laravel-cron
 RUN chmod +x /etc/entrypoint.sh
 
