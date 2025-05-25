@@ -14,7 +14,7 @@
                             <img src="{{ asset('images/logo.png') }}" alt="Zroby_Sam Logo">
                         </a>
                     </div>
-                    <p class="footer-item__desc">Zroby_Sam — платформа для пошуку майстрів, замовлення послуг і натхнення для власних проектів.</p>
+                    <p class="footer-item__desc">RobotaPro - платформа для пошуку майстрів, замовлення послуг і натхнення для власних проектів.</p>
                     <div class="footer-item__social">
                         <ul class="social-list">
                             <li class="social-list__item">

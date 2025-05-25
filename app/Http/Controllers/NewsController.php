@@ -35,12 +35,12 @@ class NewsController extends Controller
 
         // SEO
         $title = $selectedCategory
-            ? "Новини категорії: {$selectedCategory->name} | Zroby_Sam"
-            : "Останні новини | Zroby_Sam";
+            ? "Новини категорії: {$selectedCategory->name} | RobotaPro"
+            : "Останні новини | RobotaPro";
 
         $description = $selectedCategory
-            ? "Читайте свіжі новини з категорії «{$selectedCategory->name}» на платформі Zroby_Sam."
-            : "Читайте актуальні новини на платформі Zroby_Sam: поради, інновації, історії успіху та більше.";
+            ? "Читайте свіжі новини з категорії «{$selectedCategory->name}» на платформі RobotaPro."
+            : "Читайте актуальні новини на платформі RobotaPro: поради, інновації, історії успіху та більше.";
 
         return view('news.index', compact('news', 'categories', 'breadcrumbs', 'title', 'description'));
     }
