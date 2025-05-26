@@ -1,8 +1,5 @@
 SHELL=/bin/bash
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-# 🕕 Каждый день в 6:00 — парсинг новин
-0 6 * * * cd /var/www/robotapro && php artisan news:fetch >> /var/log/cron.log 2>&1
-
-# 🧠 В 6:05 — SEO и GPT-оптимизация
-5 6 * * * cd /var/www/robotapro && php artisan news:optimize >> /var/log/cron.log 2>&1
+0 0 */3 * * cd /var/www/robotapro && php artisan news:fetch >> /var/www/robotapro/storage/logs/news_fetch.log 2>&1
+0 01 */3 * * cd /var/www/robotapro && php artisan news:optimize >> /var/www/robotapro/storage/logs/news_optimize.log 2>&1
