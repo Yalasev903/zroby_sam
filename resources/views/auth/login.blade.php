@@ -1,4 +1,11 @@
 <x-guest-layout>
+     {{ dd(
+    env('PUSHER_APP_KEY'),
+    config('broadcasting.connections.pusher.key'),
+    config('broadcasting.connections.pusher.secret'),
+    config('broadcasting.connections.pusher.app_id'),
+    config('broadcasting.connections.pusher.options.cluster')
+) }}
     <x-authentication-card>
         <x-slot name="logo">
             <x-authentication-card-logo />
